@@ -76,4 +76,27 @@ class IncidenciaModel
       return false;
     }
   }
+
+  public function listarIncidencias()
+  {
+    try {
+      $conn = $this->conector->getConexion();
+      if ($conn != null) {
+        $sql = "SELECT NumIncidencia, CodPatrimonial, DescripcionCategoria, FechaIncidencia, Asunto, a.NombreArea, Descripcion, NumDocumento, Hora
+      FROM INCIDENCIA i
+      INNER JOIN Categoria ON i.CodCategoria = Categoria.CodCategoria
+      inner join area a on a.CodArea = i.CodArea";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+      } else {
+        throw new Exception("Error de conexión a la base de datos.");
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al obtener las recepciones: " . $e->getMessage());
+    }
+  }
 }

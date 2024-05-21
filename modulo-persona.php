@@ -15,7 +15,7 @@ $celular = $_POST['celular'] ?? '';
 
 // Crear una instancia del controlador PersonaController
 $personaController = new PersonaController($dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
-$personaModel = new PersonaModel();
+$personaModel = new PersonaModel($dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
 
 if ($CodPersona != '') {
   global $PersonaRegistrada;
@@ -55,7 +55,7 @@ switch ($action) {
     ?>
     <?php
     // Incluir la barra lateral desde un archivo externo
-    include("app/views/Mantenimiento/mantenedorPersona.php");
+    include("app/View/Mantenimiento/mantenedorPersona.php");
     ?>
   </div>
 </body>

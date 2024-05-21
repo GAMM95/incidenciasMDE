@@ -31,33 +31,46 @@
   <!-- Contenido principal -->
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
     <!-- Header -->
-    <h1 class="text-2xl font-bold mb-4">Mantenimiento de Persona</h1>
+    <h1 class="text-2xl font-bold mb-4">M&oacute;dulo / Persona</h1>
 
-    <form id="formPersona" action="mantenimiento-persona.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+    <form id="formPersona" action="modulo-persona.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+
       <!-- PRIMERA FILA Campo para mostrar el número de incidencia -->
-      <div class="flex flex-wrap -mx-2">
-        <label for="CodPersona" class="block font-bold mb-1 mr-1 text-lime-500">Código de Persona:</label>
-        <input type="text" id="CodPersona" name="CodPersona" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
-        <!-- El atributo 'readonly' evita que el usuario edite este campo -->
+      <div class="flex justify-center -mx-2 mb-5">
+        <div class="w-full sm:w-1/4 px-2 mb-2">
+          <div class="flex items-center">
+            <label for="CodPersona" class="block font-bold mb-1 mr-3 text-lime-500">C&oacute;digo de Persona:</label>
+            <input type="text" id="CodPersona" name="CodPersona" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
+          </div>
+        </div>
       </div>
-      <!-- SEGUNDA fila: Categoria, Prioridad, Fecha -->
-      <div class="flex flex-wrap -mx-2">
 
+      <!-- SEGUNDA fila: DNI, Nombres, Apellido Paterno y Apellido Materno -->
+      <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="dni" class="block mb-1 font-bold text-sm">DNI:</label>
-          <input type="text" id="dni" name="dni" class="border p-2 w-full text-sm" class=" border p-2">
-
+          <input type="text" id="dni" name="dni" class="border p-2 w-full text-sm" maxlength="8" pattern="\d{1,8}" title="Ingrese solo dígitos">
         </div>
-        <div class="w-full sm:w-1/2 px-2 mb-2">
-          <label for="nombre" class="block mb-1 font-bold text-sm">Nombre:</label>
+
+        <div class="w-full sm:w-1/4 px-2 mb-2">
+          <label for="nombre" class="block mb-1 font-bold text-sm">Nombres:</label>
           <input type="text" id="nombre" name="nombre" class="border p-2 w-full text-sm">
         </div>
+        <div class="w-full sm:w-1/4 px-2 mb-2">
+          <label for="apellido_paterno" class="block mb-1 font-bold text-sm">Apellido Paterno:</label>
+          <input type="text" id="apellido_paterno" name="apellido_paterno" class="border p-2 w-full text-sm">
+        </div>
+        <div class="w-full sm:w-1/4 px-2 mb-2">
+          <label for="apellido_materno" class="block mb-1 font-bold text-sm">Apellido Materno:</label>
+          <input type="text" id="apellido_materno" name="apellido_materno" class="border p-2 w-full text-sm">
+        </div>
+
       </div>
-      <!-- CUARTA fila: Asunto -->
+      <!-- CUARTA fila: Celular, Email -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="celular" class="block mb-1 font-bold text-sm">Celular:</label>
-          <input type="text" id="celular" name="celular" class="border p-2 w-full text-sm">
+          <input type="tel" id="celular" name="celular" class="border p-2 w-full text-sm" maxlength="9" pattern="\d{1,9}" title="Ingrese el número de celular">
         </div>
         <div class="w-full sm:w-1/2 px-2 mb-2">
           <label for="email" class="block mb-1 font-bold text-sm">Email:</label>
@@ -66,9 +79,11 @@
       </div>
 
       <script>
-        document.getElementById('CodPersona').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['CodPersona'] : ''; ?>';
-        document.getElementById('dni').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['DNI'] : ''; ?>';
-        document.getElementById('nombre').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['NombrePersona'] : ''; ?>';
+        document.getElementById('PER_codigo').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['CodPersona'] : ''; ?>';
+        document.getElementById('PER_dni').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['DNI'] : ''; ?>';
+        document.getElementById('PER_nombres').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['NombrePersona'] : ''; ?>';
+        document.getElementById('PER_apellidoPaterno').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['NombrePersona'] : ''; ?>';
+        document.getElementById('PER_apellidoMaterno').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['NombrePersona'] : ''; ?>';
         document.getElementById('celular').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['Celular'] : ''; ?>';
         document.getElementById('email').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['Email'] : ''; ?>';
       </script>
@@ -118,25 +133,31 @@
         </thead>
         <tbody>
           <?php
-          require_once './app/models/MantPersonaModel.php';
-          $mantPersonaModel = new PersonaModel();
+          require_once './app/Model/PersonaModel.php';
+          $mantPersonaModel = new PersonaModel($dni,$nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
           $personas = $mantPersonaModel->listarPersona();
           foreach ($personas as $persona) {
             echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b '>";
-            echo "<th scope='col' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap ' data-cod='" . htmlspecialchars($persona['CodPersona']) . "' >";
-            echo $persona['CodPersona'];
+            echo "<th scope='col' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap ' data-cod='" . htmlspecialchars($persona['PER_codigo']) . "' >";
+            echo $persona['PER_codigo'];
             echo "</th>";
-            echo "<td class='px-6 py-4 ' data-dni='" . htmlspecialchars($persona['DNI']) . "' >";
-            echo $persona['DNI'];
+            echo "<td class='px-6 py-4 ' data-dni='" . htmlspecialchars($persona['PER_dni']) . "' >";
+            echo $persona['PER_dni'];
             echo "</td>";
-            echo "<td class='px-6 py-4 ' data-nombre='" . htmlspecialchars($persona['NombrePersona']) . "' >";
-            echo $persona['NombrePersona'];
+            echo "<td class='px-6 py-4 ' data-nombre='" . htmlspecialchars($persona['PER_nombres']) . "' >";
+            echo $persona['PER_nombres'];
             echo "</td>";
-            echo "<td class='px-6 py-4' data-celular='" . htmlspecialchars($persona['Celular']) . "'>";
-            echo $persona['Celular'];
+            echo "<td class='px-6 py-4 ' data-apellidoPaterno='" . htmlspecialchars($persona['PER_apellidoPaterno']) . "' >";
+            echo $persona['PER_apellidoPaterno'];
             echo "</td>";
-            echo "<td class='px-6 py-4' data-email='" . htmlspecialchars($persona['Email']) . "'>";
-            echo $persona['Email'];
+            echo "<td class='px-6 py-4 ' data-apellidoMaterno='" . htmlspecialchars($persona['PER_apellidoMaterno']) . "' >";
+            echo $persona['PER_apellidoMaterno'];
+            echo "</td>";
+            echo "<td class='px-6 py-4' data-celular='" . htmlspecialchars($persona['PER_celular']) . "'>";
+            echo $persona['PER_celular'];
+            echo "</td>";
+            echo "<td class='px-6 py-4' data-email='" . htmlspecialchars($persona['PER_email']) . "'>";
+            echo $persona['PER_email'];
             echo "</td>";
             echo "</tr>";
           }
@@ -153,12 +174,16 @@
       var cod = $(this).find('th').data('cod');
       var dni = $(this).find('td[data-dni]').data('dni'); // Corrected line
       var nombre = $(this).find('td[data-nombre]').data('nombre'); // Corrected line
+      var apellidoPaterno = $(this).find('td[data-apellidoPaterno]').data('apellidoPaterno'); // 
+      var apellidoMaterno = $(this).find('td[data-apellidoMaterno]').data('apellidoMaterno'); // 
       var celular = $(this).find('td[data-celular]').data('celular'); // Corrected line
       var email = $(this).find('td[data-email]').data('email'); // Corrected line
 
       $('#CodPersona').val(cod);
       $('#dni').val(dni);
       $('#nombre').val(nombre);
+      $('#apellidoPaterno').val(apellidoPaterno);
+      $('#apellidoMaterno').val(apellidoMaterno);
       $('#celular').val(celular);
       $('#email').val(email);
       $(this).addClass('bg-blue-200 font-semibold');
@@ -204,7 +229,7 @@
       var formData = $("form").serialize(); // Obtener los datos del formulario
 
       $.ajax({
-        url: "mantenimiento-persona.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+        url: "modulo-persona.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
         type: "POST",
         data: formData,
         success: function(response) {

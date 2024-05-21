@@ -27,7 +27,7 @@ class PersonaController
       $insertSuccessId = $this->personaModel->registrarPersona($dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
 
       if ($insertSuccessId) {
-        header('Location: mantenimiento-persona.php?CodPersona=' . $insertSuccessId);
+        header('Location: modulo-persona.php?CodPersona=' . $insertSuccessId);
       } else {
         echo "Error al registrar la persona.";
       }
@@ -52,7 +52,7 @@ class PersonaController
       $updateSuccess = $this->personaModel->actualizarPersona($codPersona, $dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
 
       if ($updateSuccess) {
-        header('Location: mantenimiento-persona.php?CodPersona=' . $codPersona);
+        header('Location: modulo-persona.php?CodPersona=' . $codPersona);
       } else {
         echo "Error al actualizar la persona.";
       }

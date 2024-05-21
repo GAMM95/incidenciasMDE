@@ -109,14 +109,14 @@ if (session_status() == PHP_SESSION_NONE) {
       <!-- Etiqueta con submenu: Mantenimiento -->
       <div x-data="{ open: false }">
         <button @click="open = !open" class="block py-2 px-4 hover:bg-[#d5fab4]  flex justify-between w-full">
-          Mantenimiento
+          M&oacute;dulo
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': open, 'rotate-0': !open}" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 1.414L10 12.414l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
           </svg>
         </button>
         <!-- Opciones: Persona, Usuario, Area, Rol y Categorias -->
         <div x-show="open" class="pl-4">
-          <a href="mantenimiento-persona.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Persona</a>
+          <a href="modulo-persona.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Persona</a>
           <a href="mantenimiento-usuario.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Usuario</a>
           <a href="mantenimiento-area.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">&Aacute;rea</a>
           <a href="mantenimiento-rol.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Rol</a>
