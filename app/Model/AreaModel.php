@@ -1,25 +1,27 @@
 <?php
 require_once 'config/conexion.php';
 
-class AreaModel
+class AreaModel extends Conexion
 {
-  private $conector;
   protected $codigoArea;
   protected $nombreArea;
 
   public function __construct($codigoArea, $nombreArea)
   {
-    $this->conector = new Conexion();
+    // Llama al constructor de la clase padre (Conexion)
+    parent::__construct();
+
+    // Asigna los valores a las propiedades
     $this->codigoArea = $codigoArea;
     $this->nombreArea = $nombreArea;
   }
 
   public function registrarArea($nombreArea)
   {
-    $conn = $this->conector->getConexion();
+    try {
+      $conn = $this->getConexion();
 
-    if ($conn != null) {
-      try {
+      if ($conn != null) {
         // Preparar la consulta SQL para la inserción sin incluir el campo id
         $sql = "INSERT INTO AREA (ARE_nombre) VALUES (?)";
 
@@ -32,21 +34,21 @@ class AreaModel
         // Obtener el último ID insertado
         $lastId = $conn->lastInsertId();
         return $lastId;
-      } catch (PDOException $e) {
-        echo "Error al insertar área: " . $e->getMessage();
-        return false;
+      } else {
+        throw new Exception("Error de conexión con la base de datos.");
       }
-    } else {
-      echo "Error de conexión con la base de datos.";
-      return false;
+    } catch (PDOException $e) {
+      throw new Exception("Error al insertar área: " . $e->getMessage());
     }
   }
+
   public function listarArea()
   {
     try {
-      $conn = $this->conector->getConexion();
+      $conn = $this->getConexion();
+
       if ($conn != null) {
-        $sql = "SELECT CAT_codigo, CAT_descripcion FROM Categoria";
+        $sql = "SELECT ARE_codigo, ARE_nombre FROM AREA";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
@@ -57,16 +59,16 @@ class AreaModel
         throw new Exception("Error de conexión con la base de datos.");
       }
     } catch (PDOException $e) {
-      throw new Exception("Error al obtener las categorías: " . $e->getMessage());
+      throw new Exception("Error al obtener las áreas: " . $e->getMessage());
     }
   }
 
   public function obtenerAreaPorId($codigoArea)
   {
-    $conn = $this->conector->getConexion();
+    try {
+      $conn = $this->getConexion();
 
-    if ($conn != null) {
-      try {
+      if ($conn != null) {
         // Preparar la consulta SQL para obtener los registros de incidencias
         $sql = " SELECT * FROM Area  WHERE ARE_codigo = ?";
 
@@ -81,14 +83,11 @@ class AreaModel
 
         // Devolver los registros obtenidos
         return $registros;
-      } catch (PDOException $e) {
-        // Manejar cualquier excepción o error que pueda surgir al ejecutar la consulta
-        echo "Error al obtener los registros de incidencias: " . $e->getMessage();
-        return null;
+      } else {
+        throw new Exception("Error de conexión con la base de datos.");
       }
-    } else {
-      echo "Error de conexión cierre Controller la base de datos.";
-      return null;
+    } catch (PDOException $e) {
+      throw new Exception("Error al obtener el área: " . $e->getMessage());
     }
   }
 }
