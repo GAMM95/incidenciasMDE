@@ -1,5 +1,5 @@
 <?php
-require_once 'config/conexion.php';
+// require_once 'config/conexion.php';
 
 class CategoriaModel extends Conexion
 {
@@ -20,20 +20,20 @@ class CategoriaModel extends Conexion
   public function registrarCategoria($descripcionCategoria)
   {
     try {
-      $conn = $this->getConexion();
+      $conector = $this->getConexion();
 
-      if ($conn != null) {
+      if ($conector != null) {
         // Preparar la consulta SQL para la inserción sin incluir el campo id
-        $sql = "INSERT INTO Categoria (CAT_nombre) VALUES (?)";
+        $sql = "INSERT INTO CATEGORIA (CAT_nombre) VALUES (?)";
 
         // Preparar la sentencia
-        $stmt = $conn->prepare($sql);
+        $stmt = $conector->prepare($sql);
 
         // Ejecutar la inserción
         $stmt->execute([$descripcionCategoria]);
 
         // Obtener el último ID insertado
-        $lastId = $conn->lastInsertId();
+        $lastId = $conector->lastInsertId();
         return $lastId;
       } else {
         throw new Exception("Error de conexión con la base de datos.");
@@ -46,11 +46,11 @@ class CategoriaModel extends Conexion
   public function listarCategoria()
   {
     try {
-      $conn = $this->getConexion();
+      $conector = $this->getConexion();
 
-      if ($conn != null) {
-        $sql = "SELECT CAT_codigo, CAT_nombre FROM Categoria";
-        $stmt = $conn->prepare($sql);
+      if ($conector != null) {
+        $sql = "SELECT CAT_codigo, CAT_nombre FROM CATEGORIA";
+        $stmt = $conector->prepare($sql);
         $stmt->execute();
 
         // Obtener todos los resultados
@@ -67,14 +67,14 @@ class CategoriaModel extends Conexion
   public function obtenerCategoriaPorId($CodCategoria)
   {
     try {
-      $conn = $this->getConexion();
+      $conector = $this->getConexion();
 
-      if ($conn != null) {
+      if ($conector != null) {
         // Preparar la consulta SQL para obtener los registros de incidencias
-        $sql = " SELECT * FROM Categoria  WHERE CAT_codigo = ?";
+        $sql = " SELECT * FROM CATEGORIA  WHERE CAT_codigo = ?";
 
         // Preparar la sentencia
-        $stmt = $conn->prepare($sql);
+        $stmt = $conector->prepare($sql);
 
         // Ejecutar la consulta
         $stmt->execute([$CodCategoria]);

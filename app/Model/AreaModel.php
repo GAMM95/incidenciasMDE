@@ -19,20 +19,20 @@ class AreaModel extends Conexion
   public function registrarArea($nombreArea)
   {
     try {
-      $conn = $this->getConexion();
+      $conector = $this->getConexion();
 
-      if ($conn != null) {
+      if ($conector != null) {
         // Preparar la consulta SQL para la inserción sin incluir el campo id
         $sql = "INSERT INTO AREA (ARE_nombre) VALUES (?)";
 
         // Preparar la sentencia
-        $stmt = $conn->prepare($sql);
+        $stmt = $conector->prepare($sql);
 
         // Ejecutar la inserción
         $stmt->execute([$nombreArea]);
 
         // Obtener el último ID insertado
-        $lastId = $conn->lastInsertId();
+        $lastId = $conector->lastInsertId();
         return $lastId;
       } else {
         throw new Exception("Error de conexión con la base de datos.");
@@ -45,11 +45,11 @@ class AreaModel extends Conexion
   public function listarArea()
   {
     try {
-      $conn = $this->getConexion();
+      $conector = $this->getConexion();
 
-      if ($conn != null) {
+      if ($conector != null) {
         $sql = "SELECT ARE_codigo, ARE_nombre FROM AREA";
-        $stmt = $conn->prepare($sql);
+        $stmt = $conector->prepare($sql);
         $stmt->execute();
 
         // Obtener todos los resultados
@@ -66,14 +66,14 @@ class AreaModel extends Conexion
   public function obtenerAreaPorId($codigoArea)
   {
     try {
-      $conn = $this->getConexion();
+      $conector = $this->getConexion();
 
-      if ($conn != null) {
+      if ($conector != null) {
         // Preparar la consulta SQL para obtener los registros de incidencias
         $sql = " SELECT * FROM Area  WHERE ARE_codigo = ?";
 
         // Preparar la sentencia
-        $stmt = $conn->prepare($sql);
+        $stmt = $conector->prepare($sql);
 
         // Ejecutar la consulta
         $stmt->execute([$codigoArea]);

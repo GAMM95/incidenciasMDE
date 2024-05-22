@@ -24,7 +24,6 @@ if ($CodPersona != '') {
   $PersonaRegistrada = null;
 }
 
-
 switch ($action) {
   case 'registrar':
     $personaController->registrarPersona();

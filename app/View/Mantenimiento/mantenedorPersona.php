@@ -21,6 +21,8 @@
   <script src="app/Views/Func/password-toggle.js"></script>
   <!-- Implementación de iconos-->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <!-- Incluye Alpine.js -->
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
   <title class="text-center text-3xl font-poppins">Sistema de Incidencias</title>
@@ -29,7 +31,7 @@
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
   <!-- Contenido principal -->
-  <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
+  <main class="bg-[#eeeff1] flex-1 p-4">
     <!-- Header -->
     <h1 class="text-2xl font-bold mb-4">M&oacute;dulo / Persona</h1>
 
@@ -40,7 +42,7 @@
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <div class="flex items-center">
             <label for="CodPersona" class="block font-bold mb-1 mr-3 text-lime-500">C&oacute;digo de Persona:</label>
-            <input type="text" id="CodPersona" name="CodPersona" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
+            <input type="text" id="txt_codPersona" name="CodPersona" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
           </div>
         </div>
       </div>
@@ -49,20 +51,20 @@
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="dni" class="block mb-1 font-bold text-sm">DNI:</label>
-          <input type="text" id="dni" name="dni" class="border p-2 w-full text-sm" maxlength="8" pattern="\d{1,8}" title="Ingrese solo dígitos">
+          <input type="text" id="txt_dni" name="dni" class="border p-2 w-full text-sm" maxlength="8" pattern="\d{1,8}" title="Ingrese solo dígitos" required>
         </div>
 
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="nombre" class="block mb-1 font-bold text-sm">Nombres:</label>
-          <input type="text" id="nombre" name="nombre" class="border p-2 w-full text-sm">
+          <input type="text" id="txt_nombre" name="nombre" class="border p-2 w-full text-sm" required>
         </div>
         <div class="w-full sm:w-1/4 px-2 mb-2">
-          <label for="apellido_paterno" class="block mb-1 font-bold text-sm">Apellido Paterno:</label>
-          <input type="text" id="apellido_paterno" name="apellido_paterno" class="border p-2 w-full text-sm">
+          <label for="apellidoPaterno" class="block mb-1 font-bold text-sm">Apellido Paterno:</label>
+          <input type="text" id="txt_apellidoPaterno" name="apellidoPaterno" class="border p-2 w-full text-sm" required>
         </div>
         <div class="w-full sm:w-1/4 px-2 mb-2">
-          <label for="apellido_materno" class="block mb-1 font-bold text-sm">Apellido Materno:</label>
-          <input type="text" id="apellido_materno" name="apellido_materno" class="border p-2 w-full text-sm">
+          <label for="apellidoMaterno" class="block mb-1 font-bold text-sm">Apellido Materno:</label>
+          <input type="text" id="txt_apellidoMaterno" name="apellidoMaterno" class="border p-2 w-full text-sm" required>
         </div>
 
       </div>
@@ -70,11 +72,11 @@
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="celular" class="block mb-1 font-bold text-sm">Celular:</label>
-          <input type="tel" id="celular" name="celular" class="border p-2 w-full text-sm" maxlength="9" pattern="\d{1,9}" title="Ingrese el número de celular">
+          <input type="tel" id="txt_celular" name="celular" class="border p-2 w-full text-sm" maxlength="9" pattern="\d{1,9}" title="Ingrese el número de celular" required>
         </div>
         <div class="w-full sm:w-1/2 px-2 mb-2">
           <label for="email" class="block mb-1 font-bold text-sm">Email:</label>
-          <input type="text" id="email" name="email" class="border p-2 w-full text-sm">
+          <input type="email" id="txt_email" name="email" class="border p-2 w-full text-sm" required>
         </div>
       </div>
 
@@ -82,15 +84,15 @@
         document.getElementById('PER_codigo').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['CodPersona'] : ''; ?>';
         document.getElementById('PER_dni').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['DNI'] : ''; ?>';
         document.getElementById('PER_nombres').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['NombrePersona'] : ''; ?>';
-        document.getElementById('PER_apellidoPaterno').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['NombrePersona'] : ''; ?>';
-        document.getElementById('PER_apellidoMaterno').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['NombrePersona'] : ''; ?>';
+        document.getElementById('PER_apellidoPaterno').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['ApellidoPaterno'] : ''; ?>';
+        document.getElementById('PER_apellidoMaterno').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['ApellidoMaterno'] : ''; ?>';
         document.getElementById('celular').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['Celular'] : ''; ?>';
         document.getElementById('email').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['Email'] : ''; ?>';
       </script>
 
       <!-- Botónes -->
-      <div class="flex justify-center space-x-4">
-        <button type="submit" id="guardar-persona" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
+      <div class="flex justify-center space-x-4 mt-2 mb-2">
+        <button type="button" id="guardar-persona" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
           Guardar
         </button>
         <button type="button" id="editarpersona" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">
@@ -109,19 +111,19 @@
 
     </form>
 
+
     <div class="relative max-h-[300px] overflow-x-hidden shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="sticky
-                        top-2 text-xs text-gray-70 uppercase bg-lime-300">
+        <thead class="sticky top-2 text-xs text-gray-70 uppercase bg-lime-300">
           <tr>
             <th scope="col" class="px-6 py-1">
-              °
+              N°
             </th>
             <th scope="col" class="px-6 py-1">
               DNI
             </th>
             <th scope="col" class="px-6 py-3">
-              Nombre
+              Nombre completo
             </th>
             <th scope="col" class="px-6 py-3">
               Celular
@@ -134,7 +136,7 @@
         <tbody>
           <?php
           require_once './app/Model/PersonaModel.php';
-          $mantPersonaModel = new PersonaModel($dni,$nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
+          $mantPersonaModel = new PersonaModel($dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
           $personas = $mantPersonaModel->listarPersona();
           foreach ($personas as $persona) {
             echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b '>";
@@ -145,13 +147,7 @@
             echo $persona['PER_dni'];
             echo "</td>";
             echo "<td class='px-6 py-4 ' data-nombre='" . htmlspecialchars($persona['PER_nombres']) . "' >";
-            echo $persona['PER_nombres'];
-            echo "</td>";
-            echo "<td class='px-6 py-4 ' data-apellidoPaterno='" . htmlspecialchars($persona['PER_apellidoPaterno']) . "' >";
-            echo $persona['PER_apellidoPaterno'];
-            echo "</td>";
-            echo "<td class='px-6 py-4 ' data-apellidoMaterno='" . htmlspecialchars($persona['PER_apellidoMaterno']) . "' >";
-            echo $persona['PER_apellidoMaterno'];
+            echo $persona['PER_nombres'] . ' ' . $persona['PER_apellidoPaterno'] . ' ' . $persona['PER_apellidoMaterno'];
             echo "</td>";
             echo "<td class='px-6 py-4' data-celular='" . htmlspecialchars($persona['PER_celular']) . "'>";
             echo $persona['PER_celular'];
@@ -168,82 +164,121 @@
   </main>
 
 </body>
+
 <script>
   $(document).ready(function() {
+    // Evento de clic en una fila de la tabla
     $('tr').click(function() {
       var cod = $(this).find('th').data('cod');
-      var dni = $(this).find('td[data-dni]').data('dni'); // Corrected line
-      var nombre = $(this).find('td[data-nombre]').data('nombre'); // Corrected line
-      var apellidoPaterno = $(this).find('td[data-apellidoPaterno]').data('apellidoPaterno'); // 
-      var apellidoMaterno = $(this).find('td[data-apellidoMaterno]').data('apellidoMaterno'); // 
-      var celular = $(this).find('td[data-celular]').data('celular'); // Corrected line
-      var email = $(this).find('td[data-email]').data('email'); // Corrected line
+      var dni = $(this).find('td[data-dni]').text();
+      var nombreCompleto = $(this).find('td[data-nombre]').text();
+      var celular = $(this).find('td[data-celular]').text();
+      var email = $(this).find('td[data-email]').text();
 
-      $('#CodPersona').val(cod);
-      $('#dni').val(dni);
-      $('#nombre').val(nombre);
-      $('#apellidoPaterno').val(apellidoPaterno);
-      $('#apellidoMaterno').val(apellidoMaterno);
-      $('#celular').val(celular);
-      $('#email').val(email);
-      $(this).addClass('bg-blue-200 font-semibold');
-      $('tr').not(this).removeClass('bg-blue-200 font-semibold');
+      // Separar el nombre completo en partes: nombre, apellido paterno y apellido materno
+      var partesNombre = nombreCompleto.split(' ');
+      var nombre = partesNombre[0];
+      var apellidoPaterno = partesNombre[1];
+      var apellidoMaterno = partesNombre[2];
+
+      // Establecer los valores en los campos del formulario
+      $('#txt_codPersona').val(cod);
+      $('#txt_dni').val(dni);
+      $('#txt_nombre').val(nombre);
+      $('#txt_apellidoPaterno').val(apellidoPaterno);
+      $('#txt_apellidoMaterno').val(apellidoMaterno);
+      $('#txt_celular').val(celular);
+      $('#txt_email').val(email);
+
+      // Aplicar estilos de selección a la fila seleccionada y quitarlos de las demás filas
+      $('tr').removeClass('bg-blue-200 font-semibold'); // Limpiar estilos
+      $(this).addClass('bg-blue-200 font-semibold'); // Aplicar estilos a la fila seleccionada
     });
-  });
-  ////////////////////////////////////////////////////////////////////////
 
-  function limpiarCampos() {
-    // Obtener el formulario por su ID
-    const form = document.getElementById('formPersona');
-    // Limpiar los campos del formulario
-    form.reset();
-  }
-  const btnLimpiar = document.getElementById('limpiarCampos');
-  btnLimpiar.addEventListener('click', limpiarCampos);
 
-  function editarpersona() {
-    // Obtener el formulario por su ID
-    const form = document.getElementById('formPersona');
-    // Limpiar los campos del formulario
-    $action = "editar";
-    form.reset();
 
-  }
-  const btnEditar = document.getElementById('editarpersona');
-  btnEditar.addEventListener('click', editarpersona);
-
-  function nuevoRegistro() {
-    const form = document.getElementById('formPersona');
-
-    // Restablecer el formulario
-    form.reset();
-  }
-  // Asignar el evento 'click' al botón 'Nuevo Registro'
-  const btnNuevo = document.getElementById('nuevoRegistro');
-  btnNuevo.addEventListener('click', nuevoRegistro);
-
-  //GUARDAR DATOS
-  $(document).ready(function() {
-    $("#guardar-persona").on("click", function() {
-      // Obtener los datos del formulario
-      var formData = $("form").serialize(); // Obtener los datos del formulario
-
-      $.ajax({
-        url: "modulo-persona.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
-        type: "POST",
-        data: formData,
-        success: function(response) {
-          // Manejar la respuesta del servidor si es necesario
-          alert("Datos guardados exitosamente");
-          // Puedes limpiar el formulario si lo deseas
-          $("form")[0].reset();
-        },
-        error: function(xhr, status, error) {
-          // Manejar los errores si la solicitud falla
-          console.error(error);
-          alert("Error al guardar los datos. Por favor, inténtalo de nuevo.");
+    // Evento de clic en el botón "Guardar Persona"
+    $(document).ready(function() {
+      $("#guardar-persona").on("click", function() {
+        // Validar si los campos obligatorios están llenos
+        if ($('#txt_dni').val() === '' || $('#txt_nombre').val() === '' || $('#txt_apellidoPaterno').val() === '' || $('#txt_apellidoMaterno').val() === '' || $('#txt_celular').val() === '' || $('#txt_email').val() === '') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Por favor, complete todos los campos obligatorios.',
+            confirmButtonColor: '#d33', // Cambiar el color del botón de confirmación a rojo
+            confirmButtonText: 'OK'
+          });
+          return; // Detener el proceso de guardado si falta algún campo
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Nueva persona registrada',
+            text: '¡La nueva persona ha sido registrada exitosamente!',
+            confirmButtonColor: '#3085d6', // Cambiar el color del botón de confirmación a azul
+            confirmButtonText: 'Aceptar'
+          });
         }
+
+        // Obtener los datos del formulario
+        var formData = $("form").serialize(); // Obtener los datos del formulario
+
+        $.ajax({
+          url: "modulo-persona.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+          type: "POST",
+          data: formData,
+          success: function(response) {
+            $("form")[0].reset();
+          },
+          error: function(xhr, status, error) {
+            console.error(error);
+            // alert("Error al guardar los datos. Por favor, inténtalo de nuevo.");
+          }
+        });
       });
+    });
+
+    // Evento de clic en el botón "Editar Persona"
+    $('#editarpersona').click(function() {
+      var codPersona = $('#txt_codPersona').val();
+      var dni = $('#txt_dni').val();
+      var nombre = $('#txt_nombre').val();
+      var apellidoPaterno = $('#txt_apellidoPaterno').val();
+      var apellidoMaterno = $('#txt_apellidoMaterno').val();
+      var celular = $('#txt_celular').val();
+      var email = $('#txt_email').val();
+
+      if (!codPersona) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Por favor, seleccione un registro para editar.',
+          confirmButtonColor: '#d33', // Cambiar el color del botón de confirmación a rojo
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
+
+      // Aquí puedes realizar las acciones necesarias para editar el registro
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro editado',
+        text: 'Los datos del registro han sido actualizados exitosamente.',
+        confirmButtonColor: '#3085d6', // Cambiar el color del botón de confirmación a azul
+        confirmButtonText: 'Aceptar'
+      });
+    });
+
+    // Evento de clic en el botón "Limpiar Campos"
+    $('#limpiarCampos').click(function() {
+      const form = document.getElementById('formPersona');
+      form.reset();
+    });
+
+    // Evento de clic en el botón "Nuevo Registro"
+    $('#nuevoRegistro').click(function() {
+      const form = document.getElementById('formPersona');
+      form.reset();
     });
   });
 </script>

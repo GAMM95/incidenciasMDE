@@ -115,7 +115,7 @@ class PersonaModel extends Conexion
       $conector = $this->getConexion();
       if ($conector) {
         // Preparar la consulta SQL para la inserción sin incluir el campo id
-        $sql = "UPDATE Persona SET PER_dni = ?, PER_nombres = ? , PER_apellidoPaterno = ?, PER_apellidoMaterno = ?, PER_email = ?, PER_celular = ? WHERE PER_codigo = ?";
+        $sql = "UPDATE PERSONA SET PER_dni = ?, PER_nombres = ? , PER_apellidoPaterno = ?, PER_apellidoMaterno = ?, PER_email = ?, PER_celular = ? WHERE PER_codigo = ?";
 
         // Preparar la sentencia
         $stmt = $conector->prepare($sql);

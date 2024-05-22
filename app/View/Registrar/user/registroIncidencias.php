@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="es">
 
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE-edge">
@@ -42,7 +41,6 @@
       <div class="flex items-center mb-4 hidden">
         <label for="numero_incidencia" class="block font-bold mb-1 mr-1 text-lime-500">Nro Incidencia:</label>
         <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
-        <!-- El atributo 'readonly' evita que el usuario edite este campo -->
       </div>
       <!-- SEGUNDA fila: Categoria, Prioridad, Fecha -->
       <div class="flex flex-wrap -mx-2">

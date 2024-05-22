@@ -52,7 +52,7 @@ class PersonaController
       $updateSuccess = $this->personaModel->actualizarPersona($codPersona, $dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
 
       if ($updateSuccess) {
-        header('Location: modulo-persona.php?CodPersona=' . $codPersona);
+        header('Location: detalle-persona.php?CodPersona=' . $codPersona);
       } else {
         echo "Error al actualizar la persona.";
       }

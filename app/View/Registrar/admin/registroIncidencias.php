@@ -38,13 +38,12 @@
     <h1 class="text-xl font-bold mb-4">Registro de Incidencia</h1>
     <!-- Formulario -->
     <form id="formIncidencia" action="registro-incidencia.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
-
       <!-- PRIMERA FILA Campo para mostrar el número de incidencia -->
       <div class="flex items-center mb-4 hidden">
         <label for="numero_incidencia" class="block font-bold mb-1 mr-1 text-lime-500">Nro Incidencia:</label>
         <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
+        <!-- El atributo 'readonly' evita que el usuario edite este campo -->
       </div>
-
       <!-- SEGUNDA fila: Categoria, Prioridad, Fecha -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-2">
@@ -55,6 +54,7 @@
         <div class="w-full md:w-1/3 px-2 mb-2">
           <label for="hora" class="block font-bold mb-1">Hora:</label>
           <input type="time" id="hora" name="hora" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" readonly>
+
         </div>
         <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-2">
           <label for="fecha" class="block mb-1 font-bold text-sm">Fecha:</label>
@@ -88,7 +88,7 @@
         </div>
       </div>
 
-      <!-- CUARTA fila: Asunto, Documento-->
+      <!-- CUARTA fila: Asunto -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/2 px-2 mb-2">
           <label for="asunto" class="block mb-1 font-bold text-sm">Asunto:</label>
@@ -102,15 +102,15 @@
 
       <script>
         document.getElementById('codigo_patrimonial').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CodPatrimonial'] : ''; ?>';
+        document.getElementById('categoria').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['DescripcionCategoria'] : ''; ?>';
         document.getElementById('asunto').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['Asunto'] : ''; ?>';
-
         document.getElementById('numero_documento').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['NumDocumento'] : ''; ?>';
         document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CodArea'] : ''; ?>';
       </script>
 
       <!-- SEXTA fila: Descripción -->
       <div class="w-full mb-2">
-        <label for="descripcion" class="block mb-1 font-bold text-sm">Descripci&oacute;n:</label>
+        <label for="descripcion" class="block mb-1 font-bold text-sm">Descripción:</label>
         <textarea id="descripcion" name="descripcion" rows="4" class="border p-2 w-full text-sm max-h-40 resize-none overflow-y-auto"></textarea>
       </div>
 
@@ -136,70 +136,22 @@
           Nuevo
         </button>
       </div>
-
-
     </form>
     <!-- Fin del formulario -->
 
-    <div>
-      <div class="relative max-h-[300px] overflow-x-hidden shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead class="sticky
-                     top-0 text-xs text-gray-700 uppercase bg-lime-300">
-            <tr>
-              <th scope="col" class="px-6 py-3">
-                Num Incidencia
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Código Patrimonial
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Categoría
-              </th>
-              <!--<th scope="col" class="px-6 py-3">
-                        Prioridad
-                    </th>-->
-              <th scope="col" class="px-6 py-3">
-                Fecha Incidencia
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Asunto
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            require_once './app/Model/IncidenciaModel.php';
-            $incidenciaModel = new IncidenciaModel();
-            $incidencias = $incidenciaModel->listarIncidencias();
-            foreach ($incidencias as $incidencia) {
-              echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b '>";
-              echo "<th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '>";
-              echo $incidencia['NumIncidencia'];
-              echo "</th>";
-              echo "<td class='px-6 py-4'>";
-              echo $incidencia['CodPatrimonial'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $incidencia['DescripcionCategoria'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $incidencia['FechaIncidencia'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $incidencia['Asunto'];
-              echo "</td>";
-              echo "</tr>";
-            }
 
-            ?>
+    
 
 
-          </tbody>
-        </table>
-      </div>
 
-    </div>
+
+
+
+
+
+
+
+
 
   </main>
 </body>

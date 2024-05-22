@@ -29,13 +29,13 @@ CREATE TABLE PERSONA (
 	PER_dni CHAR(8) UNIQUE NOT NULL,
 	PER_nombres VARCHAR(20) NOT NULL,
 	PER_apellidoPaterno VARCHAR(15) NOT NULL,
-	PER_apellidomaterno VARCHAR(15) NOT NULL,
+	PER_apellidoMaterno VARCHAR(15) NOT NULL,
 	PER_email VARCHAR(45) NOT NULL,
 	PER_celular CHAR(9) UNIQUE NOT NULL
 );
 GO
 
-INSERT INTO PERSONA (PER_dni, PER_nombres, PER_apellidoPaterno, PER_apellidomaterno, PER_email, PER_celular) VALUES 
+INSERT INTO PERSONA (PER_dni, PER_nombres, PER_apellidoPaterno, PER_apellidoMaterno, PER_email, PER_celular) VALUES 
 ('70555743','Jhonatan', 'Mantilla', 'Miñano', 'jhonatanmm.1995@gmail.com', '950212909');
 INSERT INTO dbo.PERSONA(PER_dni,PER_nombres,PER_apellidoPaterno,PER_apellidoMaterno,PER_celular,PER_email) VALUES
 ('70555742','Gustavo','Mantilla','Miñano', '950212913','gammgush@gmail.com');

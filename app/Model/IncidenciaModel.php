@@ -27,15 +27,15 @@ class IncidenciaModel
 
   public function obtenerIncidenciaPorId($INC_codigo)
   {
-    $conn = $this->conector->getConexion();
+    $conector = $this->conector->getConexion();
 
-    if ($conn != null) {
+    if ($conector != null) {
       try {
         // Preparar la consulta SQL para obtener los registros de incidencias
         $sql = "SELECT * FROM Incidencia i INNER JOIN Categoria c ON i.CAT_codigo = c.CAT_codigo WHERE INC_codigo = ?";
 
         // Preparar la sentencia
-        $stmt = $conn->prepare($sql);
+        $stmt = $conector->prepare($sql);
 
         // Ejecutar la consulta
         $stmt->execute([$INC_codigo]);
@@ -58,14 +58,14 @@ class IncidenciaModel
 
   public function registrarIncidencia($fechaIncidencia, $horaIncidencia, $descripcionIncidencia, $codigoPatrimonial, $asuntoIncidencia, $codigoArea, $codigoUsuario, $codigoCategoria)
   {
-    $conn = $this->conector->getConexion();
+    $conector = $this->conector->getConexion();
 
-    if ($conn != null) {
+    if ($conector != null) {
       try {
         $sql = "INSERT INTO Incidencia (INC_fecha, INC_hora, INC_descripcion, INC_codigoPatrimonial, INC_asunto, ARE_codigo, USU_codigo, CAT_codigo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
+        $stmt = $conector->prepare($sql);
         $stmt->execute([$fechaIncidencia, $horaIncidencia, $descripcionIncidencia, $codigoPatrimonial, $asuntoIncidencia, $codigoArea, $codigoUsuario, $codigoCategoria]);
-        $lastId = $conn->lastInsertId();
+        $lastId = $conector->lastInsertId();
         return $lastId;
       } catch (PDOException $e) {
         echo "Error al registrar la incidencia: " . $e->getMessage();
@@ -80,14 +80,14 @@ class IncidenciaModel
   public function listarIncidencias()
   {
     try {
-      $conn = $this->conector->getConexion();
-      if ($conn != null) {
+      $conector = $this->conector->getConexion();
+      if ($conector != null) {
         $sql = "SELECT NumIncidencia, CodPatrimonial, DescripcionCategoria, FechaIncidencia, Asunto, a.NombreArea, Descripcion, NumDocumento, Hora
       FROM INCIDENCIA i
       INNER JOIN Categoria ON i.CodCategoria = Categoria.CodCategoria
       inner join area a on a.CodArea = i.CodArea";
 
-        $stmt = $conn->prepare($sql);
+        $stmt = $conector->prepare($sql);
         $stmt->execute();
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
