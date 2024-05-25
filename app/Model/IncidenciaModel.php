@@ -99,4 +99,24 @@ class IncidenciaModel
       throw new Exception("Error al obtener las recepciones: " . $e->getMessage());
     }
   }
+
+
+  public function consultarIncidencia($area, $fechaIncidencia)
+  {
+    try {
+      $conector = $this->conector->getConexion();
+      if ($conector) {
+        $sql = "SELECT * FROM Incidencia i 
+        INNER JOIN Categoria c ON i.CAT_codigo = c.CAT_codigo
+        INNER JOIN Area a ON a.ARE_codigo = i.ARE_codigo
+        WHERE (i.INC_fecha = $fechaIncidencia) OR
+        (a.ARE_nombre = $area)";
+
+        // Preparar la sentencia
+        $stmt = $conector->prepare($sql);
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al obtener las recepciones: " . $e->getMessage());
+    }
+  }
 }

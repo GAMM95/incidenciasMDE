@@ -1,7 +1,7 @@
 <?php
 require_once '../config/conexion.php';
 
-class CategoryModel
+class CategoriaModel
 {
     private $db;
 
@@ -20,7 +20,7 @@ class CategoryModel
     }
 }
 
-$categoryModel = new CategoryModel();
+$categoryModel = new CategoriaModel();
 $categories = $categoryModel->getCategoryData();
 
 header('Content-Type: application/json');

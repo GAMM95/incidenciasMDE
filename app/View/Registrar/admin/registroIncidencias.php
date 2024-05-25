@@ -47,7 +47,7 @@
       <!-- SEGUNDA fila: Categoria, Prioridad, Fecha -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-2">
-          <label for="categoria" class="block mb-1 font-bold text-sm">Categoría:</label>
+          <label for="categoria" class="block mb-1 font-bold text-sm">Categor&iacute;a:</label>
           <select id="categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
           </select>
         </div>
@@ -78,12 +78,12 @@
       <!-- TERCERA fila: Área, Código Patrimonial -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/2 px-2 mb-2">
-          <label for="area" class="block mb-1 font-bold text-sm">Área:</label>
+          <label for="area" class="block mb-1 font-bold text-sm">&Aacute;rea:</label>
           <select id="area" name="area" class="border p-2 w-full text-sm cursor-pointer" title="Seleccione &aacute;rea">
           </select>
         </div>
         <div class="w-full sm:w-1/2 px-2 mb-2">
-          <label for="codigo_patrimonial" class="block mb-1 font-bold text-sm">Código Patrimonial:</label>
+          <label for="codigo_patrimonial" class="block mb-1 font-bold text-sm">C&oacute;digo Patrimonial:</label>
           <input type="text" id="codigo_patrimonial" name="codigo_patrimonial" class="border p-2 w-full text-sm" maxlength="12" pattern="\d{1,12}" title="Ingrese los 12 d&iacute;gitos del c&oacute;digo patrimonial">
         </div>
       </div>
@@ -110,7 +110,7 @@
 
       <!-- SEXTA fila: Descripción -->
       <div class="w-full mb-2">
-        <label for="descripcion" class="block mb-1 font-bold text-sm">Descripción:</label>
+        <label for="descripcion" class="block mb-1 font-bold text-sm">Descripci&oacute;n:</label>
         <textarea id="descripcion" name="descripcion" rows="4" class="border p-2 w-full text-sm max-h-40 resize-none overflow-y-auto"></textarea>
       </div>
 
@@ -140,7 +140,7 @@
     <!-- Fin del formulario -->
 
 
-    
+
 
 
 

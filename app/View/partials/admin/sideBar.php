@@ -100,7 +100,7 @@ if (session_status() == PHP_SESSION_NONE) {
         </button>
         <!-- Opciones: Incidencia, Recepcion, Cierre -->
         <div x-show="open" class="pl-4">
-          <a href="consultar-incidencia.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Incidencia</a>
+          <a href="consultar-incidencia-admin.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Incidencia</a>
           <a href="consultar-recepcion.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Recepci&oacute;n</a>
           <a href="consultar-cierre.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Cierre</a>
         </div>
@@ -117,10 +117,10 @@ if (session_status() == PHP_SESSION_NONE) {
         <!-- Opciones: Persona, Usuario, Area, Rol y Categorias -->
         <div x-show="open" class="pl-4">
           <a href="modulo-persona.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Persona</a>
-          <a href="mantenimiento-usuario.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Usuario</a>
-          <a href="mantenimiento-area.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">&Aacute;rea</a>
-          <a href="mantenimiento-rol.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Rol</a>
-          <a href="mantenimiento-categoria.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Categor&iacute;a</a>
+          <a href="modulo-usuario.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Usuario</a>
+          <a href="modulo-area.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">&Aacute;rea</a>
+          <a href="modulo-rol.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Rol</a>
+          <a href="modulo-categoria.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Categor&iacute;a</a>
         </div>
       </div>
     </nav>

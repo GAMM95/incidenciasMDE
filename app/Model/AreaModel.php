@@ -6,13 +6,15 @@ class AreaModel extends Conexion
   protected $codigoArea;
   protected $nombreArea;
 
-  public function __construct($codigoArea, $nombreArea)
-  {
+  public function __construct(
+    // $codigoArea,
+    $nombreArea
+  ) {
     // Llama al constructor de la clase padre (Conexion)
     parent::__construct();
 
     // Asigna los valores a las propiedades
-    $this->codigoArea = $codigoArea;
+    // $this->codigoArea = $codigoArea;
     $this->nombreArea = $nombreArea;
   }
 
@@ -48,7 +50,7 @@ class AreaModel extends Conexion
       $conector = $this->getConexion();
 
       if ($conector != null) {
-        $sql = "SELECT ARE_codigo, ARE_nombre FROM AREA";
+        $sql = "SELECT ARE_codigo, ARE_nombre FROM AREA ORDER BY ARE_codigo ASC";
         $stmt = $conector->prepare($sql);
         $stmt->execute();
 

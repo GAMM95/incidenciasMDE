@@ -33,9 +33,9 @@
   <!-- Contenido principal -->
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
     <!-- Header -->
-    <h1 class="text-2xl font-bold mb-4">M&oacute;dulo / Persona</h1>
+    <h1 class="text-2xl font-bold mb-4">M&oacute;dulo / Usuario</h1>
 
-    <form id="formPersona" action="modulo-persona.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+    <form id="formUsuario" action="modulo-usuario.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
 
       <!-- PRIMERA FILA Campo para mostrar el número de incidencia -->
       <div class="flex justify-center -mx-2 mb-5">
@@ -214,7 +214,7 @@
         var formData = $("form").serialize(); // Obtener los datos del formulario
 
         $.ajax({
-          url: "modulo-persona.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+          url: "modulo-usuario.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
           type: "POST",
           data: formData,
           success: function(response) {
@@ -261,13 +261,13 @@
 
     // Evento de clic en el botón "Limpiar Campos"
     $('#limpiarCampos').click(function() {
-      const form = document.getElementById('formPersona');
+      const form = document.getElementById('formUsuario');
       form.reset();
     });
 
     // Evento de clic en el botón "Nuevo Registro"
     $('#nuevoRegistro').click(function() {
-      const form = document.getElementById('formPersona');
+      const form = document.getElementById('formUsuario');
       form.reset();
     });
   });
