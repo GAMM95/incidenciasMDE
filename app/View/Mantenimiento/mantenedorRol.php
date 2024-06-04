@@ -39,7 +39,7 @@
         <div class="flex items-center mb-4">
           <div class="flex items-center">
             <label for="CodRol" class="block font-bold mb-1 mr-3 text-lime-500">C&oacute;digo de Rol:</label>
-            <input type="text" id="CodRol" name="CodRol" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
+            <input type="text" id="CodRol" name="CodRol" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
           </div>
         </div>
       </div>
@@ -53,25 +53,20 @@
       </div>
 
       <script>
-        document.getElementById('CodRol').value = '<?php echo $RolRegistrado ? $RolRegistrado['CodRol'] : ''; ?>';
-        document.getElementById('NombreRol').value = '<?php echo $RolRegistrado ? $RolRegistrado['NombreRol'] : ''; ?>';
+        // Uso de PHP para setear los valores en el formulario si hay un rol registrado
+        document.getElementById('CodRol').value = '<?php echo $RolRegistrado ? $RolRegistrado['ROL_codigo'] : ''; ?>';
+        document.getElementById('NombreRol').value = '<?php echo $RolRegistrado ? $RolRegistrado['ROL_nombre'] : ''; ?>';
       </script>
 
       <!-- Botónes -->
       <div class="flex justify-center space-x-4">
-        <button type="button" id="guardar-categoria" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
+        <button type="button" id="guardar-rol" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
           Guardar
         </button>
-        <button type="button" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">
+        <button type="button" id="editar-rol" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">
           Editar
         </button>
-        <button type="button" id="imprimirDatos" class="bg-yellow-500 text-white font-bold hover:bg-yellow-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">
-          Imprimir
-        </button>
-        <button type="button" id="limpiarCampos" class="bg-red-500 text-white font-bold hover:bg-red-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">
-          Limpiar
-        </button>
-        <button type="button" id="nuevoRegistro" class="bg-gray-500 text-white font-bold hover:bg-gray-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">
+        <button type="button" id="nuevo-registro" class="bg-gray-500 text-white font-bold hover:bg-gray-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">
           Nuevo
         </button>
       </div>
@@ -94,7 +89,7 @@
           $roles = $RolModel->listarRol();
           foreach ($roles as $rol) {
             echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b'>";
-            echo "<th scope='col' class='px-10 py-4 font-medium text-gray-900 whitespace-nowrap' data-rol='" . htmlspecialchars($rol['ROL_codigo']) . "'>";
+            echo "<th scope='col' class='px-10 py-4 font-medium text-gray-900 whitespace-nowrap' data-codrol='" . htmlspecialchars($rol['ROL_codigo']) . "'>";
             echo $rol['ROL_codigo'];
             echo "</th>";
             echo "<th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap' data-rol='" . htmlspecialchars($rol['ROL_nombre']) . "'>";
@@ -110,64 +105,6 @@
   </main>
 
 </body>
-<script>
-  $(document).ready(function() {
-    $('tr').click(function() {
-      var cod = $(this).find('th[data-codrol]').data('codrol'); // Corrected line
-      var cat = $(this).find('th[data-rol]').data('rol');
-
-
-      $('#CodRol').val(cod);
-      $('#NombreRol').val(nom);
-      $(this).addClass('bg-blue-200 font-semibold');
-      $('tr').not(this).removeClass('bg-blue-200 font-semibold');
-    });
-  });
-  ////////////////////
-
-  function limpiarCampos() {
-    // Obtener el formulario por su ID
-    const form = document.getElementById('formcategoria');
-    // Limpiar los campos del formulario
-    form.reset();
-  }
-  const btnLimpiar = document.getElementById('limpiarCampos');
-  btnLimpiar.addEventListener('click', limpiarCampos);
-
-  function nuevoRegistro() {
-    const form = document.getElementById('formrol');
-
-    // Restablecer el formulario
-    form.reset();
-  }
-  // Asignar el evento 'click' al botón 'Nuevo Registro'
-  const btnNuevo = document.getElementById('nuevoRegistro');
-  btnNuevo.addEventListener('click', nuevoRegistro);
-
-  //GUARDAR DATOS
-  $(document).ready(function() {
-    $("#guardar-categoria").on("click", function() {
-      // Obtener los datos del formulario
-      var formData = $("form").serialize(); // Obtener los datos del formulario
-
-      $.ajax({
-        url: "modulo-rol.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
-        type: "POST",
-        data: formData,
-        success: function(response) {
-          // Manejar la respuesta del servidor si es necesario
-          alert("Datos guardados exitosamente");
-          // Puedes limpiar el formulario si lo deseas
-          $("form")[0].reset();
-        },
-        error: function(xhr, status, error) {
-          // Manejar los errores si la solicitud falla
-          console.error(error);
-          alert("Error al guardar los datos. Por favor, inténtalo de nuevo.");
-        }
-      });
-    });
-  });
-</script>
+<script src="./app/View/func/func_rol.js"></script>
 
 </html>

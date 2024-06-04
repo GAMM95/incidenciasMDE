@@ -1,9 +1,9 @@
 <?php
 $action = $_GET['action'] ?? '';
-$state = $_GET['state'] ?? '';
 $CodRol = $_GET['ROL_codigo'] ?? '';
 
 require_once 'app/Controller/RolController.php';
+require_once 'app/Model/RolModel.php';
 
 // Obtener los datos necesarios
 $nombre = $_POST['nombre'] ?? '';
@@ -24,6 +24,12 @@ switch ($action) {
   case 'registrar':
     $rolController->registrarRol();
     break;
+  case 'editar':
+    $categoriaController->editarCategoria();
+    break;
+  default:
+    // Código por defecto o mostrar alguna vista por defecto
+    break;
 }
 ?>
 <!DOCTYPE html>
@@ -37,19 +43,12 @@ switch ($action) {
   <script src="https://cdn.tailwindcss.com"></script>
 
   <title>Sistema de Incidencias - Mantenimiento Rol</title>
-</head> 
-
+</head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-
-
   <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
     <?php
-    // Incluir la barra lateral desde un archivo externo
     include("app/View/partials/admin/sideBar.php");
-    ?>
-    <?php
-    // Incluir la barra lateral desde un archivo externo
     include("app/View/Mantenimiento/mantenedorRol.php");
     ?>
   </div>

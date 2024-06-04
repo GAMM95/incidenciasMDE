@@ -6,34 +6,27 @@ class RolModel extends Conexion
   protected $codigo;
   protected $nombre;
 
-  public function __construct($nombre)
+  public function __construct($nombre = null)
   {
     parent::__construct();
     $this->nombre = $nombre;
   }
 
   // Metodo para registrar nuevo rol
-  public function registrarRol($nombre)
+  // Método para registrar categorías
+  public function registrarRol()
   {
+    if ($this->nombre === null) {
+      throw new Exception("El nombre del rol no puede estar vacío.");
+    }
     try {
       $conector = $this->getConexion();
-      if (!$conector) {
-        throw new Exception("Error de conexion a la base de datos");
-      }
       $sql = "INSERT INTO Rol (ROL_nombre) VALUE (?)";
       $stmt = $conector->prepare($sql);
-
-      //ejecutar la insercion
-      $stmt = $conector->prepare($sql);
-      $success = $stmt->execute([$nombre]);
-
-      if ($success) {
-        return $conector->lastInsertId();
-      } else {
-        return false;
-      }
+      $stmt->execute([$this->nombre]);
+      return $conector->lastInsertId();
     } catch (PDOException $e) {
-      throw new Exception("Error al registrar nuevo rol" . $e->getMessage());
+      throw new Exception("Error al insertar la categoría: " . $e->getMessage());
     }
   }
 
@@ -42,17 +35,12 @@ class RolModel extends Conexion
   {
     try {
       $conector = $this->getConexion();
-      if ($conector) {
-        $query = "SELECT * FROM ROL";
-        $stmt = $conector->prepare(($query));
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-      } else {
-        throw new Exception("Error de conexión a la base de datos.");
-      }
+      $sql = "SELECT* FROM ROL";
+      $stmt = $conector->prepare($sql);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-      throw new Exception("Error al obtener las personas: " . $e->getMessage());
+      throw new Exception("Error al obtener los roles: " . $e->getMessage());
     }
   }
 

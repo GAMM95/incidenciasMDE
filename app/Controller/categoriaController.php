@@ -1,4 +1,5 @@
 <?php
+
 require_once 'app/Model/CategoriaModel.php';
 
 class CategoriaController
@@ -13,23 +14,70 @@ class CategoriaController
   public function registrarCategoria()
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      // Obtener los datos del formulario
-      $nombre = $_POST['NombreCategoria']; // Asegúrate de que el nombre del campo coincide con el de la vista
+      $nombre = $_POST['NombreCategoria'] ?? null;
 
-      // Crear una nueva instancia de CategoriaModel con el nombre proporcionado
-      $categoriaModel = new CategoriaModel($nombre);
+      if ($nombre === null || trim($nombre) === '') {
+        echo "Error: El nombre de la categoría no puede estar vacío.";
+        return;
+      }
 
-      // Llamar al método del modelo para insertar la categoría en la base de datos
-      $insertSuccessId = $categoriaModel->registrarCategoria();
-
-      if ($insertSuccessId) {
-        header('Location: modulo-categoria.php?CodCategoria=' . $insertSuccessId);
-        exit(); // Asegúrate de salir después de redirigir
-      } else {
-        echo "Error al registrar categoría";
+      try {
+        $categoriaModel = new CategoriaModel(null, $nombre);
+        $insertSuccessId = $categoriaModel->registrarCategoria();
+        if ($insertSuccessId) {
+          header('Location: modulo-categoria.php?CodCategoria=' . $insertSuccessId);
+          exit();
+        } else {
+          echo "Error al registrar categoría";
+        }
+      } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
       }
     } else {
       echo "Error: Método no permitido";
+    }
+  }
+
+  public function editarCategoria()
+  {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $codigo = $_POST['CodCategoria'] ?? null;
+      $nombre = $_POST['NombreCategoria'] ?? null;
+
+      if ($codigo === null || trim($codigo) === '') {
+        echo "Error: El código de la categoría no puede estar vacío.";
+        return;
+      }
+
+      if ($nombre === null || trim($nombre) === '') {
+        echo "Error: El nombre de la categoría no puede estar vacío.";
+        return;
+      }
+
+      try {
+        $categoriaModel = new CategoriaModel($codigo, $nombre); // Corregido: pasando el código de la categoría
+        $categoriaModel->editarCategoria();
+        header("Location: modulo-categoria.php?CodCategoria=" . $codigo);
+        exit();
+      } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+      }
+    } else {
+      echo "Error: Método no permitido";
+    }
+  }
+
+
+  public function actualizarTabla()
+  {
+    try {
+      $categorias = $this->categoriaModel->listarCategorias();
+      // Aquí deberías retornar o incluir una vista que muestre la tabla de categorías
+      // Dependiendo de cómo manejes las vistas, podrías pasar $categorias a la vista
+      // Ejemplo:
+      // include 'views/categoriaTabla.php';
+    } catch (Exception $e) {
+      echo "Error: " . $e->getMessage();
     }
   }
 }
