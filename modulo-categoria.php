@@ -2,15 +2,12 @@
 $action = $_GET['action'] ?? '';
 $CodCategoria = $_GET['CAT_codigo'] ?? '';
 
-require_once 'app/Controller/categoriaController.php';
+require_once 'app/Controller/CategoriaController.php';
 require_once 'app/Model/CategoriaModel.php';
 
-// Obtener los datos necesarios
-$nombre = $_POST['nombre'] ?? '';
-
-// Crear una instancia del controlador RolController
-$categoriaController = new CategoriaController($nombre);
-$categoriaModel = new CategoriaModel($nombre);
+// Crear una instancia del controlador y modelo de categoría
+$categoriaController = new CategoriaController();
+$categoriaModel = new CategoriaModel();
 
 if ($CodCategoria != '') {
   global $CategoriaRegistrada;
@@ -40,11 +37,16 @@ switch ($action) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="public/assets/logo.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <title>Sistema de Incidencias - Mantenimiento CAtegoria</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+  <title>Sistema de Incidencias - Mantenimiento Categoría</title>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen overflow-x-hidden">
   <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
     <?php
     include("app/View/partials/admin/sideBar.php");

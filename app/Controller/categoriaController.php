@@ -66,6 +66,7 @@ class CategoriaController
     }
   }
 
+
   public function eliminarCategoria()
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {

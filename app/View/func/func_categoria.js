@@ -7,6 +7,9 @@ $(document).ready(function () {
     $('#txt_nombreCategoria').val(nom);
     $(this).addClass('bg-blue-200 font-semibold');
     $('tr').not(this).removeClass('bg-blue-200 font-semibold');
+
+    // Cambiar la acción del formulario a editar
+    $('#form-action').val('editar');
   });
 
   function nuevoRegistro() {
@@ -14,6 +17,9 @@ $(document).ready(function () {
     form.reset();
     $('#txt_codigoCategoria').val('');
     $('tr').removeClass('bg-blue-200 font-semibold');
+
+    // Cambiar la acción del formulario a registrar
+    $('#form-action').val('registrar');
   }
 
   const btnNuevo = document.getElementById('nuevo-registro');
@@ -24,7 +30,7 @@ $(document).ready(function () {
     var formData = $("#formcategoria").serialize();
 
     $.ajax({
-      url: "modulo-categoria.php?action=registrar",
+      url: "modulo-categoria.php?action=" + $('#form-action').val(),
       method: "POST",
       data: formData,
       success: function (response) {
@@ -50,7 +56,7 @@ $(document).ready(function () {
       data: formData,
       success: function (response) {
         toastr.success("Categoría actualizada exitosamente");
-        setTimeout(function() {
+        setTimeout(function () {
           location.reload();
         }, 1500);
       },
@@ -60,5 +66,4 @@ $(document).ready(function () {
       }
     });
   });
-  
 });

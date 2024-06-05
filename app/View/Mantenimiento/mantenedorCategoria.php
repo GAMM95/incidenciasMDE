@@ -16,23 +16,24 @@
   <title class="text-center text-3xl font-poppins">Sistema de Incidencias</title>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen overflow-x-hidden">
+<body class="bg-green-50 flex items-center justify-center min-h-screen overflow-x-hidden">
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
     <h1 class="text-2xl font-bold mb-4 ">M&oacute;dulo / Categor&iacute;a</h1>
 
-    <form id="formcategoria" action="modulo-categoria.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+    <form id="formcategoria" action="modulo-categoria.php" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+      <input type="hidden" id="form-action" name="action" value="registrar">
       <div class="flex justify-center -mx-2 mb-5">
         <div class="flex items-center mb-4">
           <div class="flex items-center">
-            <label for="CodCategoria" class="block font-bold mb-1 mr-3 text-lime-500">C&oacute;digo de categor&iacute;a:</label>
-            <input type="text" id="txt_codigoCategoria" name="CodCategoria" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
+            <label for="CodCategoria" class="block font-bold mb-1 mr-3 text-lime-500">Código de categoría:</label>
+            <input type="text" id="txt_codigoCategoria" name="CodCategoria" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly>
           </div>
         </div>
       </div>
 
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
-          <label for="NombreCategoria" class="block mb-1 font-bold text-sm">Nombre categor&iacute;a:</label>
+          <label for="NombreCategoria" class="block mb-1 font-bold text-sm">Nombre categoría:</label>
           <input type="text" id="txt_nombreCategoria" name="NombreCategoria" class="border p-2 w-full text-sm">
         </div>
       </div>
@@ -49,6 +50,7 @@
         </button>
       </div>
     </form>
+
 
     <!-- TABLA -->
     <div class="relative max-h-[450px] overflow-x-hidden shadow-md sm:rounded-lg mt-5">

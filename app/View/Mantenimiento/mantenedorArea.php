@@ -16,7 +16,7 @@
   <title class="text-center text-3xl font-poppins">Sistema de Incidencias</title>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen overflow-x-hidden">
+<body class="bg-green-50100 flex items-center justify-center min-h-screen overflow-x-hidden">
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
     <h1 class="text-2xl font-bold mb-4">M&oacute;dulo / &Aacute;rea</h1>
 
