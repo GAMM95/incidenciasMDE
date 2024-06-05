@@ -16,12 +16,12 @@ class RolModel extends Conexion
   // Metodo para registrar nuevo rol
   public function registrarRol()
   {
-    if ($this->nombreRol === null || trim($this->nombreRol)) {
+    if ($this->nombreRol === null || trim($this->nombreRol)==='') {
       throw new Exception("El nombre del rol no puede estar vacío.");
     }
     try {
       $conector = $this->getConexion();
-      $sql = "INSERT INTO Rol (ROL_nombre) VALUE (?)";
+      $sql = "INSERT INTO Rol (ROL_nombre) VALUES (?)";
       $stmt = $conector->prepare($sql);
       $stmt->execute([$this->nombreRol]);
       return $conector->lastInsertId();

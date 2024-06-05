@@ -4,7 +4,6 @@ require_once 'app/Model/RolModel.php';
 
 class RolController
 {
-
   private $rolModel;
 
   public function __construct()
@@ -58,8 +57,7 @@ class RolController
       try {
         $rolModel = new RolModel($codigo, $nombre);
         $rolModel->editarRol();
-        header("Location: modulo-rol.php?CodRol=" . $codigo);
-        exit();
+        echo "Rol actualizado correctamente.";
       } catch (Exception $e) {
         echo  "Error: " . $e->getMessage();
       }

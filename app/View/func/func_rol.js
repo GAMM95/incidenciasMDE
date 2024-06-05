@@ -22,16 +22,20 @@ $(document).ready(function () {
 
   //GUARDAR DATOS
   // $(document).ready(function () {
-  $("#guardar-rol").on("click", function () {
+  $("#guardar-rol").on("click", function (e) {
     // Obtener los datos del formulario
+    e.preventDefault();
     var formData = $("formrol").serialize(); // Obtener los datos del formulario
 
     $.ajax({
-      url: "modulo-rol.php?action?=registrar", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+      url: "modulo-rol.php?action=registrar", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
       type: "POST",
       data: formData,
       success: function (response) {
         toastr.success("Rol guardado exitosamente");
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
       },
       error: function (xhr, status, error) {
         console.log(xhr.responseText);
@@ -41,7 +45,8 @@ $(document).ready(function () {
   });
 
   // Editar categoría
-  $("#editar-rol").on("click", function () {
+  $("#editar-rol").on("click", function (e) {
+    e.preventDefault();
     var formData = $("#formrol").serialize();
 
     $.ajax({
@@ -50,6 +55,9 @@ $(document).ready(function () {
       data: formData,
       success: function (response) {
         toastr.success("Rol actualizado exitosamente");
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
       },
       error: function (xhr, status, error) {
         console.log(xhr.responseText);

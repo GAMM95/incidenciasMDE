@@ -21,7 +21,6 @@
     <h1 class="text-2xl font-bold mb-4 ">M&oacute;dulo / Categor&iacute;a</h1>
 
     <form id="formcategoria" action="modulo-categoria.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
-      <!-- PRIMERA FILA: campo para mostrar el numero de Persona -->
       <div class="flex justify-center -mx-2 mb-5">
         <div class="flex items-center mb-4">
           <div class="flex items-center">
@@ -31,7 +30,6 @@
         </div>
       </div>
 
-      <!-- SEGUNDA FILA: campo para ingresar el nuevo nombre de la categoria -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="NombreCategoria" class="block mb-1 font-bold text-sm">Nombre categor&iacute;a:</label>
@@ -39,19 +37,11 @@
         </div>
       </div>
 
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          document.getElementById('txt_codigoCategoria').value = '<?php echo isset($CategoriaRegistrada) ? htmlspecialchars($CategoriaRegistrada['CAT_codigo']) : ''; ?>';
-          document.getElementById('txt_nombreCategoria').value = '<?php echo isset($CategoriaRegistrada) ? htmlspecialchars($CategoriaRegistrada['CAT_nombre']) : ''; ?>';
-        });
-      </script>
-
-      <!-- TERCERA FILA: botones -->
       <div class="flex justify-center space-x-4">
         <button type="submit" id="guardar-categoria" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
           Guardar
         </button>
-        <button type="button" id="editar-categoria" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded" onclick="editarCategoria()">
+        <button type="button" id="editar-categoria" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">
           Editar
         </button>
         <button type="reset" id="nuevo-registro" class="bg-gray-500 text-white font-bold hover:bg-gray-600 py-2 px-4 rounded">

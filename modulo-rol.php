@@ -28,7 +28,6 @@ switch ($action) {
     $rolController->editarRol();
     break;
   default:
-    // Código por defecto o mostrar alguna vista por defecto
     break;
 }
 ?>
