@@ -33,19 +33,6 @@ if (session_status() == PHP_SESSION_NONE) {
   <!-- Incluye Alpine.js -->
   <title class="text-center text-3xl font-poppins">Sistema de Incidencias</title>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  <!-- <style>
-    .transition-transform {
-      transition: transform 3s;
-    }
-
-    .rotate-0 {
-      transform: rotate(0deg);
-    }
-
-    .rotate-180 {
-      transform: rotate(180deg);
-    }
-  </style> -->
 </head>
 
 <body class="bg-green-50 flex items-center justify-center min-h-screen">
@@ -71,12 +58,12 @@ if (session_status() == PHP_SESSION_NONE) {
     <!-- Etiquetas con submenús -->
     <nav class="flex-1 mt-10">
       <!-- Etiqueta submenu: Inicio -->
-      <a href="inicio.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Inicio</a>
+      <a href="inicio.php" class="block py-2 px-4 hover:bg-[#d5fab4]"> <b>Inicio</b> </a>
 
       <!-- Etiqueta con submenú: Registrar -->
       <div x-data="{ open: false }">
         <button @click="open = !open" class="block py-2 px-4 hover:bg-[#d5fab4] flex justify-between w-full">
-          Registrar
+          <b>Registrar</b>
           <!-- Flecha con rotación -->
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': open, 'rotate-0': !open}" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 1.414L10 12.414l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
@@ -93,7 +80,7 @@ if (session_status() == PHP_SESSION_NONE) {
       <!-- Etiqueta con submenu: Consultar -->
       <div x-data="{ open: false }">
         <button @click="open = !open" class="block py-2 px-4 hover:bg-[#d5fab4]  flex justify-between w-full">
-          Consultar
+          <b>Consultar</b>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': open, 'rotate-0': !open}" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 1.414L10 12.414l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
           </svg>
@@ -109,7 +96,7 @@ if (session_status() == PHP_SESSION_NONE) {
       <!-- Etiqueta con submenu: Mantenimiento -->
       <div x-data="{ open: false }">
         <button @click="open = !open" class="block py-2 px-4 hover:bg-[#d5fab4]  flex justify-between w-full">
-          M&oacute;dulo
+          <b>M&oacute;dulo</b>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': open, 'rotate-0': !open}" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 1.414L10 12.414l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
           </svg>

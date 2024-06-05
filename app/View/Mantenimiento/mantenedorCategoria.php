@@ -17,9 +17,8 @@
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen overflow-x-hidden">
-
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
-    <h1 class="text-2xl font-bold mb-4 ">Módulo / Categoría</h1>
+    <h1 class="text-2xl font-bold mb-4 ">M&oacute;dulo / Categor&iacute;a</h1>
 
     <form id="formcategoria" action="modulo-categoria.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
       <!-- PRIMERA FILA: campo para mostrar el numero de Persona -->
@@ -32,9 +31,10 @@
         </div>
       </div>
 
+      <!-- SEGUNDA FILA: campo para ingresar el nuevo nombre de la categoria -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
-          <label for="NombreCategoria" class="block mb-1 font-bold text-sm">Nombre categoría:</label>
+          <label for="NombreCategoria" class="block mb-1 font-bold text-sm">Nombre categor&iacute;a:</label>
           <input type="text" id="txt_nombreCategoria" name="NombreCategoria" class="border p-2 w-full text-sm">
         </div>
       </div>
@@ -46,28 +46,31 @@
         });
       </script>
 
-      <!-- Botones -->
+      <!-- TERCERA FILA: botones -->
       <div class="flex justify-center space-x-4">
-        <button type="button" id="guardar-categoria" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
+        <button type="submit" id="guardar-categoria" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
           Guardar
         </button>
-        <button type="button" id="editar-categoria" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">
+        <button type="button" id="editar-categoria" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded" onclick="editarCategoria()">
           Editar
         </button>
-        <button type="button" id="nuevo-registro" class="bg-gray-500 text-white font-bold hover:bg-gray-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">
+        <button type="reset" id="nuevo-registro" class="bg-gray-500 text-white font-bold hover:bg-gray-600 py-2 px-4 rounded">
           Nuevo
         </button>
       </div>
     </form>
 
+    <!-- TABLA -->
     <div class="relative max-h-[450px] overflow-x-hidden shadow-md sm:rounded-lg mt-5">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <!-- ENCABEZADO DE LA TABLA -->
         <thead class="sticky top-2 text-xs text-gray-70 uppercase bg-lime-300">
           <tr>
             <th scope="col" class="px-10 py-3 w-1/6">N°</th>
-            <th scope="col" class="px-6 py-3 w-5/6">Categoría</th>
+            <th scope="col" class="px-6 py-3 w-5/6">Categor&iacute;a</th>
           </tr>
         </thead>
+        <!-- CUERPO DE LA TABLA -->
         <tbody>
           <?php
           require_once './app/Model/CategoriaModel.php';
@@ -90,7 +93,19 @@
   </main>
 
   <script src="./app/View/func/func_categoria.js"></script>
-
 </body>
+<!-- <script>
+  function editarCategoria() {
+    const codigo = document.getElementById('txt_codigoCategoria').value;
+    const nombre = document.getElementById('txt_nombreCategoria').value;
+    if (codigo && nombre) {
+      document.getElementById('formcategoria').action = 'modulo-categoria.php?action=editar';
+      document.getElementById('formcategoria').submit();
+      toastr.success("Categoría actualizada exitosamente");
+    } else {
+      toastr.error("Error al actualizar la categoría");
+    }
+  }
+</script> -->
 
 </html>

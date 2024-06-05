@@ -25,7 +25,7 @@ switch ($action) {
     $rolController->registrarRol();
     break;
   case 'editar':
-    $categoriaController->editarCategoria();
+    $rolController->editarRol();
     break;
   default:
     // Código por defecto o mostrar alguna vista por defecto

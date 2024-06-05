@@ -3,27 +3,27 @@
 require_once 'config/conexion.php';
 class RolModel extends Conexion
 {
-  protected $codigo;
-  protected $nombre;
+  protected $codigoRol;
+  protected $nombreRol;
 
-  public function __construct($nombre = null)
+  public function __construct($codigoRol = null, $nombreRol = null)
   {
     parent::__construct();
-    $this->nombre = $nombre;
+    $this->codigoRol = $codigoRol;
+    $this->nombreRol = $nombreRol;
   }
 
   // Metodo para registrar nuevo rol
-  // Método para registrar categorías
   public function registrarRol()
   {
-    if ($this->nombre === null) {
+    if ($this->nombreRol === null || trim($this->nombreRol)) {
       throw new Exception("El nombre del rol no puede estar vacío.");
     }
     try {
       $conector = $this->getConexion();
       $sql = "INSERT INTO Rol (ROL_nombre) VALUE (?)";
       $stmt = $conector->prepare($sql);
-      $stmt->execute([$this->nombre]);
+      $stmt->execute([$this->nombreRol]);
       return $conector->lastInsertId();
     } catch (PDOException $e) {
       throw new Exception("Error al insertar la categoría: " . $e->getMessage());
@@ -35,7 +35,7 @@ class RolModel extends Conexion
   {
     try {
       $conector = $this->getConexion();
-      $sql = "SELECT* FROM ROL";
+      $sql = "SELECT * FROM ROL ORDER BY ROL_codigo";
       $stmt = $conector->prepare($sql);
       $stmt->execute();
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -45,55 +45,42 @@ class RolModel extends Conexion
   }
 
   // Metodo para editar roles
-  public function editarRol($nombre)
+  public function editarRol()
   {
+    if ($this->codigoRol === null) {
+      throw new Exception("El código del rol no puede ser nulo.");
+    }
+
+    if ($this->nombreRol === null || trim($this->nombreRol) === '') {
+      throw new Exception("El nombre del rol no puede estar vacío.");
+    }
+
     try {
       $conector = $this->getConexion();
-      if ($conector) {
-        $sql = "UPDATE Rol SET ROL_nombre = ? WHERE ROL_codigo = ?";
-
-        // Preparar la sentencia
-        $stmt = $conector->prepare($sql);
-
-        // Ejecutar la inserción sin proporcionar el valor para el campo id
-        $success = $stmt->execute([$nombre]);
-
-        if ($success) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        throw new Exception("Error de conexion");
-      }
+      $sql = "UPDATE ROL SET ROL_nombre = ? WHERE ROL_codigo = ?";
+      $stmt = $conector->prepare($sql);
+      $stmt->execute([$this->nombreRol, $this->codigoRol]);
+      return $stmt->rowCount();
     } catch (PDOException $e) {
       throw new Exception("Error al actualizar el rol: " . $e->getMessage());
     }
   }
 
   // Metodo para obtener rol por id
-  public function obtenerRolPorId($codigo)
+  public function obtenerRolPorId($codigoRol)
   {
+    if ($codigoRol === null) {
+      throw new Exception("El código del rol no puede ser nulo.");
+    }
+
     try {
       $conector = $this->getConexion();
-      if ($conector) {
-        $query = "SELECT * FROM Rol WHERE ROL_codigo = ?";
-
-        //Preparar la sentencia
-        $stmt = $conector->prepare($query);
-        // Ejecutar la consulta
-        $stmt->execute([$codigo]);
-
-        // Obtener los resultados como un array asociativo
-        $registros = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Devolver los registros obtenidos
-        return $registros;
-      } else {
-        throw new Exception("Error de conexión cierre Controller la base de datos.");
-      }
+      $sql = "SELECT * FROM ROL WHERE ROL_codigo = ?";
+      $stmt = $conector->prepare($sql);
+      $stmt->execute([$codigoRol]);
+      return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-      throw new Exception("Error al obtener los registros de los roles: " . $e->getMessage());
+      throw new Exception("Error al obtener el rol: " . $e->getMessage());
     }
   }
 }

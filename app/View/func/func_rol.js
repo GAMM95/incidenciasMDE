@@ -3,9 +3,8 @@ $(document).ready(function () {
     var cod = $(this).find('th[data-codrol]').data('codrol'); // Corrected line
     var nom = $(this).find('th[data-rol]').data('rol');
 
-
-    $('#CodRol').val(cod);
-    $('#NombreRol').val(nom);
+    $('#txt_codigoRol').val(cod);
+    $('#txt_nombreRol').val(nom);
     $(this).addClass('bg-blue-200 font-semibold');
     $('tr').not(this).removeClass('bg-blue-200 font-semibold');
   });
@@ -14,6 +13,8 @@ $(document).ready(function () {
   function nuevoRegistro() {
     const form = document.getElementById('formrol');
     form.reset();
+    $('#txt_codigoRol').val(''); // Asegurarse de que el campo de código de categoría también se restablezca
+    $('tr').removeClass('bg-blue-200 font-semibold');
   }
   // Asignar el evento 'click' al botón 'Nuevo Registro'
   const btnNuevo = document.getElementById('nuevo-registro');
@@ -30,29 +31,29 @@ $(document).ready(function () {
       type: "POST",
       data: formData,
       success: function (response) {
-        toastr.success("Categoría guardada exitosamente");
+        toastr.success("Rol guardado exitosamente");
       },
       error: function (xhr, status, error) {
         console.log(xhr.responseText);
-        toastr.error("Error al guardar la categoría");
+        toastr.error("Error al guardar el rol");
       }
     });
   });
 
   // Editar categoría
-  $("#editar-categoria").on("click", function () {
-    var formData = $("#formcategoria").serialize();
+  $("#editar-rol").on("click", function () {
+    var formData = $("#formrol").serialize();
 
     $.ajax({
-      url: "modulo-categoria.php?action=editar",
+      url: "modulo-rol.php?action=editar",
       method: "POST",
       data: formData,
       success: function (response) {
-        toastr.success("Categoría actualizada exitosamente");
+        toastr.success("Rol actualizado exitosamente");
       },
       error: function (xhr, status, error) {
         console.log(xhr.responseText);
-        toastr.error("Error al actualizar la categoría");
+        toastr.error("Error al actualizar el rol");
       }
     });
   });
