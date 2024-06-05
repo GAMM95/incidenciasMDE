@@ -8,7 +8,6 @@ require_once 'app/Model/CategoriaModel.php';
 // Obtener los datos necesarios
 $nombre = $_POST['nombre'] ?? '';
 
-
 // Crear una instancia del controlador RolController
 $categoriaController = new CategoriaController($nombre);
 $categoriaModel = new CategoriaModel($nombre);

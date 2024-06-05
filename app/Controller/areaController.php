@@ -6,27 +6,63 @@ class AreaController
 {
   private $areaModel;
 
-  public function __construct($nombre)
+  public function __construct()
   {
-    $this->areaModel = new AreaModel($nombre);
+    $this->areaModel = new AreaModel();
   }
 
   public function registrarArea()
   {
-    if ($_SERVER["REQUST_METHOD"] == "POST") {
-      // obtener los datos del formulario
-      $nombre = $_POST['nombre'];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $nombre = $_POST['NombreArea'] ?? null;
 
-      // Llamar al metodo del modelo para insertar la categoria en la base de datos
-      $insertSuccessId = $this->areaModel->registrarArea($nombre);
+      if ($nombre === null || trim($nombre) === '') {
+        echo "Error: El nombre del área no puede estar vacío.";
+        return;
+      }
 
-      if ($insertSuccessId) {
-        header('Location: modulo-area.php?CodArea=' . $insertSuccessId);
-      } else {
-        echo "Error al registrar categoria";
+      try {
+        $areaModel = new AreaModel(null, $nombre);
+        $insertSuccessId = $areaModel->registrarArea();
+        if ($insertSuccessId) {
+          header('Location: modulo-area.php?CodArea=' . $insertSuccessId);
+          exit();
+        } else {
+          echo "Error al registrar área";
+        }
+      } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
       }
     } else {
-      echo "Error: Metodo no permitido";
+      echo "Error: Método no permitido";
+    }
+  }
+
+  public function editarArea()
+  {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $codigo = $_POST['CodArea'] ?? null;
+      $nombre = $_POST['NombreArea'] ?? null;
+
+      if ($codigo === null || trim($codigo) === '') {
+        echo "Error: El código del área no puede estar vacío.";
+        return;
+      }
+
+      if ($nombre === null || trim($nombre) === '') {
+        echo "Error: El nombre del área no puede estar vacío.";
+        return;
+      }
+
+      try {
+        $areaModel = new AreaModel($codigo, $nombre);
+        $areaModel->editarArea();
+        echo "Área actualizada correctamente.";
+      } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+      }
+    } else {
+      echo "Error: Método no permitido";
     }
   }
 }

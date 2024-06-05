@@ -24,7 +24,7 @@
       <div class="flex justify-center -mx-2 mb-5">
         <div class="flex items-center mb-4">
           <div class="flex items-center">
-            <label for="CodCategoria" class="block font-bold mb-1 mr-3 text-lime-500">Código de categoría:</label>
+            <label for="CodCategoria" class="block font-bold mb-1 mr-3 text-lime-500">C&oacute;digo de categor&iacute;a:</label>
             <input type="text" id="txt_codigoCategoria" name="CodCategoria" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
           </div>
         </div>
@@ -63,8 +63,8 @@
         <!-- CUERPO DE LA TABLA -->
         <tbody>
           <?php
-          require_once './app/Model/CategoriaModel.php';
-          $categoriaModel = new CategoriaModel();
+          // require_once './app/Model/CategoriaModel.php';
+          // $categoriaModel = new CategoriaModel();
           $categorias = $categoriaModel->listarCategorias();
           foreach ($categorias as $categoria) {
             echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b'>";

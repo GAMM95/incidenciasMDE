@@ -50,7 +50,7 @@ $(document).ready(function () {
       data: formData,
       success: function (response) {
         toastr.success("Categoría actualizada exitosamente");
-        setTimeout(function () {
+        setTimeout(function() {
           location.reload();
         }, 1500);
       },
@@ -60,4 +60,5 @@ $(document).ready(function () {
       }
     });
   });
+  
 });
