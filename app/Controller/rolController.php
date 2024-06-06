@@ -66,7 +66,7 @@ class RolController
     }
   }
 
-  public function listarCategorias()
+  public function listarRoles()
   {
     try {
       $roles = $this->rolModel->listarRol();
@@ -76,6 +76,30 @@ class RolController
       // include 'views/categoriaTabla.php';
     } catch (Exception $e) {
       echo "Error: " . $e->getMessage();
+    }
+  }
+
+  public function filtrarRoles()
+  {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $termino = $_POST['terminoBusqueda'] ?? null;
+
+      if ($termino === null || trim($termino) === '') {
+        echo "Error: El término de búsqueda no puede estar vacío.";
+        return;
+      }
+
+      try {
+        $categorias = $this->rolModel->filtrarBusqueda($termino);
+        // Aquí deberías retornar o incluir una vista que muestre la tabla de categorías filtradas
+        // Dependiendo de cómo manejes las vistas, podrías pasar $categorias a la vista
+        // Ejemplo:
+        // include 'views/categoriaTabla.php';
+      } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+      }
+    } else {
+      echo "Error: Método no permitido";
     }
   }
 }

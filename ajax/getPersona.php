@@ -12,7 +12,7 @@ class PersonaModel
 
     public function getPersonaData()
     {
-        $query = "SELECT PER_codigo, PER_nombres FROM PERSONA";
+        $query = "select (PER_nombres + ' ' + PER_apellidoPaterno +' '+ PER_apellidoMaterno) AS persona from PERSONA";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         $resultado = $stmt->fetchAll();

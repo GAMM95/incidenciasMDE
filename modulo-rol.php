@@ -5,13 +5,10 @@ $CodRol = $_GET['ROL_codigo'] ?? '';
 require_once 'app/Controller/RolController.php';
 require_once 'app/Model/RolModel.php';
 
-// Obtener los datos necesarios
-$nombre = $_POST['nombre'] ?? '';
-
 
 // Crear una instancia del controlador RolController
-$rolController = new RolController($nombre);
-$rolModel = new RolModel($nombre);
+$rolController = new RolController();
+$rolModel = new RolModel();
 
 if ($CodRol != '') {
   global $RolRegistrado;
@@ -44,7 +41,7 @@ switch ($action) {
   <title>Sistema de Incidencias - Mantenimiento Rol</title>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-green-50 flex items-center justify-center min-h-screen">
   <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
     <?php
     include("app/View/partials/admin/sideBar.php");

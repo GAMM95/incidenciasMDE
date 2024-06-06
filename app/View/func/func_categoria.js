@@ -22,48 +22,53 @@ $(document).ready(function () {
     $('#form-action').val('registrar');
   }
 
-  const btnNuevo = document.getElementById('nuevo-registro');
-  btnNuevo.addEventListener('click', nuevoRegistro);
+  $('#nuevo-registro').on('click', nuevoRegistro);
 
-  $("#guardar-categoria").on("click", function (e) {
-    e.preventDefault();
-    var formData = $("#formcategoria").serialize();
+  function enviarFormulario(action) {
+    var nombreCategoria = $('#txt_nombreCategoria').val();
+
+    if (!nombreCategoria) {
+      toastr.error('El campo "Nombre categoría" no puede estar vacío');
+      return; // No enviar el formulario si el campo está vacío
+    }
+
+    // Habilitar el campo antes de enviar
+    $('#txt_codigoCategoria').prop('disabled', false);
+
+    var formData = $('#formcategoria').serialize();
 
     $.ajax({
-      url: "modulo-categoria.php?action=" + $('#form-action').val(),
-      method: "POST",
+      url: 'modulo-categoria.php?action=' + action,
+      method: 'POST',
       data: formData,
       success: function (response) {
-        toastr.success("Categoría guardada exitosamente");
+        if (action === 'registrar') {
+          toastr.success('Categoría registrada exitosamente');
+        } else if (action === 'editar') {
+          toastr.success('Categoría actualizada exitosamente');
+        }
         setTimeout(function () {
           location.reload();
         }, 1500);
       },
       error: function (xhr, status, error) {
         console.log(xhr.responseText);
-        toastr.error("Error al guardar la categoría");
+        toastr.error('Error al guardar la categoría');
+      },
+      complete: function () {
+        // Volver a deshabilitar el campo después de enviar
+        $('#txt_codigoCategoria').prop('disabled', true);
       }
     });
+  }
+
+  $('#guardar-categoria').on('click', function (e) {
+    e.preventDefault();
+    enviarFormulario($('#form-action').val());
   });
 
-  $("#editar-categoria").on("click", function (e) {
+  $('#editar-categoria').on('click', function (e) {
     e.preventDefault();
-    var formData = $("#formcategoria").serialize();
-
-    $.ajax({
-      url: "modulo-categoria.php?action=editar",
-      method: "POST",
-      data: formData,
-      success: function (response) {
-        toastr.success("Categoría actualizada exitosamente");
-        setTimeout(function () {
-          location.reload();
-        }, 1500);
-      },
-      error: function (xhr, status, error) {
-        console.log(xhr.responseText);
-        toastr.error("Error al actualizar la categoría");
-      }
-    });
+    enviarFormulario('editar');
   });
 });

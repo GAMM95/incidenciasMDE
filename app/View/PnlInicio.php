@@ -30,7 +30,7 @@
 
   <!-- Contenido principal -->
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto relative rounded-lg shadow-md">
-    <img src="public/assets/fondo.png" alt="Logo" class="w-full h-full object-cover absolute inset-0 opacity-75">
+    <img src="public/assets/fondo2.jpg" alt="Logo" class="w-full h-full object-cover absolute inset-0 opacity-75">
   </main>
 
 </body>

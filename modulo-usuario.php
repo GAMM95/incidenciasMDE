@@ -54,7 +54,7 @@ switch ($action) {
     ?>
     <?php
     // Incluir la barra lateral desde un archivo externo
-    include("app/View/Mantenimiento/mantenedorPersona.php");
+    include("app/View/Mantenimiento/mantenedorUsuario.php");
     ?>
   </div>
 </body>

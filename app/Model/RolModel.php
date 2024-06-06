@@ -16,17 +16,17 @@ class RolModel extends Conexion
   // Metodo para registrar nuevo rol
   public function registrarRol()
   {
-    if ($this->nombreRol === null || trim($this->nombreRol)==='') {
+    if ($this->nombreRol === null || trim($this->nombreRol) === '') {
       throw new Exception("El nombre del rol no puede estar vacío.");
     }
     try {
       $conector = $this->getConexion();
-      $sql = "INSERT INTO Rol (ROL_nombre) VALUES (?)";
+      $sql = "INSERT INTO ROL (ROL_nombre) VALUES (?)";
       $stmt = $conector->prepare($sql);
       $stmt->execute([$this->nombreRol]);
       return $conector->lastInsertId();
     } catch (PDOException $e) {
-      throw new Exception("Error al insertar la categoría: " . $e->getMessage());
+      throw new Exception("Error al insertar el rol: " . $e->getMessage());
     }
   }
 
@@ -35,7 +35,7 @@ class RolModel extends Conexion
   {
     try {
       $conector = $this->getConexion();
-      $sql = "SELECT * FROM ROL ORDER BY ROL_codigo";
+      $sql = "SELECT ROL_codigo, ROL_nombre FROM ROL ORDER BY ROL_codigo";
       $stmt = $conector->prepare($sql);
       $stmt->execute();
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -81,6 +81,24 @@ class RolModel extends Conexion
       return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
       throw new Exception("Error al obtener el rol: " . $e->getMessage());
+    }
+  }
+
+  // Method to filter categories by a search term
+  public function filtrarBusqueda($termino)
+  {
+    if ($termino === null || trim($termino) === '') {
+      throw new Exception("El término de búsqueda no puede estar vacío.");
+    }
+
+    try {
+      $conector = $this->getConexion();
+      $sql = "SELECT * FROM ROL WHERE ROL_nombre LIKE ?";
+      $stmt = $conector->prepare($sql);
+      $stmt->execute(['%' . $termino . '%']);
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      throw new Exception("Error al buscar rol: " . $e->getMessage());
     }
   }
 }

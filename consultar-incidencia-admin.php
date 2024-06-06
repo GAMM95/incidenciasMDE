@@ -16,10 +16,7 @@
     <?php
     // Incluir la barra lateral desde un archivo externo
     include("app/View/partials/admin/sideBar.php");
-    ?>
-    <?php
-    // Incluir la barra lateral desde un archivo externo
-    include("app/View/Consultar/admin/consultarIncidencia.php");
+    include("app/View/Consultar/admin/consultaIncidencia.php");
     ?>
   </div>
 </body>

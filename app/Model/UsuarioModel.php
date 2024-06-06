@@ -32,7 +32,7 @@ class UsuarioModel extends Conexion
 
         if ($resultado) {
           session_start();
-          $_SESSION['nombreDePersona'] = $resultado['PER_nombres'];
+          $_SESSION['nombreDePersona'] = $resultado['PER_nombres'] . ' ' . $resultado['PER_apellidoPaterno'];
           $_SESSION['area'] = $resultado['ARE_nombre'];
           $informacionUsuario = $this->obtenerInformacionUsuario($this->username, $this->password);
           $codigo = $informacionUsuario['codigo'];
@@ -125,8 +125,20 @@ class UsuarioModel extends Conexion
     }
   }
 
-  public function registrarUsuario()
+  public function listarUsuario()
   {
-    // Implementar lógica de registro de usuario
+    try {
+      $conector = $this->getConexion();
+      $sql = "SELECT USU_codigo, (p.PER_nombres + ' ' + p.PER_apellidoPaterno + ' '+ p.PER_apellidoMaterno) as persona, a.ARE_nombre , USU_nombre, USU_password, e.EST_descripcion FROM USUARIO u
+      INNER JOIN PERSONA p on p.PER_codigo = u.PER_codigo
+      INNER JOIN AREA a on a.ARE_codigo = u.ARE_codigo
+      INNER JOIN ESTADO e on e.EST_codigo = u.EST_codigo
+      ORDER BY USU_codigo";
+      $stmt = $conector->prepare($sql);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      throw new Exception("Error al obtener los usuarios: " . $e->getMessage());
+    }
   }
 }

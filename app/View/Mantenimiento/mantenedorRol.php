@@ -16,14 +16,16 @@
   <title class="text-center text-3xl font-poppins">Sistema de Incidencias</title>
 </head>
 
-<body class="bg-green-50bg-gray-100 flex items-center justify-center min-h-screen overflow-x-hidden">
+<body class="bg-green-50 flex items-center justify-center min-h-screen overflow-x-hidden">
 
   <!-- Contenido principal -->
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
     <!-- Header -->
     <h1 class="text-2xl font-bold mb-4 ">M&oacute;dulo / Rol</h1>
 
-    <form id="formrol" action="modulo-rol.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+    <form id="formrol" action="modulo-rol.php" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+      <input type="hidden" id="form-action" name="action" value="registrar">
+
       <!-- PRIMERA FILA Campo para mostrar el número de incidencia -->
       <div class="flex justify-center -mx-2 mb-5">
         <div class="flex items-center mb-4">
@@ -58,20 +60,18 @@
     </form>
 
     <!-- TABLA -->
-    <div class="relative max-h-[300px] overflow-x-hidden shadow-md sm:rounded-lg mt-5">
+    <div class="relative max-h-[450px] overflow-x-hidden shadow-md sm:rounded-lg mt-5">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
         <!-- ENCABEZADO DE LA TABLA -->
         <thead class="sticky top-2 text-xs text-gray-70 uppercase bg-lime-300">
           <tr>
-            <th scope="col" class="px-10 py-3 w-1/6"> N°</th>
-            <th scope="col" class="px-6 py-3 w-5/6"> Rol</th>
+            <th scope="col" class="px-10 py-3 w-1/6">N°</th>
+            <th scope="col" class="px-6 py-3 w-5/6">Rol</th>
           </tr>
         </thead>
         <!-- CUERPO DE LA TABLA -->
         <tbody>
           <?php
-          require_once './app/Model/RolModel.php';
-          $rolModel = new RolModel();
           $roles = $rolModel->listarRol();
           foreach ($roles as $rol) {
             echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b'>";
