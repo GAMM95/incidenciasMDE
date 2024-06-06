@@ -12,10 +12,10 @@ class PersonaModel
 
     public function getPersonaData()
     {
-        $query = "select (PER_nombres + ' ' + PER_apellidoPaterno +' '+ PER_apellidoMaterno) AS persona from PERSONA";
+        $query = "SELECT PER_codigo, (PER_nombres + ' ' + PER_apellidoPaterno + ' ' + PER_apellidoMaterno) AS persona FROM PERSONA";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
-        $resultado = $stmt->fetchAll();
+        $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $resultado;
     }
 }

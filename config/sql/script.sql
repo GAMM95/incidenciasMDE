@@ -190,7 +190,21 @@ INSERT INTO dbo.CATEGORIA (CAT_nombre) VALUES ('Correo corporativo');
 INSERT INTO dbo.CATEGORIA (CAT_nombre) VALUES ('Reportes varios de sistemas informaticos');
 INSERT INTO dbo.CATEGORIA (CAT_nombre) VALUES ('Otros');
 INSERT INTO dbo.CATEGORIA (CAT_nombre) VALUES ('Inaccesibilidad a Sistemas Informaticos');
+GO
 
+CREATE PROCEDURE SP_Registrar_Usuario
+    @USU_nombre VARCHAR(20),
+    @USU_password VARCHAR(10),
+    @PER_codigo SMALLINT,
+	@ROL_codigo SMALLINT,
+    @ARE_codigo SMALLINT
+AS
+BEGIN
+    -- Insertar el nuevo usuario con EST_codigo siempre igual a 1
+    INSERT INTO USUARIO (USU_nombre, USU_password, PER_codigo, ROL_codigo, ARE_codigo, EST_codigo)
+    VALUES (@USU_nombre, @USU_password, @PER_codigo, @ROL_codigo, @ARE_codigo, 1);
+END;
+GO
 
 
 

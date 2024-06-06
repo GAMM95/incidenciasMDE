@@ -1,47 +1,62 @@
 $(document).ready(function () {
-  console.log("FETCHING PERSONAS");
-  $.ajax({
-    url: 'ajax/getPersona.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      var select = $('#cbo_persona');
-      select.empty();
-      $.each(data, function (index, value) {
-        console.log(value); // Añade esta línea para depurar y verificar las claves recibidas
-        select.append('<option value="' + value.PER_codigo + '">' + value.persona + '</option>'); // Ajuste aquí
-      });
-      document.getElementById('cbo_persona').value = '<?php echo isset($usuarioRegistrado) ? $usuarioRegistrado["PER_codigo"] : ""; ?>';
-    },
-    error: function (error) {
-      console.error(error);
-    }
-  })
-});
+  $(document).ready(function () {
+    // Fetch personas
+    console.log("FETCHING PERSONAS");
+    $.ajax({
+      url: 'ajax/getPersona.php',
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        var select = $('#cbo_persona');
+        select.empty();
+        // Agregar la opción "Seleccione una persona" al principio
+        select.append('<option value="" selected disabled>Seleccione una persona</option>');
+        // Llenar el select con los datos recibidos
+        $.each(data, function (index, value) {
+          console.log(value); // Verificar las claves recibidas
+          select.append('<option value="' + value.PER_codigo + '">' + value.persona + '</option>');
+        });
+        // Seleccionar la opción predeterminada, si está definida
+        var usuarioRegistrado = '<?php echo isset($usuarioRegistrado) ? $usuarioRegistrado["PER_codigo"] : ""; ?>';
+        if (usuarioRegistrado !== "") {
+          $('#cbo_persona').val(usuarioRegistrado);
+        }
+      },
+      error: function (error) {
+        console.error("Error fetching personas:", error);
+      }
+    });
+  });
 
-$(document).ready(function () {
-  console.log("FETCHING AREAS");
-  $.ajax({
-    url: 'ajax/getAreaData.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      var select = $('#cbo_area');
-      select.empty();
-      $.each(data, function (index, value) {
-        console.log(value); // Añade esta línea para depurar y verificar las claves recibidas
-        select.append('<option value="' + value.ARE_codigo + '">' + value.ARE_nombre + '</option>'); // Ajuste aquí
-      });
-      document.getElementById('cbo_area').value = '<?php echo isset($usuarioRegistrado) ? $usuarioRegistrado["PER_codigo"] : ""; ?>';
-    },
-    error: function (error) {
-      console.error(error);
-    }
-  })
-});
+  $(document).ready(function () {
+    // Fetch áreas
+    console.log("FETCHING AREAS");
+    $.ajax({
+      url: 'ajax/getAreaData.php',
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        var select = $('#cbo_area');
+        select.empty();
+        // Agregar la opción "Seleccione un área" al principio
+        select.append('<option value="" selected disabled>Seleccione un área</option>');
+        // Llenar el select con los datos recibidos
+        $.each(data, function (index, value) {
+          console.log(value); // Depurar y verificar las claves recibidas
+          select.append('<option value="' + value.ARE_codigo + '">' + value.ARE_nombre + '</option>');
+        });
+        // Seleccionar la opción "Seleccione un área"
+        $('#cbo_area').val('');
+      },
+      error: function (error) {
+        console.error("Error fetching areas:", error);
+      }
+    });
+  });
 
-$(document).ready(function () {
-  console.log("FETCHING AREAS");
+
+  // Fetch roles
+  console.log("FETCHING ROLES");
   $.ajax({
     url: 'ajax/getRol.php',
     type: 'GET',
@@ -50,21 +65,18 @@ $(document).ready(function () {
       var select = $('#cbo_rol');
       select.empty();
       $.each(data, function (index, value) {
-        console.log(value); // Añade esta línea para depurar y verificar las claves recibidas
-        select.append('<option value="' + value.ROL_codigo + '">' + value.ROL_nombre + '</option>'); // Ajuste aquí
+        console.log(value); // Depurar y verificar las claves recibidas
+        select.append('<option value="' + value.ROL_codigo + '">' + value.ROL_nombre + '</option>');
       });
-      document.getElementById('cbo_rol').value = '<?php echo isset($usuarioRegistrado) ? $usuarioRegistrado["PER_codigo"] : ""; ?>';
+      $('#cbo_rol').val('<?php echo isset($usuarioRegistrado) ? $usuarioRegistrado["PER_codigo"] : ""; ?>');
     },
     error: function (error) {
-      console.error(error);
+      console.error("Error fetching roles:", error);
     }
-  })
-});
+  });
 
-
-$(document).ready(function () {
   // Evento de clic en una fila de la tabla
-  $('tr').click(function () {
+  $('table').on('click', 'tr', function () {
     var cod = $(this).find('th').data('cod');
     var dni = $(this).find('td[data-dni]').text();
     var nombreCompleto = $(this).find('td[data-nombre]').text();
@@ -78,7 +90,7 @@ $(document).ready(function () {
     var apellidoMaterno = partesNombre[2];
 
     // Establecer los valores en los campos del formulario
-    $('#txt_codPersona').val(cod);
+    $('#txt_codUsuario').val(cod);
     $('#txt_dni').val(dni);
     $('#txt_nombre').val(nombre);
     $('#txt_apellidoPaterno').val(apellidoPaterno);
@@ -89,5 +101,5 @@ $(document).ready(function () {
     // Aplicar estilos de selección a la fila seleccionada y quitarlos de las demás filas
     $('tr').removeClass('bg-blue-200 font-semibold'); // Limpiar estilos
     $(this).addClass('bg-blue-200 font-semibold'); // Aplicar estilos a la fila seleccionada
-  })
+  });
 });

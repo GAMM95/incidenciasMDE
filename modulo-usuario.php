@@ -1,32 +1,24 @@
 <?php
 $action = $_GET['action'] ?? '';
 $state = $_GET['state'] ?? '';
-$CodPersona = $_GET['PER_codigo'] ?? '';
+$CodUsuario = $_GET['USU_codigo'] ?? '';
 
-require_once 'app/Controller/PersonaController.php';
-
-// Obtener los datos necesarios
-$dni = $_POST['dni'] ?? '';
-$nombres = $_POST['nombre'] ?? '';
-$apellidoPaterno = $_POST['apellidoPaterno'] ?? '';
-$apellidoMaterno = $_POST['apellidoMaterno'] ?? '';
-$email = $_POST['email'] ?? '';
-$celular = $_POST['celular'] ?? '';
+require_once 'app/Controller/UsuarioController.php';
 
 // Crear una instancia del controlador PersonaController
-$personaController = new PersonaController($dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
-$personaModel = new PersonaModel($dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
+$usuarioController = new UsuarioController();
+$usuarioModel = new UsuarioModel();
 
-if ($CodPersona != '') {
-  global $PersonaRegistrada;
-  $PersonaRegistrada = $personaModel->obtenerPersonaPorId($CodPersona);
+if ($CodUsuario != '') {
+  global $UsuarioRegistrado;
+  $UsuarioRegistrado = $usuarioModel->obtenerRolPorId($CodPersona);
 } else {
-  $PersonaRegistrada = null;
+  $UsuarioRegistrado = null;
 }
 
 switch ($action) {
   case 'registrar':
-    $personaController->registrarPersona();
+    $usuarioController->registrarUsuario();
     break;
 }
 ?>

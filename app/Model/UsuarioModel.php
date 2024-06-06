@@ -6,7 +6,7 @@ class UsuarioModel extends Conexion
   protected $username;
   protected $password;
 
-  public function __construct($username, $password)
+  public function __construct($username = null, $password = null)
   {
     // Llama al constructor de la clase padre (Conexion)
     parent::__construct();
@@ -39,7 +39,7 @@ class UsuarioModel extends Conexion
           $usuario = $informacionUsuario['usuario'];
           $_SESSION['codigoUsuario'] = $codigo;
           $_SESSION['usuario'] = $usuario;
-          $_SESSION['rol'] = $this->obtenerRol($this->username); // Guardar rol en la sesión
+          $_SESSION['rol'] = $this->obtenerRolPorId($this->username); // Guardar rol en la sesión
 
           // Log de inicio de sesión
           $logData = "------- START LOGIN LOGS ---------" . PHP_EOL;
@@ -84,7 +84,7 @@ class UsuarioModel extends Conexion
     }
   }
 
-  public function obtenerRol($username)
+  public function obtenerRolPorId($username)
   {
     try {
       $conector = $this->getConexion();
@@ -115,7 +115,7 @@ class UsuarioModel extends Conexion
 
   public function redireccionSegunRol($username)
   {
-    $rol = $this->obtenerRol($username);
+    $rol = $this->obtenerRolPorId($username);
     if ($rol === 'Administrador') {
       header('Location: pagina-inicio.php');
     } elseif ($rol === 'Trabajador') {
@@ -139,6 +139,31 @@ class UsuarioModel extends Conexion
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
       throw new Exception("Error al obtener los usuarios: " . $e->getMessage());
+    }
+  }
+
+  // Método para registrar un nuevo usuario
+  public function registrarUsuario($per_codigo, $rol_codigo, $are_codigo)
+  {
+    try {
+      $conector = $this->getConexion();
+
+      if ($conector != null) {
+        $query = "EXEC SP_Registrar_Usuario :USU_nombre, :USU_password, :PER_codigo, :ROL_codigo, :ARE_codigo";
+        $stmt = $conector->prepare($query);
+        $stmt->bindParam(':USU_nombre', $this->username);
+        $stmt->bindParam(':USU_password', $this->password);
+        $stmt->bindParam(':PER_codigo', $per_codigo);
+        $stmt->bindParam(':ROL_codigo', $rol_codigo);
+        $stmt->bindParam(':ARE_codigo', $are_codigo);
+        $stmt->execute();
+
+        return true; // Registro exitoso
+      } else {
+        throw new Exception("Error de conexión a la base de datos.");
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al registrar usuario: " . $e->getMessage());
     }
   }
 }
