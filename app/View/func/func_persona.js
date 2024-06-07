@@ -9,9 +9,13 @@ $(document).ready(function () {
 
     // Separar el nombre completo en partes: nombre, apellido paterno y apellido materno
     var partesNombre = nombreCompleto.split(' ');
-    var nombre = partesNombre[0];
-    var apellidoPaterno = partesNombre[1];
-    var apellidoMaterno = partesNombre[2];
+
+    // Asumir que el último nombre es el apellido materno y el penúltimo es el apellido paterno
+    var apellidoMaterno = partesNombre.pop();
+    var apellidoPaterno = partesNombre.pop();
+
+    // Lo que queda es el nombre, que puede tener uno o más palabras
+    var nombre = partesNombre.join(' ');
 
     // Establecer los valores en los campos del formulario
     $('#txt_codPersona').val(cod);
