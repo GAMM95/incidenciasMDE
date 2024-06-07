@@ -47,7 +47,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <?php
         if (isset($_SESSION['nombreDePersona'])) {
           echo htmlspecialchars($_SESSION['nombreDePersona'], ENT_QUOTES, 'UTF-8');
-          echo "<br>";
+          echo "<br><br>";
           echo htmlspecialchars($_SESSION['area'], ENT_QUOTES, 'UTF-8');
         } else {
           echo "Usuario no logueado";

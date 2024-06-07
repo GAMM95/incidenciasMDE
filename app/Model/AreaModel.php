@@ -49,7 +49,7 @@ class AreaModel extends Conexion
       $conector = $this->getConexion();
 
       if ($conector != null) {
-        $sql = " SELECT * FROM AREA  WHERE ARE_codigo = ?";
+        $sql = " SELECT * FROM AREA WHERE ARE_codigo = ?";
         $stmt = $conector->prepare($sql);
         $stmt->execute([$codigoArea]);
         $registros = $stmt->fetch(PDO::FETCH_ASSOC);

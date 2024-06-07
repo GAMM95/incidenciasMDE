@@ -27,13 +27,22 @@ $rol = $_SESSION['rol'];
 
 <body>
   <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
+
+
+    ?
     <?php
-    if ($rol === 'Administrador' || $rol === 'Soporte' ) {
+    // if ($rol === 'Administrador' || $rol === 'Soporte') {
+    //   include("app/View/partials/admin/sideBar.php");
+    // } else if ($rol === 'Usuario') {
+    //   include("app/View/partials/user/sideBar.php");
+    // }
+    if ($rol === 'Administrador' || $rol === 'Soporte') {
       include("app/View/partials/admin/sideBar.php");
-    } else if ($rol === 'Usuario') {
+    } else {
       include("app/View/partials/user/sideBar.php");
     }
     ?>
+
     <?php include("app/View/PnlInicio.php"); ?>
   </div>
 </body>

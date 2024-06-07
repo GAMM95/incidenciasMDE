@@ -31,7 +31,7 @@
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <div class="flex items-center">
             <label for="CodUsuario" class="block font-bold mb-1 mr-3 text-lime-500">C&oacute;digo de Usuario:</label>
-            <input type="text" id="txt_codUsuario" name="CodUsuario" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
+            <input type="text" id="txt_codigoUsuario" name="CodUsuario" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
           </div>
         </div>
       </div>
@@ -40,19 +40,19 @@
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="persona" class="block mb-1 font-bold text-sm">Persona:</label>
-          <select id="cbo_persona" name="CodPersona" class="border p-2 w-full text-sm cursor-pointer">
+          <select id="cbo_persona" name="CodPersona" class="border p-2 w-full text-sm cursor-pointer" title="Seleccione una persona">
             <option value="" selected disabled class="text-gray-200">Seleccione una persona</option>
           </select>
         </div>
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="CodArea" class="block mb-1 font-bold text-sm">&Aacute;rea:</label>
-          <select id="cbo_area" name="CodArea" class="border p-2 w-full text-sm cursor-pointer">
+          <select id="cbo_area" name="CodArea" class="border p-2 w-full text-sm cursor-pointer" title="Seleccione un &aacute;rea">
             <option value="" selected disabled class="text-gray-200">Seleccione una &aacute;rea</option>
           </select>
         </div>
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="CodRol" class="block mb-1 font-bold text-sm">Rol:</label>
-          <select id="cbo_rol" name="CodRol" class="border p-2 w-full text-sm cursor-pointer">
+          <select id="cbo_rol" name="CodRol" class="border p-2 w-full text-sm cursor-pointer" title="Seleccione un rol">
             <option value="" selected disabled class="text-gray-200">Seleccione un rol</option>
           </select>
         </div>
@@ -68,7 +68,7 @@
 
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="password" class="block mb-1 font-bold text-sm">Contrase&ntilde;a:</label>
-          <input type="password" id="txt_password" name="password" class="border p-2 w-full text-sm" required>
+          <input type="text" id="txt_password" name="password" class="border p-2 w-full text-sm" limi required>
         </div>
       </div>
 
@@ -98,36 +98,52 @@
             <th scope="col" class="px-6 py-3"> Usuario </th>
             <th scope="col" class="px-6 py-3"> Contrase&ntilde;a </th>
             <th scope="col" class="px-6 py-3"> Estado </th>
+            <th scope="col" class="px-6 py-3"> Opciones </th>
           </tr>
         </thead>
         <tbody>
           <?php
           $usuarios = $usuarioModel->listarUsuario();
           foreach ($usuarios as $usuario) {
+            $estado = htmlspecialchars($usuario['EST_descripcion']);
+            $isActive = ($estado === 'Activo');
+
             echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b '>";
-            echo "<th scope='col' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap ' data-codusuario='"  . htmlspecialchars($usuario['USU_codigo']) . "' >";
+            echo "<th scope='col' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap' data-codusuario='" . htmlspecialchars($usuario['USU_codigo']) . "'>";
             echo htmlspecialchars($usuario['USU_codigo']);
             echo "</th>";
-            echo "<td class='px-6 py-4 ' data-nombre='" . htmlspecialchars($usuario['persona']) . "' >";
+
+            echo "<td class='px-6 py-4' data-nombre='" . htmlspecialchars($usuario['persona']) . "' data-codpersona='" . (isset($usuario['PER_codigo']) ? htmlspecialchars($usuario['PER_codigo']) : "") . "'>";
             echo htmlspecialchars($usuario['persona']);
             echo "</td>";
-            echo "<td class='px-6 py-4 ' data-area='" . htmlspecialchars($usuario['ARE_nombre']) . "' >";
+
+            echo "<td class='px-6 py-4' data-area='" . (isset($usuario['ARE_codigo']) ? htmlspecialchars($usuario['ARE_codigo']) : "") . "' data-codarea='" . (isset($usuario['ARE_codigo']) ? htmlspecialchars($usuario['ARE_nombre']) : "") . "'>";
             echo htmlspecialchars($usuario['ARE_nombre']);
             echo "</td>";
+
             echo "<td class='px-6 py-4' data-usuario='" . htmlspecialchars($usuario['USU_nombre']) . "'>";
             echo htmlspecialchars($usuario['USU_nombre']);
             echo "</td>";
+
             echo "<td class='px-6 py-4' data-password='" . htmlspecialchars($usuario['USU_password']) . "'>";
             echo htmlspecialchars($usuario['USU_password']);
             echo "</td>";
-            echo "<td class='px-6 py-4' data-estado='" . htmlspecialchars($usuario['EST_descripcion']) . "'>";
-            echo htmlspecialchars($usuario['EST_descripcion']);
+
+            echo "<td class='px-6 py-4' data-estado='" . $estado . "' data-codrol='" . (isset($usuario['ROL_codigo']) ? htmlspecialchars($usuario['ROL_codigo']) : "") . "'>";
+            echo $estado;
             echo "</td>";
-            // Agregar la columna con el botón "Deshabilitar"
-            echo "<td class='px-6 py-4'><button class='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>Deshabilitar</button></td>";
+
+            echo "<td class='px-6 py-4'>
+            <div class='flex'>
+              <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 " . ($isActive ? "bg-gray-500 cursor-not-allowed" : "") . "' " . ($isActive ? "disabled" : "") . ">Activar</button>
+              <button class='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded " . (!$isActive ? "bg-gray-500 cursor-not-allowed" : "") . "' " . (!$isActive ? "disabled" : "") . ">Deshabilitar</button>
+            </div>
+          </td>";
             echo "</tr>";
           }
           ?>
+
+
 
         </tbody>
       </table>

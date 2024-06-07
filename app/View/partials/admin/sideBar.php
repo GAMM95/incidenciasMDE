@@ -46,7 +46,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <?php
         if (isset($_SESSION['nombreDePersona'])) {
           echo htmlspecialchars($_SESSION['nombreDePersona'], ENT_QUOTES, 'UTF-8');
-          echo "<br>";
+          echo "<br><br>";
           echo htmlspecialchars($_SESSION['area'], ENT_QUOTES, 'UTF-8');
         } else {
           echo "Usuario no logueado";
@@ -72,8 +72,8 @@ if (session_status() == PHP_SESSION_NONE) {
         <!-- Opciones: Incidencia, Recepcion, Cierre -->
         <div x-show="open" class="pl-4">
           <a href="registro-incidencia-admin.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Incidencia</a>
-          <a href="registro-recepcion.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Recepci&oacute;n</a>
-          <a href="registro-cierre.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Cierre</a>
+          <a href="registro-recepcion-admin.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Recepci&oacute;n</a>
+          <a href="registro-cierre-admin.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Cierre</a>
         </div>
       </div>
 
@@ -88,8 +88,8 @@ if (session_status() == PHP_SESSION_NONE) {
         <!-- Opciones: Incidencia, Recepcion, Cierre -->
         <div x-show="open" class="pl-4">
           <a href="consultar-incidencia-admin.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Incidencia</a>
-          <a href="consultar-recepcion.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Recepci&oacute;n</a>
-          <a href="consultar-cierre.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Cierre</a>
+          <a href="consultar-recepcion-admin.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Recepci&oacute;n</a>
+          <a href="consultar-cierre-admin.php" class="block py-2 px-4 hover:bg-[#d5fab4] ">Cierre</a>
         </div>
       </div>
 

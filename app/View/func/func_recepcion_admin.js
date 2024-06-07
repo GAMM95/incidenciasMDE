@@ -22,28 +22,6 @@ $(document).ready(function () {
 $(document).ready(function () {
   console.log("FETCHING")
   $.ajax({
-    url: 'ajax/getCategoryData.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      var select = $('#cbo_categoria');
-      select.empty();
-      select.append('<option value="" selected disabled>Seleccione una categoría</option>');
-      $.each(data, function (index, value) {
-        select.append('<option value="' + value.CAT_codigo + '">' + value.CAT_nombre + '</option>');
-      });
-      document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada["CAT_codigo"] : "; ?>';
-    },
-    error: function (error) {
-      console.error(error);
-    }
-  });
-});
-
-
-$(document).ready(function () {
-  console.log("FETCHING")
-  $.ajax({
     url: '../../../ajax/getLastIncidencia.php',
     type: 'GET',
     dataType: 'json',

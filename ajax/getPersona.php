@@ -12,7 +12,7 @@ class PersonaModel
 
     public function getPersonaData()
     {
-        $query = "SELECT PER_codigo, (PER_nombres + ' ' + PER_apellidoPaterno + ' ' + PER_apellidoMaterno) AS persona FROM PERSONA";
+        $query = "SELECT PER_codigo, (PER_nombres + ' ' + PER_apellidoPaterno + ' ' + PER_apellidoMaterno) AS persona FROM PERSONA ORDER BY persona ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);

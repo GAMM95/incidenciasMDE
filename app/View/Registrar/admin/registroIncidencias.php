@@ -48,7 +48,7 @@
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-2">
           <label for="categoria" class="block mb-1 font-bold text-sm">Categor&iacute;a:</label>
-          <select id="categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
+          <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
           </select>
         </div>
         <div class="w-full md:w-1/3 px-2 mb-2">
@@ -79,7 +79,7 @@
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/2 px-2 mb-2">
           <label for="area" class="block mb-1 font-bold text-sm">&Aacute;rea:</label>
-          <select id="area" name="area" class="border p-2 w-full text-sm cursor-pointer" title="Seleccione &aacute;rea">
+          <select id="cbo_area" name="area" class="border p-2 w-full text-sm cursor-pointer" title="Seleccione &aacute;rea">
           </select>
         </div>
         <div class="w-full sm:w-1/2 px-2 mb-2">

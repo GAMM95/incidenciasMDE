@@ -24,8 +24,13 @@ $(document).ready(function () {
 
   $('#nuevo-registro').on('click', nuevoRegistro);
 
-
   function enviarFormulario(action) {
+    var nombreRol = $('#txt_codigoRol').val();
+
+    if(!nombreRol){
+      toastr.error('El campo "Nombre rol" no puede estar vacío');
+      return;
+    }
     // Habilitar el campo antes de enviar
     $('#txt_codigoRol').prop('disabled', false);
 

@@ -26,7 +26,7 @@
       <div class="flex justify-center -mx-2 mb-5">
         <div class="flex items-center mb-4">
           <div class="flex items-center">
-            <label for="CodCategoria" class="block font-bold mb-1 mr-3 text-lime-500">Código de categoría:</label>
+            <label for="CodCategoria" class="block font-bold mb-1 mr-3 text-lime-500">C&oacute;digo de categor&iacute;a:</label>
             <input type="text" id="txt_codigoCategoria" name="CodCategoria" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
           </div>
         </div>
@@ -36,7 +36,7 @@
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="NombreCategoria" class="block mb-1 font-bold text-sm">Nombre categoría:</label>
-          <input type="text" id="txt_nombreCategoria" name="NombreCategoria" class="border p-2 w-full text-sm" required>
+          <input type="text" id="txt_nombreCategoria" name="NombreCategoria" class="border p-2 w-full text-sm" pattern="[A-Za-z]+" title="Ingrese nueva categoría" required>
         </div>
       </div>
 

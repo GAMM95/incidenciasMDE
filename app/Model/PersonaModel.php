@@ -4,6 +4,7 @@ require_once 'config/conexion.php';
 
 class PersonaModel extends Conexion
 {
+  protected $codigoPersona;
   protected $dni;
   protected $nombres;
   protected $apellidoPaterno;
@@ -12,17 +13,17 @@ class PersonaModel extends Conexion
   protected $celular;
 
   public function __construct(
-    $dni,
-    $nombres,
-    $apellidoPaterno,
-    $apellidoMaterno,
-    $email,
-    $celular
+    $codigoPersona = null,
+    $dni = null,
+    $nombres = null,
+    $apellidoPaterno = null,
+    $apellidoMaterno = null,
+    $email = null,
+    $celular = null
   ) {
     // Llama al constructor de la clase padre (Conexion)
     parent::__construct();
-
-    // Asigna los valores a las propiedades
+    $this->codigoPersona = $codigoPersona;
     $this->dni = $dni;
     $this->nombres = $nombres;
     $this->apellidoPaterno = $apellidoPaterno;
@@ -36,46 +37,28 @@ class PersonaModel extends Conexion
   {
     try {
       $conector = $this->getConexion();
-
-      if ($conector) {
-        $sql = "SELECT * FROM PERSONA";
-        $stmt = $conector->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-      } else {
-        throw new Exception("Error de conexión a la base de datos.");
-      }
+      $sql = "SELECT * FROM PERSONA";
+      $stmt = $conector->prepare($sql);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
       throw new Exception("Error al obtener las personas: " . $e->getMessage());
     }
   }
 
   // Metodo para registrar nueva persona
-  public function registrarPersona($dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular)
+  public function registrarPersona()
   {
+    if ($this->nombres === null || trim($this->nombres) === '') {
+      throw new Exception("Los nombres de la persona no pueden estar vacíos");
+    }
+
     try {
       $conector = $this->getConexion();
-      // Verificar la conexión
-      if (!$conector) {
-        throw new Exception("Error de conexión a la base de datos.");
-      }
-
-      // Preparar la consulta SQL para la inserción
-      $sql = "INSERT INTO PERSONA (PER_DNI, PER_nombres, PER_apellidoPaterno, PER_apellidoMaterno, PER_email, PER_celular) VALUES (?, ?, ?, ?, ?, ?)";
-
-      // Preparar la sentencia
+      $sql = "INSERT INTO PERSONA (PER_DNI, PER_nombres, PER_apellidoPaterno, PER_apellidoMaterno, PER_celular, PER_email,) VALUES (?, ?, ?, ?, ?, ?)";
       $stmt = $conector->prepare($sql);
-
-      // Ejecutar la inserción
-      $success = $stmt->execute([$dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular]);
-
-      if ($success) {
-        // Devolver el último ID insertado
-        return $conector->lastInsertId();
-      } else {
-        return false;
-      }
+      $stmt->execute([$this->dni, $this->nombres, $this->apellidoPaterno, $this->apellidoMaterno, $this->celular, $this->email]);
+      return $conector->lastInsertId();
     } catch (PDOException $e) {
       throw new Exception("Error al registrar nueva persona: " . $e->getMessage());
     }
@@ -109,36 +92,14 @@ class PersonaModel extends Conexion
   }
 
   // Metodo para actualizar datos de las personas registradas
-  public function actualizarPersona($CodPersona, $dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular)
+  public function actualizarPersona()
   {
     try {
       $conector = $this->getConexion();
-      if ($conector) {
-        // Preparar la consulta SQL para la inserción sin incluir el campo id
-        $sql = "UPDATE PERSONA SET PER_dni = ?, PER_nombres = ? , PER_apellidoPaterno = ?, PER_apellidoMaterno = ?, PER_email = ?, PER_celular = ? WHERE PER_codigo = ?";
-
-        // Preparar la sentencia
-        $stmt = $conector->prepare($sql);
-
-        // Ejecutar la inserción sin proporcionar el valor para el campo id
-        $success = $stmt->execute([
-          $dni,
-          $nombres,
-          $apellidoPaterno,
-          $apellidoMaterno,
-          $email,
-          $celular,
-          $CodPersona
-        ]);
-
-        if ($success) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        throw new Exception("Error de conexión cierreController la base de datos.");
-      }
+      $sql = "UPDATE PERSONA SET PER_dni = ?, PER_nombres = ? , PER_apellidoPaterno = ?, PER_apellidoMaterno = ?, PER_celular = ?, PER_email = ? WHERE PER_codigo = ?";
+      $stmt = $conector->prepare($sql);
+      $stmt->execute([$this->dni, $this->nombres, $this->apellidoPaterno, $this->apellidoMaterno, $this->celular, $this->email, $this->codigoPersona]);
+      return $stmt->rowCount();
     } catch (PDOException $e) {
       throw new Exception("Error al actualizar la persona: " . $e->getMessage());
     }

@@ -7,59 +7,68 @@ $(document).ready(function () {
     $('#txt_nombreArea').val(nom);
     $(this).addClass('bg-blue-200 font-semibold');
     $('tr').not(this).removeClass('bg-blue-200 font-semibold');
+
+    // Cambiar la acción del formulario a editar
+    $('#form-action').val('editar');
   });
-});
 
-function nuevoRegistro() {
-  const form = document.getElementById('formarea');
-  form.reset();
-  $('#txt_codigoArea').val('');
-  $('tr').removeClass('bg-blue-200 font-semibold');
-}
+  function nuevoRegistro() {
+    const form = document.getElementById('formarea');
+    form.reset();
+    $('#txt_codigoArea').val('');
+    $('tr').removeClass('bg-blue-200 font-semibold');
 
-const btnNuevo = document.getElementById('nuevo-registro');
-btnNuevo.addEventListener('click', nuevoRegistro);
+    // Cambiar la acción del formulario a registrar
+    $('#form-action').val('registrar');
+  }
 
-// GUARDAR DATOS
-$("#guardar-area").on("click", function (e) {
-  e.preventDefault();
-  var formData = $("#formarea").serialize();
+  $('#nuevo-registro').on('click', nuevoRegistro);
 
-  $.ajax({
-    url: "modulo-area.php?action=registrar",
-    type: "POST",
-    data: formData,
-    success: function (response) {
-      toastr.success("Área guardada exitosamente");
-      setTimeout(function () {
-        location.reload();
-      }, 1500);
-    },
-    error: function (xhr, status, error) {
-      console.log(xhr.responseText);
-      toastr.error("Error al guardar el área");
+  function enviarFormulario(action) {
+    var nombreArea = $('#txt_nombreArea').val();
+
+    if (!nombreArea) {
+      toastr.error('El campo "Nombre área" no puede estar vacío');
+      return;
     }
+
+    // Habilitar el campo antes de enviar
+    $('#txt_codigoArea').prop('disabled', false);
+
+    var formData = $("#formarea").serialize();
+
+    $.ajax({
+      url: "modulo-area.php?action=" + action,
+      type: "POST",
+      data: formData,
+      success: function (response) {
+        if (action === 'registrar') {
+          toastr.success("Área guardada exitosamente");
+        } else if (action === 'editar') {
+          toastr.success("Área actualizada exitosamente");
+        }
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
+      },
+      error: function (xhr, status, error) {
+        console.log(xhr.responseText);
+        toastr.error("Error al guardar el área");
+      },
+      complete: function () {
+        // Volver a deshabilitar el campo después de enviar
+        $('#txt_codigoArea').prop('disabled', true);
+      }
+    });
+  }
+
+  $('#guardar-area').on('click', function (e) {
+    e.preventDefault();
+    enviarFormulario($('#form-action').val());
   });
-});
 
-// EDITAR DATOS
-$("#editar-area").on("click", function (e) {
-  e.preventDefault();
-  var formData = $("#formarea").serialize();
-
-  $.ajax({
-    url: "modulo-area.php?action=editar",
-    method: "POST",
-    data: formData,
-    success: function (response) {
-      toastr.success("Área actualizada exitosamente");
-      setTimeout(function () {
-        location.reload();
-      }, 1500);
-    },
-    error: function (xhr, status, error) {
-      console.log(xhr.responseText);
-      toastr.error("Error al actualizar el área");
-    }
+  $('#editar-area').on('click', function (e) {
+    e.preventDefault();
+    enviarFormulario('editar');
   });
 });

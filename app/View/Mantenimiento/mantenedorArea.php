@@ -20,24 +20,27 @@
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
     <h1 class="text-2xl font-bold mb-4">M&oacute;dulo / &Aacute;rea</h1>
 
-    <form id="formarea" action="modulo-area.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+    <form id="formarea" action="modulo-area.php" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+      <input type="hidden" id="form-action" name="action" value="registrar">
+      <!-- PRIMERA FILA  -->
       <div class="flex justify-center -mx-2 mb-5">
         <div class="flex items-center mb-4">
           <div class="flex items-center">
             <label for="CodArea" class="block font-bold mb-1 mr-3 text-lime-500">C&oacute;digo de &aacute;rea:</label>
-            <input type="text" id="txt_codigoArea" name="CodArea" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly>
+            <input type="text" id="txt_codigoArea" name="CodArea" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly disabled>
           </div>
         </div>
       </div>
 
+      <!-- SEGUNDA FILA -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="NombreArea" class="block mb-1 font-bold text-sm">Nombre &aacute;rea:</label>
-          <input type="text" id="txt_nombreArea" name="NombreArea" class="border p-2 w-full text-sm">
+          <input type="text" id="txt_nombreArea" name="NombreArea" class="border p-2 w-full text-sm" pattern="[A-Za-z]+" title="Ingrese nueva área" required>
         </div>
       </div>
 
-      <!-- Botones -->
+      <!-- BOTONES -->
       <div class="flex justify-center space-x-4">
         <button type="submit" id="guardar-area" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
           Guardar
@@ -80,6 +83,7 @@
       </table>
     </div>
   </main>
+
   <script src="./app/View/func/func_area.js"></script>
 </body>
 

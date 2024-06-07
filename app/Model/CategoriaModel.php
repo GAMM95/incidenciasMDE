@@ -6,8 +6,10 @@ class CategoriaModel extends Conexion
   protected $codigoCategoria;
   protected $nombreCategoria;
 
-  public function __construct($codigoCategoria = null, $nombreCategoria = null)
-  {
+  public function __construct(
+    $codigoCategoria = null,
+    $nombreCategoria = null
+  ) {
     parent::__construct();
     $this->codigoCategoria = $codigoCategoria;
     $this->nombreCategoria = $nombreCategoria;

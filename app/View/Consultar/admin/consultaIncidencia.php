@@ -16,43 +16,45 @@
   <title class="text-center text-3xl font-poppins">Sistema de Incidencias</title>
 </head>
 
-
 <body class="bg-green-50 flex items-center justify-center min-h-screen overflow-x-hidden">
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
     <!-- Header -->
-    <h1 class="text-2xl font-bold mb-4 ">Consultar Incidencia</h1>
+    <h1 class="text-2xl font-bold mb-4">Consultar Incidencia</h1>
 
     <form id="formIncidencia" action="modulo-rol.php" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
       <div class="flex flex-wrap -mx-2">
-
         <div class="w-full md:w-1/3 px-2 mb-2">
-          <label for="area" class="block mb-1 font-bold text-sm">Área:</label>
-          <select id="area" name="area" class="border p-2 w-full text-sm">
+          <label for="area" class="block mb-1 font-bold text-sm">&Aacute;rea:</label>
+          <select id="cbo_area" name="area" class="border p-2 w-full text-sm">
           </select>
         </div>
         <div class="w-full sm:w-1/3 md:w-1/5 px-2 mb-2">
+          <label for="codigoPatrimonial" class="block mb-1 font-bold text-sm">Código Patrimonial:</label>
+          <input type="text" id="txt_codigoPatrimonial" name="codigoPatrimonial" class="w-full border p-2 text-sm">
+        </div>
+        <div class="w-full sm:w-1/3 md:w-1/5 px-2 mb-2">
           <label for="fecha" class="block mb-1 font-bold text-sm">Fecha:</label>
-          <input type="date" id="fecha" name="fecha" class="w-full border p-2 w-full text-sm">
+          <input type="date" id="fecha" name="fecha" class="w-full border p-2 text-sm">
         </div>
-        <!-- Botones del formulario -->
-        <div class="flex justify-center space-x-2 mt-6">
 
-          <button type="button" id="buscarIncidencia" class="bg-blue-500 text-white font-bold hover:bg-[#4c8cf5] py-2 px-4 rounded">
-            Buscar
-          </button>
-          <button type="reset" class="bg-green-400 text-white font-bold hover:bg-gray-400 py-2 px-4 rounded">
-            Limpiar
-          </button>
-          <button type="submit" id="enviar" class="bg-blue-500 text-white font-bold hover:bg-[#4c8cf5] py-2 px-4 rounded">
-            Todos
-          </button>
-        </div>
+      </div>
+
+      <!-- Botones del formulario -->
+      <div class="flex justify-center space-x-2 mt-6">
+        <button type="button" id="buscarIncidencia" class="bg-blue-500 text-white font-bold hover:bg-[#4c8cf5] py-2 px-4 rounded">
+          Buscar
+        </button>
+        <button type="reset" class="bg-green-400 text-white font-bold hover:bg-gray-400 py-2 px-4 rounded">
+          Limpiar
+        </button>
+        <button type="submit" id="enviar" class="bg-blue-500 text-white font-bold hover:bg-[#4c8cf5] py-2 px-4 rounded">
+          Todos
+        </button>
       </div>
     </form>
-    
+
     <!-- RESULTADOS -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-
       <table id="tablaConsultarIncidencias" class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-lime-300">
           <tr>
@@ -69,7 +71,7 @@
         </thead>
         <tbody>
           <?php
-          require_once './app/models/consultarIncMo.php'; // Asegúrate de tener el modelo correcto para la recepción
+          require_once './app/Model/IncidenciaModel.php'; // Asegúrate de tener el modelo correcto para la recepción
           $incidenciaModel = new IncidenciaModel();
           try {
             $incidencias = $incidenciaModel->listarIncidencias(); // Método para obtener datos de recepción desde la base de datos
@@ -83,9 +85,9 @@
               echo "<td class='px-6 py-4'>" . $incidencia['FechaIncidencia'] . "</td>";
               echo "<td class='px-6 py-4'>" . $incidencia['Asunto'] . "</td>";
               echo "<td class='px-6 py-4'>" . $incidencia['NombreArea'] . "</td>";
-              echo "<td class='px-16 py-4'>" . $incidencia['Descripcion'];
-              echo "<td class='px-6 py-4'>" . $incidencia['NumDocumento'];
-              echo "<td class='px-6 py-4'>" . $incidencia['Hora'];
+              echo "<td class='px-16 py-4'>" . $incidencia['Descripcion'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['NumDocumento'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['Hora'] . "</td>";
               echo "</tr>";
             }
           } catch (Exception $e) {
@@ -97,5 +99,7 @@
       </table>
     </div>
   </main>
-
+  <script src="./app/View/func/func_incidencias_admin.js"></script>
 </body>
+
+</html>

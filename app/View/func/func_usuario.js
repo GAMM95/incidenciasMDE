@@ -1,59 +1,42 @@
 $(document).ready(function () {
-  $(document).ready(function () {
-    // Fetch personas
-    console.log("FETCHING PERSONAS");
-    $.ajax({
-      url: 'ajax/getPersona.php',
-      type: 'GET',
-      dataType: 'json',
-      success: function (data) {
-        var select = $('#cbo_persona');
-        select.empty();
-        // Agregar la opción "Seleccione una persona" al principio
-        select.append('<option value="" selected disabled>Seleccione una persona</option>');
-        // Llenar el select con los datos recibidos
-        $.each(data, function (index, value) {
-          console.log(value); // Verificar las claves recibidas
-          select.append('<option value="' + value.PER_codigo + '">' + value.persona + '</option>');
-        });
-        // Seleccionar la opción predeterminada, si está definida
-        var usuarioRegistrado = '<?php echo isset($usuarioRegistrado) ? $usuarioRegistrado["PER_codigo"] : ""; ?>';
-        if (usuarioRegistrado !== "") {
-          $('#cbo_persona').val(usuarioRegistrado);
-        }
-      },
-      error: function (error) {
-        console.error("Error fetching personas:", error);
-      }
-    });
+  // Fetch personas
+  console.log("FETCHING PERSONAS");
+  $.ajax({
+    url: 'ajax/getPersona.php',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      var select = $('#cbo_persona');
+      select.empty();
+      select.append('<option value="" selected disabled>Seleccione una persona</option>');
+      $.each(data, function (index, value) {
+        select.append('<option value="' + value.PER_codigo + '">' + value.persona + '</option>');
+      });
+    },
+    error: function (error) {
+      console.error("Error fetching personas:", error);
+    }
   });
 
-  $(document).ready(function () {
-    // Fetch áreas
-    console.log("FETCHING AREAS");
-    $.ajax({
-      url: 'ajax/getAreaData.php',
-      type: 'GET',
-      dataType: 'json',
-      success: function (data) {
-        var select = $('#cbo_area');
-        select.empty();
-        // Agregar la opción "Seleccione un área" al principio
-        select.append('<option value="" selected disabled>Seleccione un área</option>');
-        // Llenar el select con los datos recibidos
-        $.each(data, function (index, value) {
-          console.log(value); // Depurar y verificar las claves recibidas
-          select.append('<option value="' + value.ARE_codigo + '">' + value.ARE_nombre + '</option>');
-        });
-        // Seleccionar la opción "Seleccione un área"
-        $('#cbo_area').val('');
-      },
-      error: function (error) {
-        console.error("Error fetching areas:", error);
-      }
-    });
+  // Fetch áreas
+  console.log("FETCHING AREAS");
+  $.ajax({
+    url: 'ajax/getAreaData.php',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      var select = $('#cbo_area');
+      select.empty();
+      select.append('<option value="" selected disabled>Seleccione un área</option>');
+      $.each(data, function (index, value) {
+        select.append('<option value="' + value.ARE_codigo + '">' + value.ARE_nombre + '</option>');
+      });
+      document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada["ARE_codigo"] : "; ?>';
+    },
+    error: function (error) {
+      console.error("Error fetching areas:", error);
+    }
   });
-
 
   // Fetch roles
   console.log("FETCHING ROLES");
@@ -64,11 +47,10 @@ $(document).ready(function () {
     success: function (data) {
       var select = $('#cbo_rol');
       select.empty();
+      select.append('<option value="" selected disabled>Seleccione un rol</option>');
       $.each(data, function (index, value) {
-        console.log(value); // Depurar y verificar las claves recibidas
         select.append('<option value="' + value.ROL_codigo + '">' + value.ROL_nombre + '</option>');
       });
-      $('#cbo_rol').val('<?php echo isset($usuarioRegistrado) ? $usuarioRegistrado["PER_codigo"] : ""; ?>');
     },
     error: function (error) {
       console.error("Error fetching roles:", error);
@@ -77,29 +59,57 @@ $(document).ready(function () {
 
   // Evento de clic en una fila de la tabla
   $('table').on('click', 'tr', function () {
-    var cod = $(this).find('th').data('cod');
-    var dni = $(this).find('td[data-dni]').text();
-    var nombreCompleto = $(this).find('td[data-nombre]').text();
-    var celular = $(this).find('td[data-celular]').text();
-    var email = $(this).find('td[data-email]').text();
+    var cod = $(this).find('td[data-codusuario]').data('codusuario');
 
-    // Separar el nombre completo en partes: nombre, apellido paterno y apellido materno
-    var partesNombre = nombreCompleto.split(' ');
-    var nombre = partesNombre[0];
-    var apellidoPaterno = partesNombre[1];
-    var apellidoMaterno = partesNombre[2];
+    var codPersona = $(this).find('td[data-codpersona]').data('persona');
+    var codArea = $(this).find('td[data-area]').data('codarea');
+    var codRol = $(this).find('td[data-codrol]').data('codrol');
+    var usuario = $(this).find('td[data-usuario]').text();
+    var password = $(this).find('td[data-password]').text();
 
-    // Establecer los valores en los campos del formulario
-    $('#txt_codUsuario').val(cod);
-    $('#txt_dni').val(dni);
-    $('#txt_nombre').val(nombre);
-    $('#txt_apellidoPaterno').val(apellidoPaterno);
-    $('#txt_apellidoMaterno').val(apellidoMaterno);
-    $('#txt_celular').val(celular);
-    $('#txt_email').val(email);
+    $('#txt_codigoUsuario').val(cod);
+    $('#cbo_persona').val(codPersona);
+    $('#cbo_area').val(codArea);
+    $('#cbo_rol').val(codRol);
+    $('#txt_nombreUsuario').val(usuario);
+    $('#txt_password').val(password);
 
-    // Aplicar estilos de selección a la fila seleccionada y quitarlos de las demás filas
-    $('tr').removeClass('bg-blue-200 font-semibold'); // Limpiar estilos
-    $(this).addClass('bg-blue-200 font-semibold'); // Aplicar estilos a la fila seleccionada
+    $('tr').removeClass('bg-blue-200 font-semibold');
+    $(this).addClass('bg-blue-200 font-semibold');
+  });
+
+  // Validación del formulario
+  $('#formUsuario').on('submit', function (e) {
+    e.preventDefault();
+    var valid = true;
+
+    if ($('#cbo_persona').val() === '') {
+      valid = false;
+      toastr.error('Por favor, seleccione una persona.');
+    }
+
+    if ($('#cbo_area').val() === '') {
+      valid = false;
+      toastr.error('Por favor, seleccione un área.');
+    }
+
+    if ($('#cbo_rol').val() === '') {
+      valid = false;
+      toastr.error('Por favor, seleccione un rol.');
+    }
+
+    if ($('#txt_nombreUsuario').val() === '' || !$('#txt_nombreUsuario').val().match(/^\d{1,8}$/)) {
+      valid = false;
+      toastr.error('Por favor, ingrese un nombre de usuario válido.');
+    }
+
+    if ($('#txt_password').val() === '') {
+      valid = false;
+      toastr.error('Por favor, ingrese una contraseña.');
+    }
+
+    if (valid) {
+      this.submit();
+    }
   });
 });

@@ -5,12 +5,9 @@ $CodArea = $_GET['ARE_codigo'] ?? '';
 require_once 'app/Controller/AreaController.php';
 require_once 'app/Model/AreaModel.php';
 
-// Obtener los datos necesarios
-$nombre = $_POST['nombre'] ?? '';
-
 // Crear una instancia del controlador CategoriaController
-$areaController = new AreaController($nombre);
-$areaModel = new AreaModel($nombre);
+$areaController = new AreaController();
+$areaModel = new AreaModel();
 
 if ($CodArea != '') {
   $AreaRegistrada = $areaModel->obtenerAreaPorId($CodArea);
@@ -39,8 +36,13 @@ switch ($action) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="public/assets/logo.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <title>Sistema de Incidencias - Mantenimiento Area</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+  <title>Sistema de Incidencias - Mantenimiento &Aacute;rea</title>
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
