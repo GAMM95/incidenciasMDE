@@ -49,13 +49,29 @@ class PersonaModel extends Conexion
   // Metodo para registrar nueva persona
   public function registrarPersona()
   {
+    // Validación de los campos
+    if ($this->dni === null || trim($this->dni) === '') {
+      throw new Exception("El DNI no puede estar vacío");
+    }
     if ($this->nombres === null || trim($this->nombres) === '') {
       throw new Exception("Los nombres de la persona no pueden estar vacíos");
+    }
+    if ($this->apellidoPaterno === null || trim($this->apellidoPaterno) === '') {
+      throw new Exception("El apellido paterno no puede estar vacío");
+    }
+    if ($this->apellidoMaterno === null || trim($this->apellidoMaterno) === '') {
+      throw new Exception("El apellido materno no puede estar vacío");
+    }
+    if ($this->celular === null || trim($this->celular) === '') {
+      throw new Exception("El celular no puede estar vacío");
+    }
+    if ($this->email === null || trim($this->email) === '') {
+      throw new Exception("El email no puede estar vacío");
     }
 
     try {
       $conector = $this->getConexion();
-      $sql = "INSERT INTO PERSONA (PER_DNI, PER_nombres, PER_apellidoPaterno, PER_apellidoMaterno, PER_celular, PER_email,) VALUES (?, ?, ?, ?, ?, ?)";
+      $sql = "INSERT INTO PERSONA (PER_DNI, PER_nombres, PER_apellidoPaterno, PER_apellidoMaterno, PER_celular, PER_email) VALUES (?, ?, ?, ?, ?, ?)";
       $stmt = $conector->prepare($sql);
       $stmt->execute([$this->dni, $this->nombres, $this->apellidoPaterno, $this->apellidoMaterno, $this->celular, $this->email]);
       return $conector->lastInsertId();
@@ -84,7 +100,7 @@ class PersonaModel extends Conexion
         // Devolver los registros obtenidos
         return $registros;
       } else {
-        throw new Exception("Error de conexión cierre Controller la base de datos.");
+        throw new Exception("Error de conexión con la base de datos.");
       }
     } catch (PDOException $e) {
       throw new Exception("Error al obtener los registros de incidencias: " . $e->getMessage());

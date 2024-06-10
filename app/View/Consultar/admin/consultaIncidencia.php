@@ -58,7 +58,7 @@
       <table id="tablaConsultarIncidencias" class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-lime-300">
           <tr>
-            <th scope="col" class="px-3 py-3"> N° Inc </th>
+            <th scope="col" class="px-3 py-3"> N° Rec </th>
             <th scope="col" class="px-3 py-3"> C&oacute;digo Patrimonial </th>
             <th scope="col" class="px-3 py-3"> Categor&iacute;a </th>
             <th scope="col" class="px-3 py-3"> Fecha Recepci&oacute;n </th>
@@ -78,16 +78,16 @@
 
             foreach ($incidencias as $incidencia) {
               echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b '>";
-              echo "<td class='px-6 py-4'>" . $incidencia['NumIncidencia'] . "</td>";
-              echo "<td id='incCodigo' class=' hidden px-6 py-4'>" . $incidencia['NumIncidencia'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['CodPatrimonial'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['DescripcionCategoria'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['FechaIncidencia'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['Asunto'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['NombreArea'] . "</td>";
-              echo "<td class='px-16 py-4'>" . $incidencia['Descripcion'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['NumDocumento'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['Hora'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['INC_numero'] . "</td>";
+              echo "<td id='incCodigo' class=' hidden px-6 py-4'>" . $incidencia['INC_numero'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['INC_codigoPatrimonial'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['CAT_nombre'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['INC_fecha'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['INC_asunto'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['ARE_nombre'] . "</td>";
+              echo "<td class='px-16 py-4'>" . $incidencia['INC_descripcion'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['INC_documento'] . "</td>";
+              echo "<td class='px-6 py-4'>" . $incidencia['INC_hora'] . "</td>";
               echo "</tr>";
             }
           } catch (Exception $e) {

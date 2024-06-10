@@ -58,15 +58,12 @@
       <table id="tablaConsultarRecepcion" class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-lime-300">
           <tr>
-            <th scope="col" class="px-3 py-3"> N° Inc </th>
+            <th scope="col" class="px-3 py-3"> N° Rec </th>
             <th scope="col" class="px-3 py-3"> C&oacute;digo Patrimonial </th>
             <th scope="col" class="px-3 py-3"> Categor&iacute;a </th>
             <th scope="col" class="px-3 py-3"> Fecha Recepci&oacute;n </th>
             <th scope="col" class="px-3 py-3"> Asunto </th>
             <th scope="col" class="px-3 py-3"> &Aacute;rea </th>
-            <th scope="col" class="px-3 py-3"> Descripci&oacute;n </th>
-            <th scope="col" class="px-3 py-3"> Documento </th>
-            <th scope="col" class="px-3 py-3"> Hora </th>
           </tr>
         </thead>
         <tbody>
@@ -85,9 +82,6 @@
               echo "<td class='px-6 py-4'>" . $incidencia['FechaIncidencia'] . "</td>";
               echo "<td class='px-6 py-4'>" . $incidencia['Asunto'] . "</td>";
               echo "<td class='px-6 py-4'>" . $incidencia['NombreArea'] . "</td>";
-              echo "<td class='px-16 py-4'>" . $incidencia['Descripcion'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['NumDocumento'] . "</td>";
-              echo "<td class='px-6 py-4'>" . $incidencia['Hora'] . "</td>";
               echo "</tr>";
             }
           } catch (Exception $e) {

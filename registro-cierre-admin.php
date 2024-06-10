@@ -45,12 +45,8 @@ switch ($action) {
 
     <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
         <?php
-        // Incluir la barra lateral desde un archivo externo
         include("app/View/partials/admin/sideBar.php");
-        ?>
-        <?php
-        // Incluir la barra lateral desde un archivo externo
-        include("app/View/Registrar/admin/registroIncidencias.php");
+        include("app/View/Registrar/admin/registroCierre.php");
         ?>
     </div>
 </body>

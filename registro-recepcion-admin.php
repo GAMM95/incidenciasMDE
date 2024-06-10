@@ -47,10 +47,7 @@ switch ($action) {
         <?php
         // Incluir la barra lateral desde un archivo externo
         include("app/View/partials/admin/sideBar.php");
-        ?>
-        <?php
-        // Incluir la barra lateral desde un archivo externo
-        include("app/View/Registrar/admin/registroIncidencias.php");
+        include("app/View/Registrar/admin/registroRecepcion.php");
         ?>
     </div>
 </body>

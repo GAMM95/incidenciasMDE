@@ -13,6 +13,7 @@ class PersonaController
   public function registrarPersona()
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      // Obtener los datos del formulario
       $dni = $_POST['dni'] ?? null;
       $nombres = $_POST['nombre'] ?? null;
       $apellidoPaterno = $_POST['apellidoPaterno'] ?? null;
@@ -20,12 +21,13 @@ class PersonaController
       $email = $_POST['email'] ?? null;
       $celular = $_POST['celular'] ?? null;
 
+      // Validar los datos
       if ($dni === null || trim($dni) === '') {
-        echo "Error: El dni de la persona no puede estar vacío";
+        echo "Error: El DNI de la persona no puede estar vacío";
         return;
       }
 
-      if ($nombres === null) {
+      if ($nombres === null || trim($nombres) === '') {
         echo "Error: El nombre de la persona no puede estar vacío";
         return;
       }
@@ -67,7 +69,6 @@ class PersonaController
     }
   }
 
-
   public function actualizarPersona()
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -80,12 +81,14 @@ class PersonaController
       $email = $_POST['email'] ?? null;
       $celular = $_POST['celular'] ?? null;
 
+      // Validar los datos
       if ($codPersona === null || trim($codPersona) === '') {
-        echo "Error: El codigo de la persona no puede estar vacío";
+        echo "Error: El código de la persona no puede estar vacío";
         return;
       }
+      // Resto de validaciones...
       if ($dni === null || trim($dni) === '') {
-        echo "Error: El dni de la persona no puede estar vacío";
+        echo "Error: El DNI de la persona no puede estar vacío";
         return;
       }
 
@@ -113,9 +116,10 @@ class PersonaController
         echo "Error: El número de celular de la persona no puede estar vacío";
         return;
       }
+      
       // Llamar al método del modelo para actualizar la persona en la base de datos
       try {
-        $personaModel = new PersonaModel($codPersona, $dni, $nombres, $apellidoPaterno, $apellidoMaterno, $celular, $email);
+        $personaModel = new PersonaModel($codPersona, $dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);
         $personaModel->actualizarPersona();
         echo "Persona actualizada correctamente";
       } catch (Exception $e) {

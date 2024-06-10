@@ -58,15 +58,13 @@
       <table id="tablaConsultarRecepcion" class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-lime-300">
           <tr>
-            <th scope="col" class="px-3 py-3"> N° Inc </th>
+            <th scope="col" class="px-3 py-3"> N° Cie </th>
             <th scope="col" class="px-3 py-3"> C&oacute;digo Patrimonial </th>
             <th scope="col" class="px-3 py-3"> Categor&iacute;a </th>
+            <th scope="col" class="px-3 py-3"> Prioridad </th>
             <th scope="col" class="px-3 py-3"> Fecha Recepci&oacute;n </th>
             <th scope="col" class="px-3 py-3"> Asunto </th>
             <th scope="col" class="px-3 py-3"> &Aacute;rea </th>
-            <th scope="col" class="px-3 py-3"> Descripci&oacute;n </th>
-            <th scope="col" class="px-3 py-3"> Documento </th>
-            <th scope="col" class="px-3 py-3"> Hora </th>
           </tr>
         </thead>
         <tbody>

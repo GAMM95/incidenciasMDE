@@ -42,25 +42,39 @@
       <div class="flex items-center mb-4 hidden">
         <label for="numero_incidencia" class="block font-bold mb-1 mr-1 text-lime-500">Nro Incidencia:</label>
         <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
-        <!-- El atributo 'readonly' evita que el usuario edite este campo -->
       </div>
+
       <!-- SEGUNDA fila: Categoria, Prioridad, Fecha -->
       <div class="flex flex-wrap -mx-2">
-        <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-2">
+        <div class="w-full sm:w-1/2 px-2 mb-2">
           <label for="categoria" class="block mb-1 font-bold text-sm">Categor&iacute;a:</label>
           <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
           </select>
         </div>
-        <div class="w-full md:w-1/3 px-2 mb-2">
-          <label for="hora" class="block font-bold mb-1">Hora:</label>
-          <input type="time" id="hora" name="hora" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" readonly>
-
-        </div>
-        <div class="w-full sm:w-1/2 md:w-1/3 px-2 mb-2">
+        <div class="w-full sm:w-1/6 px-2 mb-2">
           <label for="fecha" class="block mb-1 font-bold text-sm">Fecha:</label>
-          <input type="date" id="fecha" name="fecha" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" readonly>
+          <input type="date" id="txt_fecha" name="fecha" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" readonly disabled>
         </div>
+        <div class="w-full sm:w-1/6 px-2 mb-2">
+          <label for="hora" class="block font-bold mb-1">Hora:</label>
+          <input type="time" id="txt_hora" name="hora" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" readonly disabled>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="w-full sm:w-1/6 px-2 mb-2 hidden">
+          <label for="usuario" class="block mb-1 font-bold text-sm">Usuario:</label>
+          <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoUsuario']; ?>">
+        </div>
+        <div class="w-full sm:w-1/6 px-2 mb-2">
+          <label for="usuario" class="block mb-1 font-bold text-sm">Usuario:</label>
+          <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['usuario']; ?>" readonly disabled>
+        </div>
+
       </div>
+
+
+
+
       <?php
       // Obtener la fecha actual
       date_default_timezone_set('America/Lima');
@@ -71,8 +85,8 @@
       ?>
       <script>
         document.getElementById('numero_incidencia').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['NumIncidencia'] : ''; ?>';
-        document.getElementById('hora').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['Hora'] : $hora_actual; ?>';
-        document.getElementById('fecha').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['FechaIncidencia'] : $fecha_actual; ?>';
+        document.getElementById('txt_hora').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['Hora'] : $hora_actual; ?>';
+        document.getElementById('txt_fecha').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['FechaIncidencia'] : $fecha_actual; ?>';
       </script>
 
       <!-- TERCERA fila: Área, Código Patrimonial -->
