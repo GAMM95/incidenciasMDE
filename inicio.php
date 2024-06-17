@@ -28,8 +28,6 @@ $rol = $_SESSION['rol'];
 <body>
   <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
 
-
-    ?
     <?php
     // if ($rol === 'Administrador' || $rol === 'Soporte') {
     //   include("app/View/partials/admin/sideBar.php");

@@ -50,7 +50,7 @@
     <div class="formDiv mx-auto">
       <!-- Encabezado y logo -->
       <div class="headerDiv text-center py-2">
-        <img src="public/assets/image.png" alt="imagen de mde" class="img_logo_login w-24 h-auto mx-auto" />
+        <img src="public/assets/logo_01.png" alt="imagen de mde" class="img_logo_login w-24 h-auto mx-auto" />
       </div>
 
       <!-- Formulario de inicio de sesión -->

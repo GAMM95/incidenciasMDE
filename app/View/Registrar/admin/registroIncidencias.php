@@ -72,9 +72,6 @@
 
       </div>
 
-
-
-
       <?php
       // Obtener la fecha actual
       date_default_timezone_set('America/Lima');
