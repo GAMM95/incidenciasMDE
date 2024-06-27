@@ -6,7 +6,6 @@ $INC_codigo = $_GET['INC_codigo'] ?? '';
 
 require_once 'app/Controller/incidenciaController.php';
 require_once 'app/Model/incidenciaModel.php';
-
 $incidenciaController = new IncidenciaController();
 $incidenciaModel = new IncidenciaModel();
 
@@ -23,9 +22,8 @@ switch ($action) {
         $incidenciaController->registrarIncidencia();
         break;
 }
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -42,14 +40,9 @@ switch ($action) {
 
 <body class="bg-green-50 flex items-center justify-center min-h-screen">
 
-
     <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
         <?php
-        // Incluir la barra lateral desde un archivo externo
         include("app/View/partials/admin/sideBar.php");
-        ?>
-        <?php
-        // Incluir la barra lateral desde un archivo externo
         include("app/View/Registrar/admin/registroIncidencias.php");
         ?>
     </div>

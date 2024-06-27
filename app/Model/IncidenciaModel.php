@@ -6,45 +6,10 @@ require_once 'UsuarioModel.php';
 
 class IncidenciaModel extends Conexion
 {
-  protected $numeroIncidencia;
-  protected $fechaIncidencia;
-  protected $horaIncidencia;
-  protected $asuntoIncidencia;
-  protected $descripcionIncidencia;
-  protected $documentoIncidencia;
-  protected $codigoPatrimonial;
-  protected $estado;
-  protected $categoria;
-  protected $area;
-  protected $usuario;
 
-
-  public function __construct(
-    $numeroIncidencia = null,
-    $fechaIncidencia = null,
-    $horaIncidencia = null,
-    $asuntoIncidencia = null,
-    $descripcionIncidencia = null,
-    $documentoIncidencia = null,
-    $codigoPatrimonial = null,
-    $estado = null,
-    $categoria = null,
-    $area = null,
-    $usuario = null,
-
-  ) {
+  public function __construct()
+  {
     parent::__construct();
-    $this->numeroIncidencia = $numeroIncidencia;
-    $this->fechaIncidencia = $fechaIncidencia;
-    $this->horaIncidencia = $horaIncidencia;
-    $this->asuntoIncidencia = $asuntoIncidencia;
-    $this->descripcionIncidencia = $descripcionIncidencia;
-    $this->documentoIncidencia = $documentoIncidencia;
-    $this->codigoPatrimonial = $codigoPatrimonial;
-    $this->estado = $estado;
-    $this->categoria = $categoria;
-    $this->area = $area;
-    $this->usuario = $usuario;
   }
 
   public function obtenerIncidenciaPorId($IncNumero)
@@ -73,16 +38,44 @@ class IncidenciaModel extends Conexion
     }
   }
 
-  public function registrarIncidencia()
-  {
-
-
+  // TODO: Metodo para registrar incidencias
+  public function insertarIncidencia(
+    $INC_fecha,
+    $INC_hora,
+    $INC_asunto,
+    $INC_descripcion,
+    $INC_documento,
+    $INC_codigoPatrimonial,
+    $EST_codigo,
+    $CAT_codigo,
+    $ARE_codigo,
+    $USU_codigo
+  ) {
+    $conector = parent::getConexion();
     try {
-      $sql = "INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial, INC_asunto, ARE_codigo, USU_codigo, CAT_codigo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      $stmt = $conector->prepare($sql);
-      $stmt->execute([$fechaIncidencia, $horaIncidencia, $descripcionIncidencia, $codigoPatrimonial, $asuntoIncidencia, $codigoArea, $codigoUsuario, $codigoCategoria]);
-      $lastId = $conector->lastInsertId();
-      return $lastId;
+      if ($conector != null) {
+        $sql = "INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial,EST_codigo, CAT_codigo, ARE_codigo, USU_codigo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conector->prepare($sql);
+        $success = $stmt->execute([
+          $INC_fecha,
+          $INC_hora,
+          $INC_asunto,
+          $INC_descripcion,
+          $INC_documento,
+          $INC_codigoPatrimonial,
+          3,
+          $CAT_codigo,
+          $ARE_codigo,
+          $USU_codigo
+        ]);
+        if ($success) {
+          echo "Error al insertar la incidencia.";
+          $lastId = $conector->lastInsertId();
+          return $lastId;
+        } else {
+          return false;
+        }
+      }
     } catch (PDOException $e) {
       echo "Error al registrar la incidencia: " . $e->getMessage();
       return false;
@@ -127,6 +120,43 @@ class IncidenciaModel extends Conexion
       }
     } catch (PDOException $e) {
       throw new Exception("Error al obtener las recepciones: " . $e->getMessage());
+    }
+  }
+
+  public function obtenerIncidenciasSinRecepcionar()
+  {
+    $conn = parent::getConexion();
+
+    if ($conn != null) {
+      try {
+        // Preparar la consulta SQL para obtener los registros de incidencias
+        // $sql = "SELECT * FROM Incidencia i INNER JOIN Categoria c ON i.CodCategoria = c.CodCategoria WHERE CodEstado = 1";
+        $sql = "SELECT INC_numero, CONVERT(VARCHAR(10),INC_fecha, 103) AS INC_fecha,  CONVERT(VARCHAR(5), INC_hora, 108) AS INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial
+      , c.CAT_nombre, a.ARE_nombre
+      FROM INCIDENCIA i
+      INNER JOIN CATEGORIA c ON c.CAT_codigo = i.CAT_codigo
+      INNER JOIN AREA a ON a.ARE_codigo = i.ARE_codigo
+	   WHERE EST_codigo = 3";
+
+        // Preparar la sentencia
+        $stmt = $conn->prepare($sql);
+
+        // Ejecutar la consulta
+        $stmt->execute();
+
+        // Obtener los resultados como un array asociativo
+        $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Devolver los registros obtenidos
+        return $registros;
+      } catch (PDOException $e) {
+        // Manejar cualquier excepción o error que pueda surgir al ejecutar la consulta
+        echo "Error al obtener los registros de incidencias: " . $e->getMessage();
+        return null;
+      }
+    } else {
+      echo "Error de conexión cierre Controller la base de datos.";
+      return null;
     }
   }
 }

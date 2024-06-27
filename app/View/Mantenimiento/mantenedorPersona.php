@@ -78,8 +78,8 @@
         document.getElementById('PER_nombres').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['NombrePersona'] : ''; ?>';
         document.getElementById('PER_apellidoPaterno').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['ApellidoPaterno'] : ''; ?>';
         document.getElementById('PER_apellidoMaterno').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['ApellidoMaterno'] : ''; ?>';
-        document.getElementById('celular').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['Celular'] : ''; ?>';
-        document.getElementById('email').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['Email'] : ''; ?>';
+        document.getElementById('PER_celular').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['Celular'] : ''; ?>';
+        document.getElementById('PER_email').value = '<?php echo $PersonaRegistrada ? $PersonaRegistrada['Email'] : ''; ?>';
       </script>
 
       <!-- Botónes -->

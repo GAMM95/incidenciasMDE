@@ -4,25 +4,15 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE-edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="/public/assets/logo.ico">
-
-  <!-- Importación de librería jQuery -->
+  <link rel="icon" href="public/assets/logo.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-  <!-- Agrega las hojas de estilo de Tailwind CSS -->
-  <link href="http://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Agrega la fuente Poppins desde Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700" rel="stylesheet">
-  <!-- Implementación de funcionalidades para la vista cliente -->
-  <script src="app/Views/Func/password-toggle.js"></script>
-  <!-- Implementación de iconos-->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <!-- Incluye Alpine.js -->
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
   <title class="text-center text-3xl font-poppins">Sistema de Incidencias</title>
 </head>
@@ -37,7 +27,7 @@
     <!-- Header -->
     <h1 class="text-xl font-bold mb-4">Registro de Incidencia</h1>
     <!-- Formulario -->
-    <form id="formIncidencia" action="registro-incidencia.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+    <form id="formIncidencia" action="registro-incidencia-admin.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
       <!-- PRIMERA FILA Campo para mostrar el número de incidencia -->
       <div class="flex items-center mb-4 hidden">
         <label for="numero_incidencia" class="block font-bold mb-1 mr-1 text-lime-500">Nro Incidencia:</label>
@@ -113,7 +103,7 @@
 
       <script>
         document.getElementById('codigo_patrimonial').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CodPatrimonial'] : ''; ?>';
-        document.getElementById('categoria').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['DescripcionCategoria'] : ''; ?>';
+        document.getElementById('CAT_codigo').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['DescripcionCategoria'] : ''; ?>';
         document.getElementById('asunto').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['Asunto'] : ''; ?>';
         document.getElementById('numero_documento').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['NumDocumento'] : ''; ?>';
         document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CodArea'] : ''; ?>';
@@ -139,9 +129,6 @@
         </button>
         <button type="button" id="imprimirDatos" class="bg-yellow-500 text-white font-bold hover:bg-yellow-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">
           Imprimir
-        </button>
-        <button type="button" id="limpiarCampos" class="bg-red-500 text-white font-bold hover:bg-red-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">
-          Limpiar
         </button>
         <button type="button" id="nuevoRegistro" class="bg-gray-500 text-white font-bold hover:bg-gray-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">
           Nuevo

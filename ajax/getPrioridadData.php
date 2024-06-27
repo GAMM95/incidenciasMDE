@@ -13,7 +13,7 @@ class PrioridadModel
     public function getPrioridadData()
     {
         $query = "select * from prioridad
-  order by CodPrioridad";
+  order by PRI_codigo";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         $resultado = $stmt->fetchAll();
