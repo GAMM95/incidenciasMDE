@@ -116,7 +116,7 @@ class PersonaController
         echo "Error: El número de celular de la persona no puede estar vacío";
         return;
       }
-      
+
       // Llamar al método del modelo para actualizar la persona en la base de datos
       try {
         $personaModel = new PersonaModel($codPersona, $dni, $nombres, $apellidoPaterno, $apellidoMaterno, $email, $celular);

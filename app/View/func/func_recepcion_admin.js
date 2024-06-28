@@ -1,17 +1,17 @@
 $(document).ready(function () {
-  console.log("FETCHING")
+  console.log("FETCHING");
   $.ajax({
-    url: 'ajax/getAreaData.php',
+    url: 'ajax/getPrioridadData.php',
     type: 'GET',
     dataType: 'json',
     success: function (data) {
-      var select = $('#cbo_area');
+      var select = $('#prioridad');
       select.empty();
-      select.append('<option value="" selected disabled>Seleccione un área</option>');
+      select.append('<option value="" selected disabled>Seleccione una prioridad</option>');
       $.each(data, function (index, value) {
-        select.append('<option value="' + value.ARE_codigo + '">' + value.ARE_nombre + '</option>');
+        select.append('<option value="' + value.PRI_codigo + '">' + value.PRI_nombre + '</option>');
       });
-      document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada["ARE_codigo"] : "; ?>';
+      document.getElementById('prioridad').value = recepcionRegistrada ? recepcionRegistrada.PRI_codigo : '';
     },
     error: function (error) {
       console.error(error);
@@ -20,18 +20,55 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  console.log("FETCHING")
+  console.log("FETCHING");
   $.ajax({
-    url: '../../../ajax/getLastIncidencia.php',
+    url: 'ajax/getImpactoData.php',
     type: 'GET',
     dataType: 'json',
     success: function (data) {
-      console.log(data);
-      var select = $('#numero_incidencia');
-      if (select.val() === '') {
-        select.empty();
-        select.val(data.INC_codigo);
-      }
+      var select = $('#impacto');
+      select.empty();
+      select.append('<option value="" selected disabled>Seleccione nivel de impacto</option>');
+      $.each(data, function (index, value) {
+        select.append('<option value="' + value.IMP_codigo + '">' + value.IMP_descripcion + '</option>');
+      });
+      document.getElementById('impacto').value = recepcionRegistrada ? recepcionRegistrada.IMP_codigo : '';
+    },
+    error: function (error) {
+      console.error(error);
+    }
+  });
+});
+
+// Add a listener to every row of the table
+$(document).ready(function () {
+  $('tr').click(function () {
+    var id = $(this).find('th').html();
+    $('tr').removeClass('bg-blue-200 font-semibold');
+    $(this).addClass('bg-blue-200 font-semibold');
+    $('#INC_codigo').val(id);
+    $('#INC_codigo_visible').val(id);
+  });
+});
+
+$(document).ready(function () {
+  $('#submitButton').click(function () {
+    var form = $('form');
+    var data = form.serialize();
+    console.log(data);
+  });
+});
+
+$(document).ready(function () {
+  console.log("FETCHING");
+  $.ajax({
+    url: '../../../ajax/getLastRecepcion.php',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      var input = $('#num_recepcion');
+      input.empty();
+      input.val(data.REC_codigo);
     },
     error: function (error) {
       console.error(error);
@@ -41,7 +78,7 @@ $(document).ready(function () {
 
 function limpiarCampos() {
   // Obtener el formulario por su ID
-  const form = document.getElementById('formIncidencia');
+  const form = document.getElementById('formRecepcion');
   // Limpiar los campos del formulario
   form.reset();
 }
@@ -49,8 +86,7 @@ const btnLimpiar = document.getElementById('limpiarCampos');
 btnLimpiar.addEventListener('click', limpiarCampos);
 
 function nuevoRegistro() {
-  const form = document.getElementById('formIncidencia');
-
+  const form = document.getElementById('formRecepcion');
   // Restablecer el formulario
   form.reset();
 }
@@ -58,27 +94,37 @@ function nuevoRegistro() {
 const btnNuevo = document.getElementById('nuevoRegistro');
 btnNuevo.addEventListener('click', nuevoRegistro);
 
-//GUARDAR DATOS
+// GUARDAR DATOS
 $(document).ready(function () {
-  $("#guardar-incidencia").on("click", function () {
+  $("#guardar-recepcion").on("click", function () {
     // Obtener los datos del formulario
     var formData = $("form").serialize(); // Obtener los datos del formulario
 
     $.ajax({
-      url: "consultar-incidencia.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+      url: 'registro-recepcion-admin.php' + action, // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
       type: "POST",
       data: formData,
       success: function (response) {
-        // Manejar la respuesta del servidor si es necesario
-        alert("Datos guardados exitosamente");
-        // Puedes limpiar el formulario si lo deseas
-        $("form")[0].reset();
+        if (action === 'registrar') {
+          toastr.success('Incidencia registrada');
+        } else if (action === 'editar') {
+          toastr.success('Incidencia actualizada');
+        }
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
       },
       error: function (xhr, status, error) {
-        // Manejar los errores si la solicitud falla
-        console.error(error);
-        alert("Error al guardar los datos. Por favor, inténtalo de nuevo.");
-      }
+        console.log(xhr.responseText);
+        toastr.error('Error al guardar persona');
+      },
     });
   });
+});
+
+// Mostrar mensajes de error desde la sesión
+$(document).ready(function () {
+  if (errorMessage) {
+    toastr.error(errorMessage);
+  }
 });

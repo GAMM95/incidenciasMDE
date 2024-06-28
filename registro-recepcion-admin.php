@@ -2,28 +2,27 @@
 
 $action = $_GET['action'] ?? '';
 $state = $_GET['state'] ?? '';
-$INC_codigo = $_GET['INC_codigo'] ?? '';
+$REC_numero = $_GET['REC_numero'] ?? '';
 
-require_once 'app/Controller/incidenciaController.php';
-require_once 'app/Model/incidenciaModel.php';
+require_once 'app/Controller/recepcionController.php';
+require_once 'app/Model/recepcionModel.php';
 
-$incidenciaController = new IncidenciaController();
-$incidenciaModel = new IncidenciaModel();
+$recepcionController = new RecepcionController();
+$recepcionModel = new RecepcionModel();
 
 
-if ($INC_codigo != '') {
-    global $incidenciaRegistrada;
-    $incidenciaRegistrada = $incidenciaModel->obtenerIncidenciaPorId($INC_codigo);
+if ($REC_numero != '') {
+    global $recepcionRegistrada;
+    $recepcionRegistrada = $recepcionModel->obtenerRecepcionPorId($REC_numero);
 } else {
     $incidenciaRegistrada = null;
 }
 
 switch ($action) {
     case 'registrar':
-        $incidenciaController->registrarIncidencia();
+        $recepcionController->registrarRecepcion();
         break;
 }
-
 
 ?>
 <!DOCTYPE html>

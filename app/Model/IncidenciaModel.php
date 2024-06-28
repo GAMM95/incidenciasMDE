@@ -1,8 +1,5 @@
 <?php
 require_once 'config/conexion.php';
-require_once 'AreaModel.php';
-require_once 'CategoriaModel.php';
-require_once 'UsuarioModel.php';
 
 class IncidenciaModel extends Conexion
 {
@@ -12,13 +9,14 @@ class IncidenciaModel extends Conexion
     parent::__construct();
   }
 
+  //TODO: Metodo para obtener incidencias por ID
   public function obtenerIncidenciaPorId($IncNumero)
   {
     try {
       $conector = $this->getConexion();
       $sql = "SELECT * FROM  INCIDENCIA i
       INNER JOIN Categoria c ON i.CAT_codigo = c.CAT_codigo 
-      WHERE INC_codigo = ?";
+      WHERE INC_numero = ?";
 
       // Preparar la sentencia
       $stmt = $conector->prepare($sql);
@@ -38,7 +36,7 @@ class IncidenciaModel extends Conexion
     }
   }
 
-  // TODO: Metodo para registrar incidencias
+  // TODO: Metodo para insertar incidencias
   public function insertarIncidencia(
     $INC_fecha,
     $INC_hora,
@@ -54,7 +52,7 @@ class IncidenciaModel extends Conexion
     $conector = parent::getConexion();
     try {
       if ($conector != null) {
-        $sql = "INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial,EST_codigo, CAT_codigo, ARE_codigo, USU_codigo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial, EST_codigo, CAT_codigo, ARE_codigo, USU_codigo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conector->prepare($sql);
         $success = $stmt->execute([
           $INC_fecha,
@@ -69,7 +67,6 @@ class IncidenciaModel extends Conexion
           $USU_codigo
         ]);
         if ($success) {
-          echo "Error al insertar la incidencia.";
           $lastId = $conector->lastInsertId();
           return $lastId;
         } else {

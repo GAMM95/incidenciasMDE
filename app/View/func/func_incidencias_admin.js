@@ -87,20 +87,23 @@ $(document).ready(function () {
     var formData = $("form").serialize(); // Obtener los datos del formulario
 
     $.ajax({
-      url: "consultar-incidencia.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+      url: 'registro-incidencia-admin.php' + action, // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
       type: "POST",
       data: formData,
       success: function (response) {
-        // Manejar la respuesta del servidor si es necesario
-        alert("Datos guardados exitosamente");
-        // Puedes limpiar el formulario si lo deseas
-        $("form")[0].reset();
+        if (action === 'registrar') {
+          toastr.success('Incidencia registrada');
+        } else if (action === 'editar') {
+          toastr.success('incidencia actualizada ');
+        }
+        setTimeout(function () {
+          location.reload();
+        }, 1500);
       },
       error: function (xhr, status, error) {
-        // Manejar los errores si la solicitud falla
-        console.error(error);
-        alert("Error al guardar los datos. Por favor, inténtalo de nuevo.");
-      }
+        console.log(xhr.responseText);
+        toastr.error('Error al guardar persona');
+      },
     });
   });
 });

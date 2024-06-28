@@ -15,30 +15,42 @@ class IncidenciaController
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // Obtener los datos del formulario
-      $fecha = $_POST['fecha'];
-      $hora = $_POST['hora'];
-      $asunto =  $_POST['asunto'];
-      $descripcion = $_POST['descripcion'];
-      $documento = $_POST['documento'];
-      $codigoPatrimonial = $_POST['codigo_patrimonial'];
-      $categoria = $_POST['categoria'];
-      $area = $_POST['area'];
-      $usuario = $_POST['usuario'];
+      $fecha = $_POST['fecha'] ?? null;
+      $hora = $_POST['hora'] ?? null;
+      $asunto =  $_POST['asunto'] ?? null;
+      $descripcion = $_POST['descripcion'] ?? null;
+      $documento = $_POST['documento'] ?? null;
+      $codigoPatrimonial = $_POST['codigo_patrimonial'] ?? null;
+      $categoria = $_POST['categoria'] ?? null;
+      $area = $_POST['area'] ?? null;
+      $usuario = $_POST['usuario'] ?? null;
+
+      // Verificar que la fecha no es nula
+      if ($fecha === null || $fecha === '') {
+        echo "Error: La fecha es un campo obligatorio.";
+        return;
+      }
 
       // Llamar al método del modelo para insertar la incidencia en la base de datos
       $insertSuccessId = $this->incidenciaModel->insertarIncidencia(
-        $fecha, $hora, $asunto, $descripcion, $documento, $codigoPatrimonial, 3, $categoria, $area, $usuario);
+        $fecha,
+        $hora,
+        $asunto,
+        $descripcion,
+        $documento,
+        $codigoPatrimonial,
+        3,
+        $categoria,
+        $area,
+        $usuario
+      );
 
       if ($insertSuccessId) {
-
         header('Location: registro-incidencia-admin.php?INC_numero=' . $insertSuccessId);
-        // Mostrar los datos de las incidencias
       } else {
-        // Mostrar un mensaje de error
         echo "Error al registrar la incidencia.";
       }
     } else {
-      // Manejar el caso en el que no se recibe un POST (puede ser una redirección o una respuesta de error)
       echo "Error: Método no permitido.";
     }
   }

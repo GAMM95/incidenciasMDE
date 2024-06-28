@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="es">
 
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,6 +33,11 @@
         <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
       </div>
 
+      <div class="flex items-center mb-4 hidden">
+        <label for="usuario" class="block font-bold mb-1 mr-1 text-lime-500">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
+      </div>
+
       <!-- SEGUNDA fila: Categoria, Prioridad, Fecha -->
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/2 px-2 mb-2">
@@ -41,14 +45,30 @@
           <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
           </select>
         </div>
+        <!-- Campo de Fecha -->
         <div class="w-full sm:w-1/6 px-2 mb-2">
           <label for="fecha" class="block mb-1 font-bold text-sm">Fecha:</label>
-          <input type="date" id="txt_fecha" name="fecha" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" readonly disabled>
+          <input type="date" id="txt_fecha" name="fecha" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo date('Y-m-d'); ?>" readonly>
         </div>
+
         <div class="w-full sm:w-1/6 px-2 mb-2">
           <label for="hora" class="block font-bold mb-1">Hora:</label>
-          <input type="time" id="txt_hora" name="hora" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" readonly disabled>
+          <input type="time" id="txt_hora" name="hora" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" readonly>
         </div>
+        <?php
+        // Obtener la fecha actual
+        date_default_timezone_set('America/Lima');
+        $fecha_actual = date('Y-m-d');
+
+        // Obtener la hora actual
+        $hora_actual = date('H:i');
+        ?>
+        <script>
+          document.getElementById('numero_incidencia').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_numero'] : ''; ?>';
+          document.getElementById('usuario').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['USU_codigo'] : ''; ?>';
+          document.getElementById('txt_hora').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_hora'] : $hora_actual; ?>';
+          document.getElementById('txt_fecha').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_fecha'] : $fecha_actual; ?>';
+        </script>
 
         <!-- USUARIO -->
         <div class="w-full sm:w-1/6 px-2 mb-2 hidden">
@@ -59,22 +79,7 @@
           <label for="usuario" class="block mb-1 font-bold text-sm">Usuario:</label>
           <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['usuario']; ?>" readonly disabled>
         </div>
-
       </div>
-
-      <?php
-      // Obtener la fecha actual
-      date_default_timezone_set('America/Lima');
-      $fecha_actual = date('Y-m-d');
-
-      // Obtener la hora actual
-      $hora_actual = date('H:i');
-      ?>
-      <script>
-        document.getElementById('numero_incidencia').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['NumIncidencia'] : ''; ?>';
-        document.getElementById('txt_hora').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['Hora'] : $hora_actual; ?>';
-        document.getElementById('txt_fecha').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['FechaIncidencia'] : $fecha_actual; ?>';
-      </script>
 
       <!-- TERCERA fila: Área, Código Patrimonial -->
       <div class="flex flex-wrap -mx-2">
@@ -96,17 +101,19 @@
           <input type="text" id="asunto" name="asunto" class="border p-2 w-full text-sm">
         </div>
         <div class="w-full sm:w-1/2 px-2 mb-2">
-          <label for="numero_documento" class="block mb-1 font-bold text-sm">Documento:</label>
-          <input type="text" id="numero_documento" name="numero_documento" class="border p-2 w-full text-sm">
+          <div class="w-full sm:w-1/2 px-2 mb-2">
+            <label for="documento" class="block mb-1 font-bold text-sm">Documento:</label>
+            <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm" required>
+          </div>
         </div>
       </div>
 
       <script>
-        document.getElementById('codigo_patrimonial').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CodPatrimonial'] : ''; ?>';
-        document.getElementById('CAT_codigo').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['DescripcionCategoria'] : ''; ?>';
-        document.getElementById('asunto').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['Asunto'] : ''; ?>';
-        document.getElementById('numero_documento').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['NumDocumento'] : ''; ?>';
-        document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CodArea'] : ''; ?>';
+        document.getElementById('codigo_patrimonial').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_codigoPatrimonial'] : ''; ?>';
+        document.getElementById('cbo_area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CAT_codigo'] : ''; ?>';
+        document.getElementById('asunto').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_asunto'] : ''; ?>';
+        document.getElementById('numero_documento').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_documento'] : ''; ?>';
+        document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['ARE_codigo'] : ''; ?>';
       </script>
 
       <!-- SEXTA fila: Descripción -->
@@ -116,7 +123,7 @@
       </div>
 
       <script>
-        document.getElementById('descripcion').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['Descripcion'] : ''; ?>';
+        document.getElementById('descripcion').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_descripcion'] : ''; ?>';
       </script>
 
       <!-- Botónes -->
@@ -136,7 +143,6 @@
       </div>
     </form>
     <!-- Fin del formulario -->
-
 
   </main>
 

@@ -63,13 +63,13 @@ VALUES
 	);
 
 INSERT INTO
-	dbo.PERSONA(
+	PERSONA (
 		PER_dni,
 		PER_nombres,
 		PER_apellidoPaterno,
 		PER_apellidoMaterno,
-		PER_celular,
-		PER_email
+		PER_email,
+		PER_celular
 	)
 VALUES
 	(
@@ -77,8 +77,8 @@ VALUES
 		'Gustavo',
 		'Mantilla',
 		'Miñano',
-		'950212913',
-		'gammgush@gmail.com'
+		'gammgush@gmail.com',
+		'950212913'
 	);
 
 INSERT INTO
@@ -90,15 +90,7 @@ INSERT INTO
 		PER_celular,
 		PER_email
 	)
-VALUES
-	(
-		'98765423',
-		'Maria',
-		'Blas',
-		'Vera',
-		'975168936',
-		'mblasv@gmail.com'
-	);
+VALUES ('98765423','Maria','Blas','Vera','mblasv@gmail.com','975168936');
 
 -- CREACION DE LA TABLA AREA
 CREATE TABLE AREA (
@@ -715,10 +707,6 @@ GO
 	2,
 	5,
 	1
-select
-	*
-from
-	INCIDENCIA
 SELECT
 	INC_numero,
 	INC_fecha,
@@ -755,7 +743,6 @@ SELECT
 	INC_numero,
 	INC_fecha,
 	CONVERT(VARCHAR(5), INC_hora, 108) AS INC_hora,
-	-- Usar CONVERT para mostrar solo horas y minutos
 	INC_asunto,
 	INC_descripcion,
 	INC_documento,
@@ -767,3 +754,53 @@ SELECT
 FROM
 	INCIDENCIA;
 
+GO
+	CREATE PROCEDURE sp_InsertarRecepcionActualizarIncidencia @REC_fecha DATE,
+	@REC_hora TIME,
+	@INC_numero INT,
+	@PRI_codigo INT,
+	@IMP_codigo INT,
+	@USU_codigo INT AS BEGIN
+SET
+	NOCOUNT ON;
+
+BEGIN TRY BEGIN TRANSACTION;
+
+-- Insertar la nueva recepción
+INSERT INTO
+	RECEPCION (
+		REC_fecha,
+		REC_hora,
+		INC_numero,
+		PRI_codigo,
+		IMP_codigo,
+		USU_codigo,
+		EST_codigo
+	)
+VALUES
+	(
+		@REC_fecha,
+		@REC_hora,
+		@INC_numero,
+		@PRI_codigo,
+		@IMP_codigo,
+		@USU_codigo,
+		4
+	);
+
+-- Actualizar el estado de la incidencia
+UPDATE
+	INCIDENCIA
+SET
+	EST_codigo = 4
+WHERE
+	INC_numero = @INC_numero;
+
+COMMIT TRANSACTION;
+
+END TRY BEGIN CATCH ROLLBACK TRANSACTION;
+
+THROW;
+
+END CATCH
+END;
