@@ -1,17 +1,17 @@
 $(document).ready(function () {
   console.log("FETCHING");
   $.ajax({
-    url: 'ajax/getPrioridadData.php',
+    url: 'ajax/getOperatividad.php',
     type: 'GET',
     dataType: 'json',
     success: function (data) {
-      var select = $('#prioridad');
+      var select = $('#operatividad');
       select.empty();
-      select.append('<option value="" selected disabled>Seleccione una prioridad</option>');
+      select.append('<option value="" selected disabled>Seleccione operatividad</option>');
       $.each(data, function (index, value) {
-        select.append('<option value="' + value.PRI_codigo + '">' + value.PRI_nombre + '</option>');
+        select.append('<option value="' + value.OPE_codigo + '">' + value.OPE_descripcion + '</option>');
       });
-      document.getElementById('prioridad').value = '<?php echo $recepcionRegistrada ? $recepcionRegistrada["PRI_codigo"] : ""; ?>';
+      document.getElementById('operatividad').value = '<?php echo $cierreRegistrado ? $cierreRegistrado["PRI_codigo"] : ""; ?>';
     },
     error: function (error) {
       console.error(error);
@@ -19,26 +19,6 @@ $(document).ready(function () {
   });
 });
 
-$(document).ready(function () {
-  console.log("FETCHING");
-  $.ajax({
-    url: 'ajax/getImpactoData.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      var select = $('#impacto');
-      select.empty();
-      select.append('<option value="" selected disabled>Seleccione nivel de impacto</option>');
-      $.each(data, function (index, value) {
-        select.append('<option value="' + value.IMP_codigo + '">' + value.IMP_descripcion + '</option>');
-      });
-      document.getElementById('impacto').value = '<?php echo $recepcionRegistrada ? $recepcionRegistrada["IMP_codigo"] : ""; ?>';
-    },
-    error: function (error) {
-      console.error(error);
-    }
-  });
-});
 
 // Add a listener to every row of the table
 $(document).ready(function () {
@@ -46,8 +26,8 @@ $(document).ready(function () {
     var id = $(this).find('th').html();
     $('tr').removeClass('bg-blue-200 font-semibold');
     $(this).addClass('bg-blue-200 font-semibold');
-    $('#INC_numero').val(id);
-    $('#INC_codigo_visible').val(id);
+    $('#REC_numero').val(id);
+    $('#REC_codigo_visible').val(id);
   });
 });
 
@@ -78,7 +58,7 @@ $(document).ready(function () {
 
 function limpiarCampos() {
   // Obtener el formulario por su ID
-  const form = document.getElementById('formRecepcion');
+  const form = document.getElementById('formCierre');
   // Limpiar los campos del formulario
   form.reset();
 }
@@ -86,7 +66,7 @@ const btnLimpiar = document.getElementById('limpiarCampos');
 btnLimpiar.addEventListener('click', limpiarCampos);
 
 function nuevoRegistro() {
-  const form = document.getElementById('formRecepcion');
+  const form = document.getElementById('formCierre');
   // Restablecer el formulario
   form.reset();
 }
@@ -96,19 +76,19 @@ btnNuevo.addEventListener('click', nuevoRegistro);
 
 // GUARDAR DATOS
 $(document).ready(function () {
-  $("#guardar-recepcion").on("click", function () {
+  $("#guardar-cierre").on("click", function () {
     // Obtener los datos del formulario
     var formData = $("form").serialize(); // Obtener los datos del formulario
 
     $.ajax({
-      url: 'registro-recepcion-admin.php' + action, // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+      url: 'registro-cierre-admin.php' + action, // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
       type: "POST",
       data: formData,
       success: function (response) {
         if (action === 'registrar') {
-          toastr.success('Incidencia registrada');
+          toastr.success('Cierre registrado');
         } else if (action === 'editar') {
-          toastr.success('Incidencia actualizada');
+          toastr.success('Cierre actualizado');
         }
         setTimeout(function () {
           location.reload();
@@ -116,7 +96,7 @@ $(document).ready(function () {
       },
       error: function (xhr, status, error) {
         console.log(xhr.responseText);
-        toastr.error('Error al guardar persona');
+        toastr.error('Error al guardar cierre');
       },
     });
   });

@@ -119,14 +119,15 @@
       <!-- SEXTA fila: Descripción -->
       <div class="w-full mb-2">
         <label for="descripcion" class="block mb-1 font-bold text-sm">Descripci&oacute;n:</label>
-        <textarea id="descripcion" name="descripcion" rows="4" class="border p-2 w-full text-sm max-h-40 resize-none overflow-y-auto"></textarea>
+        <input type="text" id="descripcion" name="descripcion" class="border p-2 w-full text-sm mb-3">
+        <!-- <textarea id="descripcion" name="descripcion" rows="4" class="border p-2 w-full text-sm max-h-40 resize-none overflow-y-auto"></textarea> -->
       </div>
 
       <script>
         document.getElementById('descripcion').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_descripcion'] : ''; ?>';
       </script>
 
-      <!-- Botónes -->
+      <!-- TODO: BOTONES -->
       <div class="flex justify-center space-x-4">
         <button type="submit" id="guardar-incidencia" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
           Guardar
@@ -144,6 +145,56 @@
     </form>
     <!-- Fin del formulario -->
 
+    <!-- TODO: TABLA DE INCIDENCIAS REGISTRADAS -->
+    <div>
+      <div class="relative max-h-[300px] mt-2 overflow-x-hidden shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-blue-300">
+            <tr>
+              <th scope="col" class="px-6 py-3">N°</th>
+              <th scope="col" class="px-6 py-3">Fecha y Hora</th>
+              <th scope="col" class="px-6 py-3">Area</th>
+              <th scope="col" class="px-6 py-3">Código Patrimonial</th>
+              <th scope="col" class="px-6 py-3">Categoría</th>
+              <th scope="col" class="px-6 py-3">Asunto</th>
+              <th scope="col" class="px-6 py-3">Usuario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            require_once './app/Model/IncidenciaModel.php';
+            $incidenciaModel = new IncidenciaModel();
+            $incidencias = $incidenciaModel->listarIncidencias();
+            foreach ($incidencias as $incidencia) {
+              echo "<tr class='second-table bg-white hover:bg-green-100 hover:scale-[101%] transition-all  border-b '>";
+              echo "<th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '>";
+              echo $incidencia['INC_numero'];
+              echo "</th>";
+              echo "<td class='px-6 py-4'>";
+              echo $incidencia['fechaIncidenciaFormateada'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $incidencia['ARE_nombre'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $incidencia['INC_codigoPatrimonial'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $incidencia['CAT_nombre'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $incidencia['INC_asunto'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $incidencia['USU_nombre'];
+              echo "</td>";
+              echo "</tr>";
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
 
   <script src="./app/View/func/func_incidencias_admin.js"></script>

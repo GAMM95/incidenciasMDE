@@ -1,26 +1,24 @@
 <?php
 require 'app/Model/RecepcionModel.php';
-// require 'app/models/IncidenciaModel.php';
 
 class RecepcionController
 {
   private $recepcionModel;
-  private $incidenciaModel;
 
   public function __construct()
   {
     $this->recepcionModel = new RecepcionModel();
-    // $this->incidenciaModel = new IncidenciaModel();
   }
 
+  //TODO: Metodo para registrar la recepcion
   public function registrarRecepcion()
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // Obtener los datos del formulario
 
-      $fecha = $_POST['fecha'] ?? null;
+      $fecha = $_POST['fecha_recepcion'] ?? null;
       $hora = $_POST['hora'] ?? null;
-      $incidencia = $_POST['incidencia'] ?? null;
+      $incidencia = $_POST['INC_numero'] ?? null;
       $prioridad = $_POST['prioridad'] ?? null;
       $impacto  = $_POST['impacto'] ?? null;
       $usuario = $_POST['usuario'] ?? null;

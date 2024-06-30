@@ -1,3 +1,23 @@
+<?php
+
+$action = $_GET['action'] ?? '';
+$state = $_GET['state'] ?? '';
+
+require_once 'app/Controller/cierreController.php';
+$cierreController = new cierreController();
+
+
+switch ($action) {
+  case 'registrar':
+    $cierreController->registrarCierre();
+    break;
+}
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 

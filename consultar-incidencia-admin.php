@@ -4,11 +4,11 @@ $action = $_GET['action'] ?? '';
 $state = $_GET['state'] ?? '';
 $INC_numero = $_GET['INC_numero'] ?? '';
 
-require_once 'app/controllers/incidenciaController.php';
+require_once 'app/Controller/incidenciaController.php';
 $incidenciaController = new IncidenciaController();
 $incidenciaModel = new IncidenciaModel();
 
-if ($INC_codigo != '') {
+if ($INC_numero != '') {
     global $incidenciaRegistrada;
     $incidenciaRegistrada = $incidenciaModel->obtenerIncidenciaPorId($INC_numero);
 
