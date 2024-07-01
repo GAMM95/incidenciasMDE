@@ -18,7 +18,7 @@ class RecepcionController
 
       $fecha = $_POST['fecha_recepcion'] ?? null;
       $hora = $_POST['hora'] ?? null;
-      $incidencia = $_POST['INC_numero'] ?? null;
+      $incidencia = $_POST['incidencia'] ?? null;
       $prioridad = $_POST['prioridad'] ?? null;
       $impacto  = $_POST['impacto'] ?? null;
       $usuario = $_POST['usuario'] ?? null;

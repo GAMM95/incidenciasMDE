@@ -1,236 +1,96 @@
-// $(document).ready(function () {
-//   // Función para cargar valores por defecto en los combos de prioridad e impacto
-//   function cargarValoresPorDefecto() {
-//     // Obtener el valor de la prioridad registrada (PHP)
-//     var prioridadRegistrada = '<?php echo $recepcionRegistrada ? $recepcionRegistrada["PRI_codigo"] : ""; ?>';
-
-//     // Obtener el valor del impacto registrado (PHP)
-//     var impactoRegistrado = '<?php echo $recepcionRegistrada ? $recepcionRegistrada["IMP_codigo"] : ""; ?>';
-
-//     // Llenar el select de prioridad
-//     $.ajax({
-//       url: 'ajax/getPrioridadData.php',
-//       type: 'GET',
-//       dataType: 'json',
-//       success: function (data) {
-//         var select = $('#prioridad');
-//         select.empty();
-//         select.append('<option value="">Seleccione una prioridad</option>');
-//         $.each(data, function (index, value) {
-//           select.append('<option value="' + value.PRI_codigo + '">' + value.PRI_nombre + '</option>');
-//         });
-
-//         // Establecer el valor por defecto
-//         if (prioridadRegistrada !== '') {
-//           select.val(prioridadRegistrada);
-//         } else {
-//           select.val('');
-//         }
-//       },
-//       error: function (error) {
-//         console.error(error);
-//       }
-//     });
-
-//     // Llenar el select de impacto
-//     $.ajax({
-//       url: 'ajax/getImpactoData.php',
-//       type: 'GET',
-//       dataType: 'json',
-//       success: function (data) {
-//         var select = $('#impacto');
-//         select.empty();
-//         select.append('<option value="">Seleccione un impacto</option>');
-//         $.each(data, function (index, value) {
-//           select.append('<option value="' + value.IMP_codigo + '">' + value.IMP_descripcion + '</option>');
-//         });
-
-//         // Establecer el valor por defecto
-//         if (impactoRegistrado !== '') {
-//           select.val(impactoRegistrado);
-//         } else {
-//           select.val('');
-//         }
-//       },
-//       error: function (error) {
-//         console.error(error);
-//       }
-//     });
-//   }
-
-//   // Llamar a la función para cargar valores por defecto al cargar la página
-//   cargarValoresPorDefecto();
-
-//   // Add a listener to every row of the table
-//   $('tr').click(function () {
-//     var id = $(this).find('th').html();
-//     $('tr').removeClass('bg-blue-200 font-semibold');
-//     $(this).addClass('bg-blue-200 font-semibold');
-//     $('#INC_numero').val(id);
-//     $('#INC_codigo_visible').val(id);
-//   });
-
-//   $('#submitButton').click(function () {
-//     var form = $('form');
-//     var data = form.serialize();
-//     console.log(data);
-//   });
-
-//   console.log("FETCHING");
-//   $.ajax({
-//     url: '../../../ajax/getLastRecepcion.php',
-//     type: 'GET',
-//     dataType: 'json',
-//     success: function (data) {
-//       var input = $('#num_recepcion');
-//       input.empty();
-//       input.val(data.REC_codigo);
-//     },
-//     error: function (error) {
-//       console.error(error);
-//     }
-//   });
-// });
-
-// function filtrarTablaIncidenciasSinRecepcionar() {
-//   const input = document.getElementById('searchInput');
-//   const filter = input.value.toLowerCase();
-//   const table = document.querySelector('table');
-//   const rows = table.getElementsByTagName('tr');
-
-//   for (let i = 1; i < rows.length; i++) {
-//     let cells = rows[i].getElementsByTagName('td');
-//     let match = false;
-//     for (let j = 0; j < cells.length; j++) {
-//       if (cells[j]) {
-//         if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
-//           match = true;
-//           break;
-//         }
-//       }
-//     }
-//     rows[i].style.display = match ? "" : "none";
-//   }
-// }
-
-// // Función para limpiar campos del formulario
-// function limpiarCampos() {
-//   const form = document.getElementById('formRecepcion');
-//   form.reset();
-// }
-
-// // Asignar el evento 'click' al botón 'Limpiar'
-// $('#limpiarCampos').click(limpiarCampos);
-
-// // Función para nuevo registro (resetear formulario y cargar valores por defecto)
-// function nuevoRegistro() {
-//   limpiarCampos(); // Limpiar campos del formulario
-//   cargarValoresPorDefecto(); // Cargar valores por defecto en los combos
-// }
-
-// // Asignar el evento 'click' al botón 'Nuevo Registro'
-// $('#nuevoRegistro').click(nuevoRegistro);
-
-// // GUARDAR DATOS
-// $("#guardar-recepcion").on("click", function () {
-//   var formData = $("form").serialize(); // Obtener los datos del formulario
-
-//   $.ajax({
-//     url: 'registro-recepcion-admin.php' + action,
-//     type: "POST",
-//     data: formData,
-//     success: function (response) {
-//       if (action === 'registrar') {
-//         toastr.success('Incidencia registrada');
-//       } else if (action === 'editar') {
-//         toastr.success('Incidencia actualizada');
-//       }
-//       setTimeout(function () {
-//         location.reload();
-//       }, 1500);
-//     },
-//     error: function (xhr, status, error) {
-//       console.log(xhr.responseText);
-//       toastr.error('Error al guardar persona');
-//     },
-//   });
-// });
-
-// // Mostrar mensajes de error desde la sesión
-// if (errorMessage) {
-//   toastr.error(errorMessage);
-// }
-
-
-
 $(document).ready(function () {
-  cargarValoresPorDefecto();
-
-  $('tr').click(function () {
+  // Evento de clic en las filas de la tabla de incidencias sin recepcionar
+  $(document).on('click', '#tablaIncidenciasSinRecepcionar tbody tr', function () {
     var id = $(this).find('th').html();
-    $('tr').removeClass('bg-blue-200 font-semibold');
+    $('#tablaIncidenciasSinRecepcionar tbody tr').removeClass('bg-blue-200 font-semibold');
     $(this).addClass('bg-blue-200 font-semibold');
-    $('#INC_numero').val(id);
-    $('#INC_codigo_visible').val(id);
+    $('#incidencia').val(id);
   });
 
-  $('#submitButton').click(function () {
-    var form = $('form');
-    var data = form.serialize();
-    console.log(data);
+  // Evento de clic en las filas de la tabla de incidencias recepcionadas
+  $(document).on('click', '#tablaIncidenciasRecepcionadas tbody tr', function () {
+    var numRecepcion = $(this).data('id');
+    $('#tablaIncidenciasRecepcionadas tbody tr').removeClass('bg-blue-200 font-semibold');
+    $(this).addClass('bg-blue-200 font-semibold');
+    $('#num_recepcion').val(numRecepcion);
   });
 
-  console.log("FETCHING");
-  $.ajax({
-    url: '../../../ajax/getLastRecepcion.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      var input = $('#num_recepcion');
-      input.empty();
-      input.val(data.REC_codigo);
-    },
-    error: function (error) {
-      console.error(error);
-    }
-  });
 
-  $('#limpiarCampos').click(limpiarCampos);
+  // TODO: METODO PARA LIMPIAR LOS CAMPOS 
   $('#nuevoRegistro').click(nuevoRegistro);
 
-  $("#guardar-recepcion").on("click", function () {
-    var formData = $("form").serialize();
-
-    $.ajax({
-      url: 'registro-recepcion-admin.php' + action,
-      type: "POST",
-      data: formData,
-      success: function (response) {
-        if (action === 'registrar') {
-          toastr.success('Incidencia registrada');
-        } else if (action === 'editar') {
-          toastr.success('Incidencia actualizada');
-        }
-        setTimeout(function () {
-          location.reload();
-        }, 1500);
-      },
-      error: function (xhr, status, error) {
-        console.log(xhr.responseText);
-        toastr.error('Error al guardar persona');
-      },
-    });
+  // Función para cambiar de página en la tabla de incidencias sin recepcionar
+  $(document).on('click', '.pagination-link', function (e) {
+    e.preventDefault();
+    var page = $(this).attr('href').split('page=')[1];
+    changePageTablaSinRecepcionar(page);
   });
-
-  if (errorMessage) {
-    toastr.error(errorMessage);
-  }
 });
 
-function cargarValoresPorDefecto() {
-  var prioridadRegistrada = '<?php echo $recepcionRegistrada ? $recepcionRegistrada["PRI_codigo"] : ""; ?>';
-  var impactoRegistrado = '<?php echo $recepcionRegistrada ? $recepcionRegistrada["IMP_codigo"] : ""; ?>';
 
+// TODO: METODO PARA HACER BUSQUEDA DE LA PRIMERA TABLA
+$('#searchInput').on('input', function () {
+  filtrarTablaIncidenciasSinRecepcionar();
+});
+
+// TODO: FILTRADO DE TABLA DE INCIDENCIAS SIN RECEPCIONAR
+function filtrarTablaIncidenciasSinRecepcionar() {
+  var input, filter, table, rows, cells, i, j, match;
+  input = document.getElementById('searchInput');
+  filter = input.value.toUpperCase();
+  table = document.getElementById('tablaIncidenciasSinRecepcionar');
+  rows = table.getElementsByTagName('tr');
+
+  for (i = 1; i < rows.length; i++) {
+    cells = rows[i].getElementsByTagName('td');
+    match = false;
+    for (j = 0; j < cells.length; j++) {
+      if (cells[j].innerText.toUpperCase().indexOf(filter) > -1) {
+        match = true;
+        break;
+      }
+    }
+    rows[i].style.display = match ? '' : 'none';
+  }
+}
+
+// Función para limpiar los campos del formulario de recepción
+function limpiarCampos() {
+  document.getElementById('formRecepcion').reset();
+}
+
+// Función para establecer los campos en blanco al hacer clic en Nuevo Registro
+function nuevoRegistro() {
+  limpiarCampos();
+}
+
+// TODO: FUNCION PARA CAMBIAR PAGINAS DE LA TABLA DE INCIDENCIAS SIN RECEPCIONAR
+function changePageTablaSinRecepcionar(page) {
+  fetch(`?page=${page}`)
+    .then(response => response.text())
+    .then(data => {
+      const parser = new DOMParser();
+      const newDocument = parser.parseFromString(data, 'text/html');
+      const newTable = newDocument.querySelector('#tablaIncidenciasSinRecepcionar');
+      const newPagination = newDocument.querySelector('.flex.justify-end.items-center.mt-1');
+
+      // Reemplazar la tabla actual con la nueva tabla obtenida
+      document.querySelector('#tablaIncidenciasSinRecepcionar').parentNode.replaceChild(newTable, document.querySelector('#tablaIncidenciasSinRecepcionar'));
+
+      // Reemplazar la paginación actual con la nueva paginación obtenida
+      const currentPagination = document.querySelector('.flex.justify-end.items-center.mt-1');
+      if (currentPagination && newPagination) {
+        currentPagination.parentNode.replaceChild(newPagination, currentPagination);
+      }
+    })
+    .catch(error => {
+      console.error('Error al cambiar de página:', error);
+    });
+}
+
+// TODO: SETEAR LOS VALORES DEL COMBO PRIORIDAD
+$(document).ready(function () {
+  console.log("FETCHING")
   $.ajax({
     url: 'ajax/getPrioridadData.php',
     type: 'GET',
@@ -238,7 +98,7 @@ function cargarValoresPorDefecto() {
     success: function (data) {
       var select = $('#prioridad');
       select.empty();
-      select.append('<option value="">Seleccione una prioridad</option>');
+      select.append('<option value="" selected disabled>Seleccione una prioridad</option>');
       $.each(data, function (index, value) {
         select.append('<option value="' + value.PRI_codigo + '">' + value.PRI_nombre + '</option>');
       });
@@ -253,7 +113,11 @@ function cargarValoresPorDefecto() {
       console.error(error);
     }
   });
+});
 
+// TODO: SETEAR LOS VALORES DEL COMBO IMPACTO
+$(document).ready(function () {
+  console.log("FETCHING")
   $.ajax({
     url: 'ajax/getImpactoData.php',
     type: 'GET',
@@ -261,7 +125,7 @@ function cargarValoresPorDefecto() {
     success: function (data) {
       var select = $('#impacto');
       select.empty();
-      select.append('<option value="">Seleccione un impacto</option>');
+      select.append('<option value="" selected disabled>Seleccione un impacto</option>');
       $.each(data, function (index, value) {
         select.append('<option value="' + value.IMP_codigo + '">' + value.IMP_descripcion + '</option>');
       });
@@ -276,57 +140,77 @@ function cargarValoresPorDefecto() {
       console.error(error);
     }
   });
-}
+});
 
-function filtrarTablaIncidenciasSinRecepcionar() {
-  const input = document.getElementById('searchInput');
-  const filter = input.value.toLowerCase();
-  const table = document.querySelector('table');
-  const rows = table.getElementsByTagName('tr');
+// TODO: GUARDAR LA RECEPCION
+$(document).ready(function () {
+  $('#guardar-recepcion').click(function (event) {
+    event.preventDefault(); // Prevenir el comportamiento predeterminado del botón
 
-  for (let i = 1; i < rows.length; i++) {
-    let cells = rows[i].getElementsByTagName('td');
-    let match = false;
-    for (let j = 0; j < cells.length; j++) {
-      if (cells[j]) {
-        if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
-          match = true;
-          break;
-        }
-      }
+    // Validar campos antes de enviar
+    if (!validarCampos()) {
+      return; // Si hay campos inválidos, detener el envío del formulario
     }
-    rows[i].style.display = match ? "" : "none";
-  }
-}
 
-function limpiarCampos() {
-  const form = document.getElementById('formRecepcion');
-  form.reset();
-}
+    var form = $('form');
+    var data = form.serialize();
+    console.log(data); // Para verificar cuántas veces se envía el formulario
 
-function nuevoRegistro() {
-  limpiarCampos();
-}
-
-function changePageTablaSinRecepcionar(page) {
-  // Realizar la petición AJAX
-  fetch(`?page=${page}`)
-    .then(response => response.text())
-    .then(data => {
-      // Actualizar el contenido de la tabla y de la paginación
-      const parser = new DOMParser();
-      const newDocument = parser.parseFromString(data, 'text/html');
-      const newTable = newDocument.querySelector('table');
-      const newPagination = newDocument.querySelector('.flex.justify-end.items-center.mt-1');
-
-      // Reemplazar la tabla y la paginación actual
-      const currentTable = document.querySelector('table');
-      currentTable.parentNode.replaceChild(newTable, currentTable);
-
-      const currentPagination = document.querySelector('.flex.justify-end.items-center.mt-1');
-      currentPagination.parentNode.replaceChild(newPagination, currentPagination);
-    })
-    .catch(error => {
-      console.error('Error al cambiar de página:', error);
+    var action = form.attr('action');
+    $.ajax({
+      url: action,
+      type: 'POST',
+      data: data,
+      success: function (response) {
+        // Manejo de éxito de la solicitud AJAX
+        if (action === 'registro-recepcion-admin.php?action=registrar') {
+          toastr.success('Recepción de incidencia registrada');
+        } else if (action === 'registro-recepcion-admin.php?action=editar') {
+          toastr.success('Recepción de incidencia actualizada');
+        }
+        setTimeout(function () {
+          location.reload(); // Recargar la página después de un tiempo
+        }, 1500);
+      },
+      error: function (xhr, status, error) {
+        // Manejo de error de la solicitud AJAX
+        console.error(xhr.responseText);
+        toastr.error('Error al registrar recepción');
+      }
     });
-}
+  });
+
+  // Función para validar campos antes de enviar el formulario
+  function validarCampos() {
+    var valido = true;
+    var mensajeError = ''; // Inicializamos una variable para los mensajes de error
+
+    // Validar campo de número de incidencia
+    if ($('#incidencia').val() === '') {
+      mensajeError += 'Debe seleccionar una incidencia. ';
+      valido = false;
+    }
+
+    // Validar campo de prioridad e impacto
+    var faltaPrioridad = ($('#prioridad').val() === null || $('#prioridad').val() === '');
+    var faltaImpacto = ($('#impacto').val() === null || $('#impacto').val() === '');
+
+    if (faltaPrioridad && faltaImpacto) {
+      mensajeError += 'Debe seleccionar una prioridad y un impacto.';
+      valido = false;
+    } else if (faltaPrioridad) {
+      mensajeError += 'Debe seleccionar una prioridad.';
+      valido = false;
+    } else if (faltaImpacto) {
+      mensajeError += 'Debe seleccionar un impacto.';
+      valido = false;
+    }
+    // Mostrar el mensaje de error si hay
+    if (!valido) {
+      toastr.error(mensajeError.trim());
+    }
+    return valido;
+  }
+
+});
+

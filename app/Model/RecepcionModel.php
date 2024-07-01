@@ -44,7 +44,7 @@ class RecepcionModel extends Conexion
       $stmt->execute();
       return $conector->lastInsertId();
     } catch (PDOException $e) {
-      echo "Error al registrar la recepción: " . $e->getMessage();
+      echo "Error al insertar recepcionn: " . $e->getMessage();
       return false;
     }
   }
@@ -148,7 +148,7 @@ class RecepcionModel extends Conexion
         $sql = "SELECT R.REC_codigo, R.INC_numero, I.INC_codigoPatrimonial AS codigo_patrimonial, I.INC_estado, 
                 P.PRI_nombre AS prioridad, R.REC_fecha, Imp.IMP_nombre AS impacto, C.CAT_nombre
           FROM Recepcion R
-          INNER JOIN Incidencia I ON R.INC_codigo = I.INC_codigo
+          INNER JOIN Incidencia I ON R.INC_numero = I.INC_numero
           INNER JOIN Prioridad P ON R.PRI_codigo = P.PRI_codigo
           INNER JOIN Impacto Imp ON R.IMP_codigo = Imp.IMP_codigo 
 		      inner join CATEGORIA c on i.CAT_codigo = c.CAT_codigo

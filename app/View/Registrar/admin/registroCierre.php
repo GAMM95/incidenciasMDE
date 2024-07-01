@@ -23,18 +23,62 @@
     <?php
     global $cierreRegistrado;
     ?>
-    <!-- Header -->
-    <h1 class="text-xl text-gray-400 mb-2">Incidencias pendientes</h1>
-    <!-- Tabla de datos desde la base de datos -->
+    <!-- TODO: TITULO TABLA DE INCIDENCIAS NO RECEPCIONADAS -->
+    <div class="flex justify-between items-center mb-2">
+      <h1 class="text-xl text-gray-400">Incidencias pendientes</h1>
+      <input type="text" id="searchInput" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-lime-300" placeholder="Buscar..." oninput="filtrarTablaIncidenciasSinRecepcionar()" />
+    </div>
 
+    <script>
+      // TODO: METODO PARA HACER BUSQUEDA DE LA PRIMERA TABLA
+      $('#searchInput').on('input', function() {
+        filtrarTablaIncidenciasSinRecepcionar();
+      });
+
+      // TODO: FILTRADO DE TABLA DE INCIDENCIAS SIN RECEPCIONAR
+      function filtrarTablaIncidenciasSinRecepcionar() {
+        var input, filter, table, rows, cells, i, j, match;
+        input = document.getElementById('searchInput');
+        filter = input.value.toUpperCase();
+        table = document.getElementById('tablaRecepcionesSinCerrar');
+        rows = table.getElementsByTagName('tr');
+
+        for (i = 1; i < rows.length; i++) {
+          cells = rows[i].getElementsByTagName('td');
+          match = false;
+          for (j = 0; j < cells.length; j++) {
+            if (cells[j].innerText.toUpperCase().indexOf(filter) > -1) {
+              match = true;
+              break;
+            }
+          }
+          rows[i].style.display = match ? '' : 'none';
+        }
+      }
+    </script>
+
+    <!-- Tabla de datos desde la base de datos -->
+    <?php
+    require_once './app/Model/RecepcionModel.php';
+    $recepcionModel = new RecepcionModel();
+    $limit = 2; //Numero de filas por pagina
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Página actual
+    $start = ($page - 1) * $limit; // Calcula el índice de inicio
+
+
+    $totalRecepcionesSinCerrar = $cierreModel-> 
+
+
+
+    ?>
     <!-- TODO: TABLA DE INCIDENCIAS PENDIENTES -->
     <div>
       <div class="relative max-h-[300px] overflow-x-hidden shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <table id="tablaRecepcionesSinCerrar" class="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-lime-300">
             <tr>
               <th scope="col" class="px-6 py-3">N°</th>
-              <th scope="col" class="px-6 py-3">Fecha y Hora</th>
+              <th scope="col" class="px-6 py-3">Fecha recepcion</th>
               <th scope="col" class="px-6 py-3">Area</th>
               <th scope="col" class="px-6 py-3">Código Patrimonial</th>
               <th scope="col" class="px-6 py-3">Asunto</th>
@@ -127,11 +171,11 @@
           <!-- USUARIO QUE HARA EL CIERRE -->
           <div class="w-full md:w-1/4 px-2 mb-2">
             <label for="usuarioDisplay" class="block font-bold mb-1">Usuario:</label>
-            <input type="text" id="usuarioDisplay" name="usuarioDisplay" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['usuario']; ?>" readonly disabled>
+            <input type="text" id="usuarioDisplay" name="usuarioDisplay" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['usuario']; ?>" readonly>
           </div>
-          <div class="w-full md:w-1/4 px-2 mb-2 ">
+          <div class="w-full md:w-1/4 px-2 mb-2 hidden">
             <label for="usuario" class="block font-bold mb-1">Usuario:</label>
-            <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoUsuario']; ?>" readonly disabled>
+            <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoUsuario']; ?>" readonly>
           </div>
 
           <!-- OPERATIVIDAD -->
@@ -184,6 +228,8 @@
           document.getElementById('fecha').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['CIE_fecha'] : $fecha_actual; ?>';
           document.getElementById('hora').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['REC_hora'] : $hora_actual; ?>';
           document.getElementById('operatividad').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['OPE_codigo'] : ''; ?>';
+          document.getElementById('usuarioDisplay').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['codigoUsuario'] : $_SESSION['usuario']; ?>';
+          document.getElementById('usuario').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['codigoUsuario'] : $_SESSION['codigoUsuario']; ?>';
           document.getElementById('asunto').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['REC_asunto'] : ''; ?>';
           document.getElementById('documento').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['REC_documento'] : ''; ?>';
           document.getElementById('diagnostico').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['REC_diagnostico'] : ''; ?>';

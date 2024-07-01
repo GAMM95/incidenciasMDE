@@ -19,6 +19,7 @@ $(document).ready(function () {
   });
 });
 
+// TODO: SETEO DEL COMBO CATEGORIA
 $(document).ready(function () {
   console.log("FETCHING")
   $.ajax({
@@ -52,7 +53,7 @@ $(document).ready(function () {
       var select = $('#numero_incidencia');
       if (select.val() === '') {
         select.empty();
-        select.val(data.INC_codigo);
+        select.val(data.INC_numero);
       }
     },
     error: function (error) {

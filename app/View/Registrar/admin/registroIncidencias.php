@@ -31,7 +31,7 @@
       <!-- TODO: FILA OCULTA DEL FORMULARIO - NUMERO DE INCIDENCIA -->
       <div class="flex items-center mb-4 hidden">
         <label for="numero_incidencia" class="block font-bold mb-1 mr-1 text-lime-500">Nro Incidencia:</label>
-        <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
+        <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly>
       </div>
 
       <!-- TODO: PRIMERA FILA DEL FORMULARIO  -->
@@ -66,7 +66,7 @@
           <label for="usuarioDisplay" class="block font-bold mb-1">Usuario:</label>
           <input type="text" id="usuarioDisplay" name="usuarioDisplay" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['usuario']; ?>" readonly>
         </div>
-        <div class="w-full md:w-1/6 px-2 mb-2 ">
+        <div class="w-full md:w-1/6 px-2 mb-2 hidden">
           <label for="usuario" class="block font-bold mb-1">Usuario:</label>
           <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoUsuario']; ?>" readonly>
         </div>
@@ -83,13 +83,13 @@
         <!-- CODIGO PATROMONIAL -->
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="codigo_patrimonial" class="block mb-1 font-bold text-sm">C&oacute;digo Patrimonial:</label>
-          <input type="text" id="codigo_patrimonial" name="codigo_patrimonial" class="border p-2 w-full text-sm" maxlength="12" pattern="\d{1,12}" title="Ingrese los 12 d&iacute;gitos del c&oacute;digo patrimonial">
+          <input type="text" id="codigo_patrimonial" name="codigo_patrimonial" class="border p-2 w-full text-sm" maxlength="12" pattern="\d{1,12}" title="Ingrese los 12 d&iacute;gitos del c&oacute;digo patrimonial" placeholder="Ingrese codigo patrimonial">
         </div>
 
         <!-- ASUNTO DE LA INCIDENCIA -->
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="asunto" class="block mb-1 font-bold text-sm">Asunto:</label>
-          <input type="text" id="asunto" name="asunto" class="border p-2 w-full text-sm">
+          <input type="text" id="asunto" name="asunto" class="border p-2 w-full text-sm" placeholder="Ingrese asunto">
         </div>
       </div>
 
@@ -98,13 +98,13 @@
         <!-- DOCUMENTO DE LA INCIDENCIA -->
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="documento" class="block mb-1 font-bold text-sm">Documento:</label>
-          <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm" required>
+          <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm" placeholder="Ingrese documento"  required>
         </div>
 
         <!-- DESCRIPCION DE LA INCIDENCIA -->
         <div class="w-full md:w-2/3 px-2 mb-2">
           <label for="descripcion" class="block mb-1 font-bold text-sm">Descripci&oacute;n:</label>
-          <input type="text" id="descripcion" name="descripcion" class="border p-2 w-full text-sm mb-3">
+          <input type="text" id="descripcion" name="descripcion" class="border p-2 w-full text-sm mb-3" placeholder="Inngrese descripcion (opcional)">
         </div>
       </div>
 

@@ -1,19 +1,18 @@
 <?php
 require_once '../config/conexion.php';
 
-class ImpactoModel
+class ImpactoModel extends Conexion
 {
-    private $db;
-
     public function __construct()
     {
-        $this->db = (new Conexion())->getConexion();
+        parent::__construct();
     }
 
     public function getImpactoData()
     {
+        $conector = parent::getConexion();
         $query = "SELECT * FROM IMPACTO";
-        $stmt = $this->db->prepare($query);
+        $stmt = $conector->prepare($query);
         $stmt->execute();
         $resultado = $stmt->fetchAll();
         return $resultado;
