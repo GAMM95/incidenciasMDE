@@ -49,16 +49,19 @@ class RecepcionModel extends Conexion
     }
   }
 
-  // TODO: MEtodo para obtener las recepciones registradas
-  public function obtenerRecepcionesRegistradas()
+  // TODO: Metodo listar recepciones Administrador - FORM CONSULTAR RECEPCION
+  public function listarRecepcionesAdministrador()
   {
     $conector = parent::getConexion();
     try {
       if ($conector != null) {
-        $sql = "SELECT REC_numero, r.INC_numero, i.INC_codigoPatrimonial, i.EST_codigo, P.PRI_nombre, r.REC_fecha, Imp.IMP_descripcion
-            FROM Recepcion r
+        $sql = "SELECT REC_numero, (CONVERT(VARCHAR(10),REC_fecha,103) + ' - '+   STUFF(RIGHT('0' + CONVERT(VarChar(7), REC_hora, 0), 7), 6, 0, ' ')) AS fechaRecepcionFormateada, a.ARE_nombre, i.INC_codigoPatrimonial, c.CAT_nombre, INC_asunto,P.PRI_nombre, Imp.IMP_descripcion, u.USU_nombre
+            FROM RECEPCION r
             INNER JOIN INCIDENCIA i ON r.INC_numero = i.INC_numero
+            INNER JOIN CATEGORIA c ON c.CAT_codigo = i.CAT_codigo
             INNER JOIN PRIORIDAD p ON r.PRI_codigo = P.PRI_codigo
+            INNER JOIN AREA a ON a.ARE_codigo = i.ARE_codigo
+            INNER JOIN USUARIO u ON u.USU_codigo = r.USU_codigo
             INNER JOIN IMPACTO Imp ON r.IMP_codigo = Imp.IMP_codigo 
             WHERE r.EST_codigo = 4
             ORDER BY R.REC_numero";
@@ -71,7 +74,7 @@ class RecepcionModel extends Conexion
         throw new Exception("Error de conexión a la base de datos.");
       }
     } catch (PDOException $e) {
-      throw new Exception("Error al obtener las recepciones: " . $e->getMessage());
+      throw new Exception("Error al listar las recepciones para el admministrador: " . $e->getMessage());
     }
   }
 

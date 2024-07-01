@@ -71,7 +71,7 @@ if (session_status() == PHP_SESSION_NONE) {
         </button>
 
         <div x-show="open" x-transition class="pl-4">
-          <a href="consultar-incidencia.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Incidencia</a>
+          <a href="consultar-incidencia-user.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Incidencia</a>
           <a href="consultar-recepcion.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Recepción</a>
           <a href="consultar-cierre.php" class="block py-2 px-4 hover:bg-[#d5fab4]">Cierre</a>
         </div>

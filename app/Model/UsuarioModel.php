@@ -34,6 +34,7 @@ class UsuarioModel extends Conexion
           session_start();
           $_SESSION['nombreDePersona'] = $resultado['PER_nombres'] . ' ' . $resultado['PER_apellidoPaterno'];
           $_SESSION['area'] = $resultado['ARE_nombre'];
+          $_SESSION['codigoArea'] = $resultado['ARE_codigo'];
           $informacionUsuario = $this->obtenerInformacionUsuario($this->username, $this->password);
           $codigo = $informacionUsuario['codigo'];
           $usuario = $informacionUsuario['usuario'];
@@ -43,9 +44,8 @@ class UsuarioModel extends Conexion
 
           // Log de inicio de sesión
           $logData = "------- START LOGIN LOGS ---------" . PHP_EOL;
-          $logData .= "Nombre de Persona: " . $_SESSION['nombreDePersona'] . ", Área: " . $_SESSION['area'] . ", Código de Usuario: " . $codigo . ", Usuario: " . $usuario . PHP_EOL;
+          $logData .= "Nombre de Persona: " . $_SESSION['nombreDePersona'] . ", Codigo Area: " . $_SESSION['codigoArea'] . ", Área: " . $_SESSION['area'] . ", Código de Usuario: " . $codigo . ", Usuario: " . $usuario . PHP_EOL;
           file_put_contents('logs/log.txt', $logData, FILE_APPEND);
-
           return true;
         }
         return false;

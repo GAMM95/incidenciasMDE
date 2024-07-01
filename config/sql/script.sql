@@ -154,7 +154,7 @@ CREATE PROCEDURE SP_Usuario_login(
 ) AS BEGIN
 SET
 	NOCOUNT ON;
-	SELECT u.USU_nombre, u.USU_password, p.PER_nombres, p.PER_apellidoPaterno, r.ROL_nombre, a.ARE_nombre
+	SELECT u.USU_nombre, u.USU_password, p.PER_nombres, p.PER_apellidoPaterno, r.ROL_nombre, a.ARE_codigo, a.ARE_nombre
 	FROM USUARIO u
 	INNER JOIN PERSONA p ON p.PER_codigo = u.PER_codigo
 	INNER JOIN ROL r ON r.ROL_codigo = u.ROL_codigo
@@ -227,11 +227,11 @@ GO
 CREATE TABLE INCIDENCIA (
 	INC_numero SMALLINT IDENTITY(1, 1),
 	INC_fecha DATE NOT NULL,
-	INC_hora TIMe(7) NOT NULL,
+	INC_hora TIME NOT NULL,
 	INC_asunto VARCHAR(200) NOT NULL,
-	INC_descripcion VARCHAR(500) NOT NULL,
+	INC_descripcion VARCHAR(500) NULL,
 	INC_documento VARCHAR(100) NOT NULL,
-	INC_codigoPatrimonial CHAR(12) NOT NULL,
+	INC_codigoPatrimonial CHAR(12) NULL,
 	EST_codigo SMALLINT NOT NULL,
 	CAT_codigo SMALLINT NOT NULL,
 	ARE_codigo SMALLINT NOT NULL,
@@ -243,6 +243,8 @@ CREATE TABLE INCIDENCIA (
 	CONSTRAINT fk_usuario_incidencia FOREIGN KEY (USU_codigo) REFERENCES USUARIO (USU_codigo)
 );
 GO
+
+INSERT INTO INCIDENCIA  VALUES ('2024-05-31','10:32:15','No enciende CPU','Se presiona y no enciende','S/D','740895000365',3,1,21,3);
 
 -- CREACION DE TABLA RECEPCION
 CREATE TABLE RECEPCION (
@@ -383,19 +385,18 @@ SET
 END;
 
 
+
 SELECT
     I.INC_numero,
-    I.INC_fecha,
-    I.INC_hora,
+   (CONVERT(VARCHAR(10),INC_fecha,103) + ' - '+   STUFF(RIGHT('0' + CONVERT(VarChar(7), INC_hora, 0), 7), 6, 0, ' ')) AS fechaIncidenciaFormateada,
     A.ARE_nombre,
     CAT.CAT_nombre,
     I.INC_asunto,
     I.INC_documento,
     I.INC_codigoPatrimonial,
-    CASE
-        WHEN C.CIE_numero IS NOT NULL THEN EC.EST_descripcion  -- Estado del cierre si existe
-        ELSE E.EST_descripcion  -- Estado de la incidencia si no hay cierre asociado
-    END AS ESTADO
+	(CONVERT(VARCHAR(10),CIE_fecha,103) + ' - '+   STUFF(RIGHT('0' + CONVERT(VarChar(7), CIE_hora, 0), 7), 6, 0, ' ')) AS fechaCierreFormateada,
+	O.OPE_descripcion,
+	u.USU_nombre
 FROM RECEPCION R
 RIGHT JOIN INCIDENCIA I ON R.INC_numero = I.INC_numero
 INNER JOIN  AREA A ON I.ARE_codigo = A.ARE_codigo
@@ -403,4 +404,41 @@ INNER JOIN CATEGORIA CAT ON I.CAT_codigo = CAT.CAT_codigo
 INNER JOIN ESTADO E ON I.EST_codigo = E.EST_codigo
 LEFT JOIN CIERRE C ON R.REC_numero = C.REC_numero
 LEFT JOIN ESTADO EC ON C.EST_codigo = EC.EST_codigo
-WHERE  I.EST_codigo IN (3, 4, 5) OR C.EST_codigo IN (3, 4, 5);
+INNER JOIN OPERATIVIDAD O ON O.OPE_codigo = C.OPE_codigo
+INNER JOIN USUARIO U ON U.USU_codigo = C.USU_codigo
+WHERE  I.EST_codigo = 5 OR C.EST_codigo = 5
+ORDER BY C.CIE_numero DESC
+
+
+
+
+SELECT
+    I.INC_numero,
+    (CONVERT(VARCHAR(10), INC_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), INC_hora, 0), 7), 6, 0, ' ')) AS fechaIncidenciaFormateada,
+    A.ARE_nombre,
+    CAT.CAT_nombre,
+    I.INC_asunto,
+    I.INC_codigoPatrimonial,
+    (CONVERT(VARCHAR(10), REC_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), REC_hora, 0), 7), 6, 0, ' ')) AS fechaRecepcionFormateada,
+    PRI.PRI_nombre,
+	IMP_descripcion,
+    (CONVERT(VARCHAR(10), CIE_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), CIE_hora, 0), 7), 6, 0, ' ')) AS fechaCierreFormateada,
+	O.OPE_descripcion,
+	u.USU_nombre,
+    CASE
+        WHEN C.CIE_numero IS NOT NULL THEN EC.EST_descripcion  -- Estado del cierre si existe
+        ELSE E.EST_descripcion  -- Estado de la incidencia si no hay cierre asociado
+    END AS ESTADO
+FROM RECEPCION R
+RIGHT JOIN INCIDENCIA I ON R.INC_numero = I.INC_numero
+INNER JOIN AREA A ON I.ARE_codigo = A.ARE_codigo
+INNER JOIN CATEGORIA CAT ON I.CAT_codigo = CAT.CAT_codigo
+INNER JOIN ESTADO E ON I.EST_codigo = E.EST_codigo
+LEFT JOIN CIERRE C ON R.REC_numero = C.REC_numero
+LEFT JOIN ESTADO EC ON C.EST_codigo = EC.EST_codigo
+LEFT JOIN PRIORIDAD PRI ON PRI.PRI_codigo = R.PRI_codigo
+LEFT JOIN IMPACTO IMP ON IMP.IMP_codigo = R.IMP_codigo
+LEFT JOIN OPERATIVIDAD O ON O.OPE_codigo = C.OPE_codigo
+LEFT JOIN USUARIO U ON U.USU_codigo = I.USU_codigo
+WHERE (I.EST_codigo IN (3, 4, 5) OR C.EST_codigo IN (3, 4, 5))
+AND A.ARE_codigo = 21; -- Aquí sustituye 21 por el código de área deseado

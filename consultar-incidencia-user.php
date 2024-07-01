@@ -1,3 +1,29 @@
+<?php
+
+$action = $_GET['action'] ?? '';
+$state = $_GET['state'] ?? '';
+$INC_numero = $_GET['INC_numero'] ?? '';
+
+require_once 'app/Controller/incidenciaController.php';
+$incidenciaController = new IncidenciaController();
+$incidenciaModel = new IncidenciaModel();
+
+if ($INC_numero != '') {
+    global $incidenciaRegistrada;
+    $incidenciaRegistrada = $incidenciaModel->obtenerIncidenciaPorId($INC_numero);
+
+} else {
+    $incidenciaRegistrada = null;
+}
+
+switch ($action) {
+    case 'registrar':
+        $incidenciaController->registrarIncidencia();
+        break;
+    
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,14 +38,11 @@
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
+  <div class="flex s?? null;hadow-lg p-8 rounded-lg w-full sm:h-screen">
     <?php
     // Incluir la barra lateral desde un archivo externo
     include("app/View/partials/user/sideBar.php");
-    ?>
-    <?php
-    // Incluir la barra lateral desde un archivo externo
-    include("app/View/Consultar/user/consultarIncidencia.php");
+    include("app/View/Consultar/user/consultaIncidencia.php");
     ?>
   </div>
 </body>

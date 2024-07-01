@@ -32,7 +32,7 @@ $(document).ready(function () {
       $.each(data, function (index, value) {
         select.append('<option value="' + value.CAT_codigo + '">' + value.CAT_nombre + '</option>');
       });
-      document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada["CAT_codigo"] : "; ?>';
+      document.getElementById('categoria').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada["CAT_codigo"] : "; ?>';
     },
     error: function (error) {
       console.error(error);
@@ -61,6 +61,31 @@ $(document).ready(function () {
   });
 });
 
+function changePage(page) {
+  // Realizar la petición AJAX
+  fetch(`?page=${page}`)
+    .then(response => response.text())
+    .then(data => {
+      // Actualizar el contenido de la tabla y de la paginación
+      const parser = new DOMParser();
+      const newDocument = parser.parseFromString(data, 'text/html');
+      const newTable = newDocument.querySelector('table');
+      const newPagination = newDocument.querySelector('.flex.justify-center.items-center.mt-4');
+
+      // Reemplazar la tabla y la paginación actual
+      const currentTable = document.querySelector('table');
+      currentTable.parentNode.replaceChild(newTable, currentTable);
+
+      const currentPagination = document.querySelector('.flex.justify-center.items-center.mt-4');
+      currentPagination.parentNode.replaceChild(newPagination, currentPagination);
+    })
+    .catch(error => {
+      console.error('Error al cambiar de página:', error);
+    });
+}
+
+
+
 function limpiarCampos() {
   // Obtener el formulario por su ID
   const form = document.getElementById('formIncidencia');
@@ -83,27 +108,26 @@ btnNuevo.addEventListener('click', nuevoRegistro);
 //GUARDAR DATOS
 $(document).ready(function () {
   $("#guardar-incidencia").on("click", function () {
-    // Obtener los datos del formulario
-    var formData = $("form").serialize(); // Obtener los datos del formulario
+    var formData = $("form").serialize();
 
     $.ajax({
-      url: 'registro-incidencia-admin.php' + action, // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+      url: 'registro-incidencia-admin.php' + action,
       type: "POST",
       data: formData,
       success: function (response) {
         if (action === 'registrar') {
           toastr.success('Incidencia registrada');
         } else if (action === 'editar') {
-          toastr.success('incidencia actualizada ');
+          toastr.success('Incidencia actualizada');
         }
         setTimeout(function () {
           location.reload();
         }, 1500);
       },
       error: function (xhr, status, error) {
-        console.log(xhr.responseText);
-        toastr.error('Error al guardar persona');
-      },
+        console.error(xhr.responseText);
+        toastr.error('Error al guardar la incidencia');
+      }
     });
   });
 });

@@ -56,13 +56,34 @@ class CierreModel extends Conexion
   }
 
 
-  //TODO: Metodo para obtener los cierres registrados
-  public function obtenerCierresRegistrados()
+  //TODO: Metodo para listar cierres Administrador - FORM CONSULTAR CIERRE
+  public function listarCierresAdministrador()
   {
     $conector = parent::getConexion();
     try {
       if ($conector != null) {
-        $sql = "";
+        $sql = "SELECT
+          I.INC_numero,
+          (CONVERT(VARCHAR(10),INC_fecha,103) + ' - '+   STUFF(RIGHT('0' + CONVERT(VarChar(7), INC_hora, 0), 7), 6, 0, ' ')) AS fechaIncidenciaFormateada,
+          A.ARE_nombre,
+          CAT.CAT_nombre,
+          I.INC_asunto,
+          I.INC_documento,
+          I.INC_codigoPatrimonial,
+	        (CONVERT(VARCHAR(10),CIE_fecha,103) + ' - '+   STUFF(RIGHT('0' + CONVERT(VarChar(7), CIE_hora, 0), 7), 6, 0, ' ')) AS fechaCierreFormateada,
+	        O.OPE_descripcion,
+	        u.USU_nombre
+        FROM RECEPCION R
+        RIGHT JOIN INCIDENCIA I ON R.INC_numero = I.INC_numero
+        INNER JOIN  AREA A ON I.ARE_codigo = A.ARE_codigo
+        INNER JOIN CATEGORIA CAT ON I.CAT_codigo = CAT.CAT_codigo
+        INNER JOIN ESTADO E ON I.EST_codigo = E.EST_codigo
+        LEFT JOIN CIERRE C ON R.REC_numero = C.REC_numero
+        LEFT JOIN ESTADO EC ON C.EST_codigo = EC.EST_codigo
+        INNER JOIN OPERATIVIDAD O ON O.OPE_codigo = C.OPE_codigo
+        INNER JOIN USUARIO U ON U.USU_codigo = C.USU_codigo
+        WHERE  I.EST_codigo = 5 OR C.EST_codigo = 5
+        ORDER BY C.CIE_numero DESC";
         $stmt = $conector->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -71,7 +92,7 @@ class CierreModel extends Conexion
         throw new Exception("Error de conexión a la base de datos.");
       }
     } catch (PDOException $e) {
-      echo "Error al obtener cierres registrados: " . $e->getMessage();
+      echo "Error al listar cierres registrados para el administrador: " . $e->getMessage();
       return false;
     }
   }

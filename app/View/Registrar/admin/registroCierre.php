@@ -91,88 +91,88 @@
         <!-- NUMERO DE RECEPCION -->
         <input type="hidden" class="border bg-white p-2 w-full text-sm" id="REC_numero" name="REC_numero">
         <div class="flex justify-center mx-2 mb-4">
+          <!-- TODO: PRIMERA FILA -->
           <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center">
             <label for="REC_codigo_visible" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Recepci&oacute;n:</label>
             <input disabled type="text" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" id="REC_codigo_visible" name="REC_codigo_visible">
           </div>
+          <!-- INPUT ESCONDIDO PARA EL NUMERO DE CIERRE -->
+          <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center hidden">
+            <label for="num_cierre" class="block font-bold mb-1 mr-3 text-lime-500">Num Cierre:</label>
+            <input type="text" id="num_cierre" name="num_cierre" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" disabled>
+          </div>
         </div>
 
         <!-- TODO: PRIMERA FILA DEL FORMULARIO -->
-        <div class="flex flex-wrap -mx-2 mb-2">
-          <!-- INPUT ESCONDIDO PARA EL NUMERO DE CIERRE -->
-          <div class="w-full md:w-1/3 px-2 mb-2 hidden">
-            <label for="num_cierre" class="block font-bold mb-1 ">Num Cierre:</label>
-            <input type="text" id="num_cierre" name="num_cierre" class="border p-2 w-full text-sm">
-          </div>
-
+        <div class="flex flex-wrap -mx-2">
           <!-- FECHA DE CIERRE -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
+          <div class="w-full md:w-1/4 px-2 mb-2">
             <label for="fecha_cierre" class="block font-bold mb-1">Fecha de Cierre:</label>
             <input type="date" id="fecha_cierre" name="fecha_cierre" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo date('Y-m-d'); ?>" readonly>
           </div>
 
           <!-- HORA DE CIERRE -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
+          <div class="w-full md:w-1/4 px-2 mb-2">
             <label for="hora" class="block font-bold mb-1">Hora:</label>
             <?php
             // Establecer la zona horaria deseada
             date_default_timezone_set('America/Lima');
             $fecha_actual = date('Y-m-d');
             // Obtener la hora actual en formato de 24 horas (HH:MM)
-            $hora_actual = date('H:i');
+            $hora_actual = date('H:i:s');
             ?>
             <input type="text" id="hora" name="hora" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $hora_actual; ?>" readonly>
           </div>
 
           <!-- USUARIO QUE HARA EL CIERRE -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
+          <div class="w-full md:w-1/4 px-2 mb-2">
             <label for="usuarioDisplay" class="block font-bold mb-1">Usuario:</label>
             <input type="text" id="usuarioDisplay" name="usuarioDisplay" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['usuario']; ?>" readonly disabled>
           </div>
-          <div class="w-full md:w-1/3 px-2 mb-4 hidden">
+          <div class="w-full md:w-1/4 px-2 mb-2 ">
             <label for="usuario" class="block font-bold mb-1">Usuario:</label>
-            <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoUsuario']; ?>">
+            <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoUsuario']; ?>" readonly disabled>
           </div>
-        </div>
 
-        <!-- TODO: SEGUNDA FILA DEL FORMULARIO -->
-        <div class="flex flex-wrap -mx-2 mb-2">
           <!-- OPERATIVIDAD -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
+          <div class="w-full md:w-1/4 px-2 mb-2">
             <label for="operatividad" class="block font-bold mb-1">Operatividad:</label>
             <select id="operatividad" name="operatividad" class="border p-2 w-full text-sm cursor-pointer">
             </select>
           </div>
+        </div>
 
+        <!-- TODO: SEGUNDA FILA DEL FORMULARIO -->
+        <div class="flex flex-wrap -mx-2 ">
           <!-- ASUNTO DEL CIERRE -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
+          <div class="w-full md:w-1/3 px-2 mb-2">
             <label for="asunto" class="block mb-1 font-bold text-sm">Asunto:</label>
             <input type="text" id="asunto" name="asunto" class="border p-2 w-full text-sm">
           </div>
 
           <!-- DOCUMENTO DE CIERRE -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
+          <div class="w-full md:w-1/3 px-2 mb-2">
             <label for="documento" class="block mb-1 font-bold text-sm">Documento:</label>
             <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm">
+          </div>
+
+          <!-- DIAGNOSTICO DEL CIERRE -->
+          <div class="w-full md:w-1/3 px-2 mb-2">
+            <label for="diagnostico" class="block mb-1 font-bold text-sm">Diagn&oacute;stico:</label>
+            <input type="text" id="diagnostico" name="diagnostico" class="border p-2 w-full text-sm">
           </div>
         </div>
 
         <!-- TODO: TERCELA FILA DEL FORMULARIO -->
-        <div class="flex flex-wrap -mx-2 mb-2">
-          <!-- DIAGNOSTICO DEL CIERRE -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
-            <label for="diagnostico" class="block mb-1 font-bold text-sm">Diagn&oacute;stico:</label>
-            <input type="text" id="diagnostico" name="diagnostico" class="border p-2 w-full text-sm">
-          </div>
-
+        <div class="flex flex-wrap -mx-2">
           <!-- SOLUCION DE LA INCIDENCIA -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
+          <div class="w-full md:w-1/2 px-2 mb-2">
             <label for="solucion" class="block mb-1 font-bold text-sm">Soluci&oacute;n:</label>
             <input type="text" id="solucion" name="solucion" class="border p-2 w-full text-sm">
           </div>
 
           <!-- RECOMENDACIONES -->
-          <div class="w-full md:w-1/3 px-2 mb-4">
+          <div class="w-full md:w-1/2 px-2 mb-2">
             <label for="recomendaciones" class="block mb-1 font-bold text-sm">Recomendaciones:</label>
             <input type="text" id="recomendaciones" name="recomendaciones" class="border p-2 w-full text-sm">
           </div>
@@ -192,7 +192,7 @@
         </script>
 
         <!-- TODO: BOTONES DEL FORMULARIO -->
-        <div class="flex justify-center space-x-4">
+        <div class="flex justify-center space-x-4 mt-2">
           <button type="submit" id="guardar-cierre" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">Guardar</button>
           <button type="button" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">Editar</button>
           <button type="button" id="imprimirDatos" class="bg-yellow-500 text-white font-bold hover:bg-yellow-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">Imprimir</button>

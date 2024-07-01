@@ -85,10 +85,36 @@
           <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaSinRecepcionar(<?php echo $page + 1; ?>)">&gt;</a>
         <?php endif; ?>
       </div>
+
+      <script src="./app/View/func/func_incidencia_admin.js"></script>
+      <script>
+        function changePageTablaSinRecepcionar(page) {
+          // Realizar la petición AJAX
+          fetch(`?page=${page}`)
+            .then(response => response.text())
+            .then(data => {
+              // Actualizar el contenido de la tabla y de la paginación
+              const parser = new DOMParser();
+              const newDocument = parser.parseFromString(data, 'text/html');
+              const newTable = newDocument.querySelector('table');
+              const newPagination = newDocument.querySelector('.flex.justify-end.items-center.mt-1');
+
+              // Reemplazar la tabla y la paginación actual
+              const currentTable = document.querySelector('table');
+              currentTable.parentNode.replaceChild(newTable, currentTable);
+
+              const currentPagination = document.querySelector('.flex.justify-end.items-center.mt-1');
+              currentPagination.parentNode.replaceChild(newPagination, currentPagination);
+            })
+            .catch(error => {
+              console.error('Error al cambiar de página:', error);
+            });
+        }
+      </script>
     </div>
 
     <!-- Segundo Apartado - Formulario de registro de Recepcion de incidencia -->
-    <h1 class="text-xl font-bold text-gray-800 mb-2">Recepci&oacute;n de incidencia</h1>
+    <h1 class="text-xl font-bold text-gray-800 mb-2">Recepción de incidencia</h1>
     <!-- TODO: Formulario -->
     <div class="bg-white shadow-md p-4 mb-2 rounded-lg">
       <form id="formRecepcion" action="registro-recepcion-admin.php?action=registrar" method="POST">
@@ -139,22 +165,21 @@
             <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoUsuario']; ?>">
           </div>
 
-          <!-- SELECT PRIORIDAD -->
+          <!-- PRIORIDAD SELECCIONADA PARA LA RECEPCION -->
           <div class="w-full md:w-1/5 px-2 mb-2">
             <label for="prioridad" class="block font-bold mb-1">Prioridad:</label>
-            <select id="prioridad" name="prioridad" class="border p-2 w-full text-sm">
-              <option value="">Seleccione una prioridad</option>
+            <select id="prioridad" name="prioridad" class="border p-2 w-full text-sm cursor-pointer" required>
             </select>
           </div>
 
-          <!-- SELECT IMPACTO -->
+          <!-- IMPACTO SELECCIONADO PARA LA RECEPCION -->
           <div class="w-full md:w-1/5 px-2 mb-2">
             <label for="impacto" class="block font-bold mb-1">Impacto:</label>
-            <select id="impacto" name="impacto" class="border p-2 w-full text-sm">
-              <option value="">Seleccione un impacto</option>
+            <select id="impacto" name="impacto" class="border p-2 w-full text-sm cursor-pointer" required>
             </select>
           </div>
         </div>
+
 
         <!-- TODO: RECOPILACION DE VALORES DE CADA INPUT Y COMBOBOX     -->
         <script>
@@ -165,7 +190,7 @@
           document.getElementById('impacto').value = '<?php echo $recepcionRegistrada ? $recepcionRegistrada['IMP_codigo'] : ''; ?>';
         </script>
 
-        <!-- TODO: BOTONES DE FORMULARIO -->
+        <!-- TODO: BOTONES DEL FORMULARIO -->
         <div class="flex justify-center space-x-4">
           <button type="submit" id="guardar-recepcion" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">Guardar</button>
           <button type="button" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">Editar</button>
@@ -233,6 +258,7 @@
   </main>
 
   <script src="./app/View/func/func_recepcion_admin.js"></script>
+
 </body>
 
 </html>

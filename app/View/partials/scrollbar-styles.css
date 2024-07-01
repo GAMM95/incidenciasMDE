@@ -18,7 +18,7 @@
 
 /* Aplicación específica para el aside */
 aside::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 aside::-webkit-scrollbar-track {
@@ -26,10 +26,10 @@ aside::-webkit-scrollbar-track {
 }
 
 aside::-webkit-scrollbar-thumb {
-  background: #cdfff8;
+  background: #888888;
   border-radius: 10px;
 }
 
 aside::-webkit-scrollbar-thumb:hover {
-  background: #b1f1eb;
+  background: #555555;
 }

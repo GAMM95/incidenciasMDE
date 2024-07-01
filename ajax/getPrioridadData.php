@@ -14,11 +14,10 @@ class PrioridadModel extends Conexion
     public function getPrioridadData()
     {
         $conector = parent::getConexion();
-        $query = "select * from prioridad
-  order by PRI_codigo";
+        $query = "SELECT * FROM PRIORIDAD
+        order by PRI_codigo";
         // $stmt = $this->db->prepare($query);
         $stmt = $conector->prepare($query);
-
         $stmt->execute();
         $resultado = $stmt->fetchAll();
         return $resultado;
