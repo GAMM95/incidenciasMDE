@@ -57,7 +57,7 @@
       }
     </script>
 
-    <!-- Tabla de datos desde la base de datos -->
+    <!-- TODO: TABLA DE RECEPCIONES SIN CERRAR -->
     <?php
     require_once './app/Model/RecepcionModel.php';
     $recepcionModel = new RecepcionModel();
@@ -66,21 +66,21 @@
     $start = ($page - 1) * $limit; // Calcula el índice de inicio
 
 
-    $totalRecepcionesSinCerrar = $cierreModel-> 
+    $totalRecepcionesSinCerrar = $recepcionModel->contarRecepcionesSinCerrar();
+    $totalPages = ceil($totalRecepcionesSinCerrar / $limit);
 
-
-
+    // Obtener las recepciones sin cerrar para la pagina actual
+    $recepciones = $recepcionModel->obtenerRecepcionesSinCerrar($start, $limit);
     ?>
-    <!-- TODO: TABLA DE INCIDENCIAS PENDIENTES -->
     <div>
       <div class="relative max-h-[300px] overflow-x-hidden shadow-md sm:rounded-lg">
         <table id="tablaRecepcionesSinCerrar" class="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-lime-300">
             <tr>
               <th scope="col" class="px-6 py-3">N°</th>
-              <th scope="col" class="px-6 py-3">Fecha recepcion</th>
+              <th scope="col" class="px-6 py-3">Fecha recepci&oacute;n</th>
               <th scope="col" class="px-6 py-3">Area</th>
-              <th scope="col" class="px-6 py-3">Código Patrimonial</th>
+              <th scope="col" class="px-6 py-3">C&oacute;digo Patrimonial</th>
               <th scope="col" class="px-6 py-3">Asunto</th>
               <th scope="col" class="px-6 py-3">Prioridad</th>
               <th scope="col" class="px-6 py-3">Impacto</th>
@@ -88,39 +88,24 @@
             </tr>
           </thead>
           <tbody>
-            <?php
-            require_once './app/Model/RecepcionModel.php';
-            $recepcionModel = new RecepcionModel();
-            $recepciones = $recepcionModel->obtenerRecepcionesSinCerrar();
-            foreach ($recepciones as $recepcion) {
-              echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b '>";
-              echo "<th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '>";
-              echo $recepcion['REC_numero'];
-              echo "</th>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['fechaRecepcionFormateada'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['ARE_nombre'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['INC_codigoPatrimonial'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['INC_asunto'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['PRI_nombre'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['IMP_descripcion'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['USU_nombre'];
-              echo "</td>";
-              echo "</tr>";
-            }
-            ?>
+            <?php foreach ($recepciones as $recepcion) : ?>
+              <tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b '>
+                <th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap'><?= $recepcion['REC_numero']; ?></th>
+                <td class='px-6 py-4'><?= $recepcion['fechaRecepcionFormateada']; ?></th>
+                <td class='px-6 py-4'><?= $recepcion['ARE_nombre']; ?></th>
+                <td class='px-6 py-4'><?= $recepcion['INC_codigoPatrimonial']; ?></th>
+                <td class='px-6 py-4'><?= $recepcion['INC_asunto']; ?></th>
+                <td class='px-6 py-4'><?= $recepcion['PRI_nombre']; ?></th>
+                <td class='px-6 py-4'><?= $recepcion['IMP_descripcion']; ?></th>
+                <td class='px-6 py-4'><?= $recepcion['USU_nombre']; ?></th>
+              </tr>
+            <?php endforeach; ?>
+
+            <?php if (empty($incidencias)) : ?>
+              <tr>
+                <td colspan="7" class="text-center py-4">No hay incidencias sin recepcionar.</td>
+              </tr>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>

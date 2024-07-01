@@ -79,11 +79,12 @@ class RecepcionModel extends Conexion
   }
 
   //TODO: Metodo para obtener recepciones sin cerrar
-  public function obtenerRecepcionesSinCerrar()
+  public function obtenerRecepcionesSinCerrar($start, $limit)
   {
     $conector = parent::getConexion();
-    if ($conector != null) {
-      try {
+    try {
+      if ($conector != null) {
+
         $sql = "SELECT REC_numero, (CONVERT(VARCHAR(10), REC_fecha,103) + ' - ' + CONVERT(VARCHAR(5), REC_hora, 108)) AS fechaRecepcionFormateada, a.ARE_nombre, i.INC_codigoPatrimonial, INC_asunto, p.PRI_nombre, imp.IMP_descripcion, u.USU_nombre
         FROM RECEPCION r 
         INNER JOIN INCIDENCIA i ON i.INC_numero = r.INC_numero
@@ -91,18 +92,22 @@ class RecepcionModel extends Conexion
         INNER JOIN PRIORIDAD p ON p.PRI_codigo = r.PRI_codigo
         INNER JOIN IMPACTO imp ON imp.IMP_codigo = r.IMP_codigo
         INNER JOIN USUARIO u ON u.USU_codigo = r.USU_codigo
-        WHERE r.EST_codigo = 4";
+        WHERE r.EST_codigo = 4
+        ORDER BY REC_numero DESC
+        OFFSET :start ROWS
+        FETCH NEXT :limit ROWS ONLY";
         $stmt = $conector->prepare($sql);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $registros;
-      } catch (PDOException $e) {
-        // Manejar cualquier excepción o error que pueda surgir al ejecutar la consulta
-        echo "Error al obtener las recepciones sin cerrar: " . $e->getMessage();
+      } else {
+        echo "Error de conexión cierre Controller la base de datos.";
         return null;
       }
-    } else {
-      echo "Error de conexión cierre Controller la base de datos.";
+    } catch (PDOException $e) {
+      echo "Error al obtener las recepciones sin cerrar: " . $e->getMessage();
       return null;
     }
   }
@@ -138,6 +143,27 @@ class RecepcionModel extends Conexion
       return null;
     }
   }
+
+  // TODO: Contar el total de recepciones sin cerrar
+  public function contarRecepcionesSinCerrar()
+  {
+    $conector = parent::getConexion();
+    try {
+      if ($conector != null) {
+        $sql = "SELECT COUNT(*) as total FROM RECEPCION r
+      WHERE r.EST_codigo = 4";
+        $stmt = $conector->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+      } else {
+        throw new Exception("Error de conexión a la base de datos.");
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al contar recepciones sin cerrar: " . $e->getMessage());
+    }
+  }
+
 
   public function BuscarRecepcionesRegistradas()
   {

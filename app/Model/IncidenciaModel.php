@@ -244,7 +244,7 @@ class IncidenciaModel extends Conexion
   // TODO: Contar el total de incidencias sin recepcionar
   public function contarIncidenciasSinRecepcionar()
   {
-    $conector = $this->getConexion();
+    $conector = parent::getConexion();
     try {
       if ($conector != null) {
         $sql = "SELECT COUNT(*) as total FROM INCIDENCIA i
