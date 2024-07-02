@@ -15,7 +15,7 @@ class IncidenciaController
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // Obtener los datos del formulario
-      $fecha = $_POST['fecha'] ?? null;
+      $fecha = $_POST['fecha_incidencia'] ?? null;
       $hora = $_POST['hora'] ?? null;
       $asunto =  $_POST['asunto'] ?? null;
       $descripcion = $_POST['descripcion'] ?? null;
@@ -25,7 +25,7 @@ class IncidenciaController
       $area = $_POST['area'] ?? null;
       $usuario = $_POST['usuario'] ?? null;
 
-      // Verificar que la fecha no es nula
+      // Verificar campos obligatorios
       if ($fecha === null || $fecha === '') {
         echo "Error: La fecha es un campo obligatorio.";
         return;
@@ -36,60 +36,47 @@ class IncidenciaController
         return;
       }
 
-      if ($asunto === null || trim($asunto) === '') {
-        echo "Error: El asunto de la incidencia no puede estar vacío";
-        return;
-      }
-
-      if ($documento === null || trim($documento) === '') {
-        echo "Error: El documento de la incidencia no puede estar vacío";
-        return;
-      }
-
-      if ($categoria === null || $categoria === '') {
-        echo "Error: La categoria de la incidencia no puede estar vacío";
-        return;
-      }
-
-      if ($area === null || $area === '') {
-        echo "Error: El area de la incidencia no puede estar vacío";
-        return;
-      }
-
       if ($usuario === null || $usuario === '') {
         echo "Error: El usuario de la incidencia no puede estar vacío";
         return;
       }
 
+      if ($categoria === null || $categoria === '') {
+        echo "Error: La categoría no puede estar vacía";
+        return;
+      }
+
+      if ($area === null || $area === '') {
+        echo "Error: El área no puede estar vacía";
+        return;
+      }
 
       // Llamar al método del modelo para insertar la incidencia en la base de datos
-      $insertSuccessId = $this->incidenciaModel->insertarIncidencia(
+      $insertSuccessId = $this->incidenciaModel->insertarIncidenciaAdministrador(
         $fecha,
         $hora,
         $asunto,
         $descripcion,
         $documento,
         $codigoPatrimonial,
-        3,
         $categoria,
         $area,
         $usuario
       );
 
-      if ($insertSuccessId) {
-        header('Location: registro-incidencia-admin.php?INC_numero=' . $insertSuccessId);
+      if ($insertSuccessId === -1) {
+        echo 'Error al registrar la incidencia';
       } else {
-        echo "Error al registrar la incidencia.";
+        echo "Incidencia registrada correctamente con ID: " . $insertSuccessId;
       }
-    } else {
-      echo "Error: Método no permitido.";
     }
   }
+
 
   // TODO: Metodo para otbener la lista de incidencias segun el area a la pertenece el usuario
   public function listarIncidenciasUsuarioArea()
   {
-    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $area = $_POST['area'] ?? null;
     }
   }

@@ -8,20 +8,16 @@ class OperatividadModel extends Conexion
     parent::__construct();
   }
 
-  //TODO: Metodo para cargar las prioridades
+  //TODO: Metodo para cargar operatividad
   public function getOperatividadData()
   {
     $conector = parent::getConexion();
-    try {
-      $query = "SELECT * FROM OPERATIVIDAD ORDER BY OPE_codigo";
-      $stmt = $conector->prepare($query);
-      $stmt->execute();
-      $resultado = $stmt->fetchAll(); // Asegúrate de usar FETCH_ASSOC para obtener un array asociativo
-      return $resultado;
-    } catch (PDOException $e) {
-      echo "Error al cargar datos del modelo opeartividad" . $e->getMessage();
-      return null;
-    }
+    $query = "SELECT * FROM OPERATIVIDAD 
+      ORDER BY OPE_codigo";
+    $stmt = $conector->prepare($query);
+    $stmt->execute();
+    $resultado = $stmt->fetchAll(); 
+    return $resultado;
   }
 }
 

@@ -26,36 +26,8 @@
     <!-- TODO: TITULO TABLA DE INCIDENCIAS NO RECEPCIONADAS -->
     <div class="flex justify-between items-center mb-2">
       <h1 class="text-xl text-gray-400">Incidencias pendientes</h1>
-      <input type="text" id="searchInput" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-lime-300" placeholder="Buscar..." oninput="filtrarTablaIncidenciasSinRecepcionar()" />
+      <input type="text" id="searchInput" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-lime-300" placeholder="Buscar..." oninput="filtrarTablaRecepcionesSinCerrar()" />
     </div>
-
-    <script>
-      // TODO: METODO PARA HACER BUSQUEDA DE LA PRIMERA TABLA
-      $('#searchInput').on('input', function() {
-        filtrarTablaIncidenciasSinRecepcionar();
-      });
-
-      // TODO: FILTRADO DE TABLA DE INCIDENCIAS SIN RECEPCIONAR
-      function filtrarTablaIncidenciasSinRecepcionar() {
-        var input, filter, table, rows, cells, i, j, match;
-        input = document.getElementById('searchInput');
-        filter = input.value.toUpperCase();
-        table = document.getElementById('tablaRecepcionesSinCerrar');
-        rows = table.getElementsByTagName('tr');
-
-        for (i = 1; i < rows.length; i++) {
-          cells = rows[i].getElementsByTagName('td');
-          match = false;
-          for (j = 0; j < cells.length; j++) {
-            if (cells[j].innerText.toUpperCase().indexOf(filter) > -1) {
-              match = true;
-              break;
-            }
-          }
-          rows[i].style.display = match ? '' : 'none';
-        }
-      }
-    </script>
 
     <!-- TODO: TABLA DE RECEPCIONES SIN CERRAR -->
     <?php
@@ -101,14 +73,27 @@
               </tr>
             <?php endforeach; ?>
 
-            <?php if (empty($incidencias)) : ?>
+            <?php if (empty($recepciones)) : ?>
               <tr>
-                <td colspan="7" class="text-center py-4">No hay incidencias sin recepcionar.</td>
+                <td colspan="8" class="text-center py-4">No hay incidencias recepionadas sin cerrar.</td>
               </tr>
             <?php endif; ?>
           </tbody>
         </table>
       </div>
+
+      <!-- Paginación -->
+      <?php if ($totalPages > 0) : ?>
+        <div class="flex justify-end items-center mt-1">
+          <?php if ($page > 1) : ?>
+            <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaSinCerrar(<?php echo $page - 1; ?>)">&lt;</a>
+          <?php endif; ?>
+          <span class="mx-2">P&aacute;gina <?php echo $page; ?> de <?php echo $totalPages; ?></span>
+          <?php if ($page < $totalPages) : ?>
+            <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaSinCerrar(<?php echo $page + 1; ?>)">&gt;</a>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
     </div>
 
     <!-- Segundo Apartado - Formulario de registro de Cierre de incidencia -->
@@ -120,14 +105,16 @@
         <!-- NUMERO DE RECEPCION -->
         <input type="hidden" class="border bg-white p-2 w-full text-sm" id="REC_numero" name="REC_numero">
         <div class="flex justify-center mx-2 mb-4">
-          <!-- TODO: PRIMERA FILA -->
-          <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center">
-            <label for="REC_codigo_visible" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Recepci&oacute;n:</label>
-            <input disabled type="text" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" id="REC_codigo_visible" name="REC_codigo_visible">
+
+          <!-- NUMERO DE RECEPCION -->
+          <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center ">
+            <label for="num_recepcion" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Recepci&oacute;n:</label>
+            <input type="text" id="num_recepcion" name="num_recepcion" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly>
           </div>
+
           <!-- INPUT ESCONDIDO PARA EL NUMERO DE CIERRE -->
-          <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center hidden">
-            <label for="num_cierre" class="block font-bold mb-1 mr-3 text-lime-500">Num Cierre:</label>
+          <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center">
+            <label for="num_cierre" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero Cierre:</label>
             <input type="text" id="num_cierre" name="num_cierre" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" disabled>
           </div>
         </div>
@@ -176,19 +163,19 @@
           <!-- ASUNTO DEL CIERRE -->
           <div class="w-full md:w-1/3 px-2 mb-2">
             <label for="asunto" class="block mb-1 font-bold text-sm">Asunto:</label>
-            <input type="text" id="asunto" name="asunto" class="border p-2 w-full text-sm">
+            <input type="text" id="asunto" name="asunto" class="border p-2 w-full text-sm" placeholder="Ingrese asunto">
           </div>
 
           <!-- DOCUMENTO DE CIERRE -->
           <div class="w-full md:w-1/3 px-2 mb-2">
             <label for="documento" class="block mb-1 font-bold text-sm">Documento:</label>
-            <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm">
+            <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm" placeholder="Ingrese documento de cierre">
           </div>
 
           <!-- DIAGNOSTICO DEL CIERRE -->
           <div class="w-full md:w-1/3 px-2 mb-2">
             <label for="diagnostico" class="block mb-1 font-bold text-sm">Diagn&oacute;stico:</label>
-            <input type="text" id="diagnostico" name="diagnostico" class="border p-2 w-full text-sm">
+            <input type="text" id="diagnostico" name="diagnostico" class="border p-2 w-full text-sm" placeholder="Ingrese diagnóstico">
           </div>
         </div>
 
@@ -197,13 +184,13 @@
           <!-- SOLUCION DE LA INCIDENCIA -->
           <div class="w-full md:w-1/2 px-2 mb-2">
             <label for="solucion" class="block mb-1 font-bold text-sm">Soluci&oacute;n:</label>
-            <input type="text" id="solucion" name="solucion" class="border p-2 w-full text-sm">
+            <input type="text" id="solucion" name="solucion" class="border p-2 w-full text-sm" placeholder="Ingrese solución (opcional)">
           </div>
 
           <!-- RECOMENDACIONES -->
           <div class="w-full md:w-1/2 px-2 mb-2">
             <label for="recomendaciones" class="block mb-1 font-bold text-sm">Recomendaciones:</label>
-            <input type="text" id="recomendaciones" name="recomendaciones" class="border p-2 w-full text-sm">
+            <input type="text" id="recomendaciones" name="recomendaciones" class="border p-2 w-full text-sm" placeholder="Ingrese recomendaciones (opcional)">
           </div>
         </div>
 
@@ -232,6 +219,63 @@
         </div>
       </form>
     </div>
+
+    <!-- TODO: TABLA DE INCIDENCIAS CERRADAS -->
+    <div>
+      <div class="relative max-h-[300px] overflow-x-hidden shadow-md sm:rounded-lg">
+        <table id="tablaRecepcionesCerradas" class="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-blue-300">
+            <tr>
+              <th scope="col" class="px-6 py-3">N°</th>
+              <th scope="col" class="px-6 py-3">Fecha Cierre</th>
+              <th scope="col" class="px-6 py-3">&Aacute;rea</th>
+              <th scope="col" class="px-6 py-3">C&oacute;digo Patrimonial</th>
+              <th scope="col" class="px-6 py-3">Categor&iacute;a</th>
+              <th scope="col" class="px-6 py-3">Asunto</th>
+              <th scope="col" class="px-6 py-3">Operatividad</th>
+              <th scope="col" class="px-6 py-3">Diagn&oacute;stico</th>
+              <th scope="col" class="px-6 py-3">Usuario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            require_once './app/Model/RecepcionModel.php';
+            $recepcionModel = new RecepcionModel();
+            $recepciones = $recepcionModel->listarRecepciones();
+            foreach ($recepciones as $recepcion) {
+              echo "<tr class='second-table bg-white hover:bg-green-100 hover:scale-[101%] transition-all border-b' data-id='{$recepcion['REC_numero']}'>";
+              echo "<th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '>";
+              echo $recepcion['REC_numero'];
+              echo "</th>";
+              echo "<td class='px-6 py-4'>";
+              echo $recepcion['fechaRecepcionFormateada'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $recepcion['ARE_nombre'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $recepcion['INC_codigoPatrimonial'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $recepcion['CAT_nombre'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $recepcion['PRI_nombre'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $recepcion['IMP_descripcion'];
+              echo "</td>";
+              echo "<td class='px-6 py-4'>";
+              echo $recepcion['USU_nombre'];
+              echo "</td>";
+              echo "</tr>";
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </main>
 
   <script src="./app/View/func/func_cierre.js"></script>

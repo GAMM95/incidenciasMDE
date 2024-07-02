@@ -29,7 +29,7 @@
     <form id="formIncidencia" action="registro-incidencia-admin.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
 
       <!-- TODO: FILA OCULTA DEL FORMULARIO - NUMERO DE INCIDENCIA -->
-      <div class="flex items-center mb-4 hidden">
+      <div class="flex items-center mb-4 ">
         <label for="numero_incidencia" class="block font-bold mb-1 mr-1 text-lime-500">Nro Incidencia:</label>
         <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly>
       </div>
@@ -38,14 +38,15 @@
       <div class="flex flex-wrap -mx-2">
         <!-- CATEGORIA SELECCIONADA -->
         <div class="w-full sm:w-1/2 px-2 mb-2">
-          <label for="categoria" class="block mb-1 font-bold text-sm">Categor&iacute;a:</label>
-          <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer"></select>
+          <label for="categoria" class="block font-bold mb-1">Categor&iacute;a:</label>
+          <select id="categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
+          </select>
         </div>
 
         <!-- FECHA DE LA INCIDENCIA -->
         <div class="w-full sm:w-1/6 px-2 mb-2">
-          <label for="fecha" class="block mb-1 font-bold text-sm">Fecha:</label>
-          <input type="date" id="txt_fecha" name="fecha" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo date('Y-m-d'); ?>" readonly>
+          <label for="fecha_incidencia" class="block mb-1 font-bold text-sm">Fecha:</label>
+          <input type="date" id="fecha_incidencia" name="fecha_incidencia" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo date('Y-m-d'); ?>" readonly>
         </div>
 
         <!-- HORA DE LA INCIDENCIA -->
@@ -55,7 +56,6 @@
           // Establecer la zona horaria deseada
           date_default_timezone_set('America/Lima');
           $fecha_actual = date('Y-m-d');
-          // Obtener la hora actual en formato de 24 horas (HH:MM)
           $hora_actual = date('H:i:s');
           ?>
           <input type="text" id="hora" name="hora" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $hora_actual; ?>" readonly>
@@ -76,8 +76,9 @@
       <div class="flex flex-wrap -mx-2">
         <!-- AREA DE LA INCIDENCIA -->
         <div class="w-full sm:w-1/2 px-2 mb-2">
-          <label for="area" class="block mb-1 font-bold text-sm">&Aacute;rea:</label>
-          <select id="cbo_area" name="area" class="border p-2 w-full text-sm cursor-pointer" title="Seleccione &aacute;rea"></select>
+          <label for="area" class="block font-bold mb-1">&Aacute;rea:</label>
+          <select id="area" name="area" class="border p-2 w-full text-sm cursor-pointer">
+          </select>
         </div>
 
         <!-- CODIGO PATROMONIAL -->
@@ -98,7 +99,7 @@
         <!-- DOCUMENTO DE LA INCIDENCIA -->
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="documento" class="block mb-1 font-bold text-sm">Documento:</label>
-          <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm" placeholder="Ingrese documento"  required>
+          <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm" placeholder="Ingrese documento">
         </div>
 
         <!-- DESCRIPCION DE LA INCIDENCIA -->
@@ -110,19 +111,15 @@
 
       <!-- TODO: RECOPILACION DE VALORES DE CADA INPUT Y COMBOBOX     -->
       <script>
-        $(document).ready(function() {
-          document.getElementById('numero_incidencia').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_numero'] : ''; ?>';
-          document.getElementById('cbo_categoria').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CAT_codigo'] : ''; ?>';
-          document.getElementById('txt_fecha').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_fecha'] : $fecha_actual; ?>';
-          document.getElementById('hora').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_hora'] : $hora_actual; ?>';
-          document.getElementById('usuarioDisplay').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['codigoUsuario'] : $_SESSION['usuario']; ?>';
-          document.getElementById('usuario').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['codigoUsuario'] : $_SESSION['codigoUsuario']; ?>';
-          document.getElementById('cbo_area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['ARE_codigo'] : ''; ?>';
-          document.getElementById('codigo_patrimonial').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_codigo_patrimonial'] : ''; ?>';
-          document.getElementById('asunto').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_asunto'] : ''; ?>';
-          document.getElementById('documento').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_documento'] : ''; ?>';
-          document.getElementById('descripcion').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_descripcion'] : ''; ?>';
-        });
+        // Asignación de valores predefinidos al cargar la página
+        document.getElementById('categoria').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['categoria'] : ''; ?>';
+        document.getElementById('fecha').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_fecha'] : $fecha_actual; ?>';
+        document.getElementById('hora').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_hora'] : $hora_actual; ?>';
+        document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['ARE_codigo'] : ''; ?>';
+        document.getElementById('codigo_patrimonial').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_codigo_patrimonial'] : ''; ?>';
+        document.getElementById('asunto').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_asunto'] : ''; ?>';
+        document.getElementById('documento').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_documento'] : ''; ?>';
+        document.getElementById('descripcion').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_descripcion'] : ''; ?>';
       </script>
 
       <!-- TODO: BOTONES -->
@@ -141,8 +138,7 @@
         </button>
       </div>
     </form>
-    <!-- Fin del formulario -->
-
+    falta arreglar aqui
     <!-- TODO: TABLA DE INCIDENCIAS REGISTRADAS -->
     <?php
     require_once './app/Model/IncidenciaModel.php';

@@ -32,45 +32,78 @@ class IncidenciaModel extends Conexion
   }
 
   // TODO: Metodo para insertar incidencias - Administrador
-  public function insertarIncidencia(
-    $INC_fecha,
-    $INC_hora,
-    $INC_asunto,
-    $INC_descripcion,
-    $INC_documento,
-    $INC_codigoPatrimonial,
-    $EST_codigo,
-    $CAT_codigo,
-    $ARE_codigo,
-    $USU_codigo
+  // public function insertarIncidenciaAdministrador(
+  //   $fecha,
+  //   $hora,
+  //   $asunto,
+  //   $descripcion,
+  //   $documento,
+  //   $codigoPatrimonial,
+  //   $categoria,
+  //   $area,
+  //   $usuario
+  // ) {
+  //   $conector = parent::getConexion();
+  //   try {
+
+  //     $sql = "EXEC SP_Registrar_Incidencia_Admin @INC_fecha = :fecha, @INC_hora = :hora, @INC_asunto = :asunto, @INC_descripcion = :descripcion, @INC_documento = :documento, @INC_codigoPatrimonial = :codigoPatrimonial, @CAT_codigo = :categoria, @ARE_codigo = :area, @USU_codigo = :usuario";
+  //     $stmt = $conector->prepare($sql);
+  //     $stmt->bindParam(':fecha', $fecha);
+  //     $stmt->bindParam(':hora', $hora);
+  //     $stmt->bindParam(':asunto', $asunto);
+  //     $stmt->bindParam(':descripcion', $descripcion);
+  //     $stmt->bindParam(':documento', $documento);
+  //     $stmt->bindParam(':codigoPatrimonial', $codigoPatrimonial);
+  //     $stmt->bindParam(':categoria', $categoria);
+  //     $stmt->bindParam(':area', $area);
+  //     $stmt->bindParam(':usuario', $usuario);
+  //     $stmt->execute();
+  //     return $conector->lastInsertId();
+  //   } catch (PDOException $e) {
+  //     echo "Error al insertar la incidencia para el administrador: " . $e->getMessage();
+  //     return false;
+  //   }
+  // }
+  // TODO: Metodo para insertar incidencias - Administrador
+  public function insertarIncidenciaAdministrador(
+    $fecha,
+    $hora,
+    $asunto,
+    $descripcion,
+    $documento,
+    $codigoPatrimonial,
+    $categoria,
+    $area,
+    $usuario
   ) {
-    $conector = parent::getConexion();
     try {
-      if ($conector != null) {
-        $sql = "INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial, EST_codigo, CAT_codigo, ARE_codigo, USU_codigo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      $conector = parent::getConexion();
+      if ($conector) {
+        $sql = "EXEC SP_Registrar_Incidencia_Admin @INC_fecha = :fecha, @INC_hora = :hora, @INC_asunto = :asunto, @INC_descripcion = :descripcion, @INC_documento = :documento, @INC_codigoPatrimonial = :codigoPatrimonial, @CAT_codigo = :categoria, @ARE_codigo = :area, @USU_codigo = :usuario";
         $stmt = $conector->prepare($sql);
-        $success = $stmt->execute([
-          $INC_fecha,
-          $INC_hora,
-          $INC_asunto,
-          $INC_descripcion,
-          $INC_documento,
-          $INC_codigoPatrimonial,
-          3,
-          $CAT_codigo,
-          $ARE_codigo,
-          $USU_codigo
-        ]);
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->bindParam(':hora', $hora);
+        $stmt->bindParam(':asunto', $asunto);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':documento', $documento);
+        $stmt->bindParam(':codigoPatrimonial', $codigoPatrimonial);
+        $stmt->bindParam(':categoria', $categoria);
+        $stmt->bindParam(':area', $area);
+        $stmt->bindParam(':usuario', $usuario);
+        $success = $stmt->execute();
         if ($success) {
           $lastId = $conector->lastInsertId();
           return $lastId;
         } else {
           return false;
         }
+      } else {
+        throw new Exception("Error de conexión a la base de datos.");
       }
     } catch (PDOException $e) {
-      echo "Error al insertar la incidencia para el administrador: " . $e->getMessage();
-      return false;
+      throw new Exception("Error al insertar la incidencia para el administrador: " . $e->getMessage());
+    } catch (Exception $e) {
+      throw new Exception("Error general al insertar la incidencia: " . $e->getMessage());
     }
   }
 

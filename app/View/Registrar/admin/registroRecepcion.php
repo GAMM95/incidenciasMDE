@@ -149,13 +149,13 @@
           <!-- SELECT PRIORIDAD -->
           <div class="w-full md:w-1/5 px-2 mb-2">
             <label for="prioridad" class="block font-bold mb-1">Prioridad:</label>
-            <select id="prioridad" name="prioridad" class="border p-2 w-full text-sm">
+            <select id="prioridad" name="prioridad" class="border p-2 w-full text-sm cursor-pointer">
             </select>
           </div>
           <!-- SELECT IMPACTO -->
           <div class="w-full md:w-1/5 px-2 mb-2">
             <label for="impacto" class="block font-bold mb-1">Impacto:</label>
-            <select id="impacto" name="impacto" class="border p-2 w-full text-sm">
+            <select id="impacto" name="impacto" class="border p-2 w-full text-sm cursor-pointer">
             </select>
           </div>
         </div>

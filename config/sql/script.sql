@@ -269,20 +269,20 @@ GO
 CREATE PROCEDURE SP_Registrar_Incidencia_Admin 
 	@INC_fecha DATE,
 	@INC_hora TIMe,
-	@INC_asunto VARCHAR(200),
-	@INC_descripcion VARCHAR(500),
-	@INC_documento VARCHAR(100),
-	@INC_codigoPatrimonial CHAR(12),
-	@EST_codigo SMALLINT,
+	@INC_asunto VARCHAR,
+	@INC_descripcion VARCHAR,
+	@INC_documento VARCHAR,
+	@INC_codigoPatrimonial CHAR,
 	@CAT_codigo SMALLINT,
 	@ARE_codigo SMALLINT,
 	@USU_codigo SMALLINT 
 AS BEGIN 
-	-- Insertar el nuevo usuario con EST_codigo siempre igual a 1
+	-- Insertar el nuevo usuario con EST_codigo siempre igual a 3
 	INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial, EST_codigo, CAT_codigo, ARE_codigo, USU_codigo)
 	VALUES (@INC_fecha, @INC_hora, @INC_asunto, @INC_descripcion, @INC_documento, @INC_codigoPatrimonial, 3, @CAT_codigo, @ARE_codigo, @USU_codigo);
 END;
 GO
+
 
 -- PROCEDIMIENTO ALMACENADO PARA INSERTAR LA RECEPCION Y ACTUALIZAR ESTADO DE INCIDENCIA
 CREATE PROCEDURE sp_InsertarRecepcionActualizarIncidencia(
@@ -351,6 +351,7 @@ CREATE TABLE CIERRE(
 );
 GO
 
+-- PROCEDIMIENTO ALMAENADO PARA INSERTAR CIERRES Y ACTUALIZAR ESTADO DE RECEPCION
 CREATE PROCEDURE sp_InsertarCierreActualizarRecepcion
     @CIE_fecha DATE,
     @CIE_hora TIME,
