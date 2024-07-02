@@ -245,6 +245,8 @@ CREATE TABLE INCIDENCIA (
 GO
 
 INSERT INTO INCIDENCIA  VALUES ('2024-05-31','10:32:15','No enciende CPU','Se presiona y no enciende','S/D','740895000365',3,1,21,3);
+INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial, EST_codigo, CAT_codigo, ARE_codigo, USU_codigo) 
+VALUES ('2024-03-12','12:32:10','abc','as','S/D','705402564789',3,1,1,1) ;
 
 -- CREACION DE TABLA RECEPCION
 CREATE TABLE RECEPCION (
@@ -278,10 +280,11 @@ CREATE PROCEDURE SP_Registrar_Incidencia_Admin
 	@USU_codigo SMALLINT 
 AS BEGIN 
 	-- Insertar el nuevo usuario con EST_codigo siempre igual a 3
-	INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial, EST_codigo, CAT_codigo, ARE_codigo, USU_codigo)
-	VALUES (@INC_fecha, @INC_hora, @INC_asunto, @INC_descripcion, @INC_documento, @INC_codigoPatrimonial, 3, @CAT_codigo, @ARE_codigo, @USU_codigo);
+	INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial,  CAT_codigo, ARE_codigo, USU_codigo, EST_codigo)
+	VALUES (@INC_fecha, @INC_hora, @INC_asunto, @INC_descripcion, @INC_documento, @INC_codigoPatrimonial, @CAT_codigo, @ARE_codigo, @USU_codigo, 3);
 END;
 GO
+
 
 
 -- PROCEDIMIENTO ALMACENADO PARA INSERTAR LA RECEPCION Y ACTUALIZAR ESTADO DE INCIDENCIA
@@ -443,3 +446,15 @@ LEFT JOIN OPERATIVIDAD O ON O.OPE_codigo = C.OPE_codigo
 LEFT JOIN USUARIO U ON U.USU_codigo = I.USU_codigo
 WHERE (I.EST_codigo IN (3, 4, 5) OR C.EST_codigo IN (3, 4, 5))
 AND A.ARE_codigo = 21; -- Aquí sustituye 21 por el código de área deseado
+GO
+
+-- METODO PARA CONTAR LAS INCIDENCIAS EN EL ULTIMO MES PARA EL ADMINISTRADOR
+
+SELECT COUNT(*) FROM INCIDENCIA 
+WHERE INC_FECHA >= DATEADD(MONTH, -1, GETDATE())
+
+SELECT COUNT(*) 
+FROM INCIDENCIA 
+WHERE INC_FECHA >= DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
+  AND INC_FECHA < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) + 1, 0)
+

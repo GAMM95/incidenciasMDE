@@ -6,6 +6,7 @@ $INC_numero = $_GET['INC_numero'] ?? '';
 
 require_once 'app/Controller/incidenciaController.php';
 require_once 'app/Model/incidenciaModel.php';
+
 $incidenciaController = new IncidenciaController();
 $incidenciaModel = new IncidenciaModel();
 

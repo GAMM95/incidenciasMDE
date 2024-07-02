@@ -21,7 +21,7 @@ class cierreController
       $solucion = $_POST['solucion'] ?? null;
       $recomendaciones = $_POST['recomendaciones'] ?? null;
       $operatividad = $_POST['operatividad'] ?? null;
-      $recepcion = $_POST['REC_numero'] ?? null;
+      $recepcion = $_POST['recepcion'] ?? null;
       $usuario = $_POST['usuario'] ?? null;
 
       // Verificar que la fecha no es nula

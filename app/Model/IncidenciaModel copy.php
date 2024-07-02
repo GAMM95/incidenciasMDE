@@ -32,8 +32,40 @@ class IncidenciaModel extends Conexion
   }
 
   // TODO: Metodo para insertar incidencias - Administrador
-  public function insertarIncidenciaAdministrador($INC_fecha, $INC_hora, $INC_asunto, $INC_descripcion, $INC_documento, $INC_codigoPatrimonial,  $EST_codigo, $CAT_codigo, $ARE_codigo, $USU_codigo)
-  {
+  // public function insertarIncidenciaAdministrador($fecha, $hora, $asunto, $descripcion, $documento, $codigoPatrimonial, $categoria, $area, $usuario)
+  // {
+  //   $conector = parent::getConexion();
+  //   try {
+  //     $sql = "EXEC SP_Registrar_Incidencia_Admin @INC_fecha = :fecha, @INC_hora = :hora, @INC_asunto = :asunto, @INC_descripcion = :descripcion, @INC_documento = :documento, @INC_codigoPatrimonial = :codigoPatrimonial, @CAT_codigo = :categoria, @ARE_codigo = :area, @USU_codigo = :usuario";
+  //     $stmt = $conector->prepare($sql);
+  //     $stmt->bindParam(':fecha', $fecha);
+  //     $stmt->bindParam(':hora', $hora);
+  //     $stmt->bindParam(':asunto', $asunto);
+  //     $stmt->bindParam(':descripcion', $descripcion);
+  //     $stmt->bindParam(':documento', $documento);
+  //     $stmt->bindParam(':codigoPatrimonial', $codigoPatrimonial);
+  //     $stmt->bindParam(':categoria', $categoria);
+  //     $stmt->bindParam(':area', $area);
+  //     $stmt->bindParam(':usuario', $usuario);
+  //     $success = $stmt->execute();
+  //     return $conector->lastInsertId();
+  //   } catch (PDOException $e) {
+  //     echo "Error al insertar recepcionn: " . $e->getMessage();
+  //     return false;
+  //   }
+  // }
+  public function insertarIncidenciaAdministrador(
+    $INC_fecha,
+    $INC_hora,
+    $INC_asunto,
+    $INC_descripcion,
+    $INC_documento,
+    $INC_codigoPatrimonial,
+    $EST_codigo,
+    $CAT_codigo,
+    $ARE_codigo,
+    $USU_codigo
+  ) {
     $conector = parent::getConexion();
     try {
       if ($conector != null) {
@@ -63,51 +95,6 @@ class IncidenciaModel extends Conexion
       return false;
     }
   }
-
-
-  // public function insertarIncidenciaAdministrador(
-  //   $fecha,
-  //   $hora,
-  //   $asunto,
-  //   $descripcion,
-  //   $documento,
-  //   $codigoPatrimonial,
-  //   $categoria,
-  //   $area,
-  //   $usuario
-  // ) {
-  //   try {
-  //     $conector = parent::getConexion();
-  //     if ($conector) {
-  //       $sql = "EXEC SP_Registrar_Incidencia_Admin @INC_fecha = :fecha, @INC_hora = :hora, @INC_asunto = :asunto, @INC_descripcion = :descripcion, @INC_documento = :documento, @INC_codigoPatrimonial = :codigoPatrimonial, @CAT_codigo = :categoria, @ARE_codigo = :area, @USU_codigo = :usuario";
-  //       $stmt = $conector->prepare($sql);
-  //       $stmt->bindParam(':fecha', $fecha);
-  //       $stmt->bindParam(':hora', $hora);
-  //       $stmt->bindParam(':asunto', $asunto);
-  //       $stmt->bindParam(':descripcion', $descripcion);
-  //       $stmt->bindParam(':documento', $documento);
-  //       $stmt->bindParam(':codigoPatrimonial', $codigoPatrimonial);
-  //       $stmt->bindParam(':categoria', $categoria);
-  //       $stmt->bindParam(':area', $area);
-  //       $stmt->bindParam(':usuario', $usuario);
-  //       $success = $stmt->execute();
-  //       if ($success) {
-  //         $lastId = $conector->lastInsertId();
-  //         return $lastId;
-  //       } else {
-  //         return false;
-  //       }
-  //     } else {
-  //       throw new Exception("Error de conexión a la base de datos.");
-  //     }
-  //   } catch (PDOException $e) {
-  //     throw new Exception("Error al insertar la incidencia para el administrador: " . $e->getMessage());
-  //   } catch (Exception $e) {
-  //     throw new Exception("Error general al insertar la incidencia: " . $e->getMessage());
-  //   }
-  // }
-
-
 
   // TODO: Metodo listar incidencias Administrador - FORM CONSULTAR INCIDENCIA
   public function listarIncidenciasAdministrador()
@@ -291,28 +278,6 @@ class IncidenciaModel extends Conexion
       }
     } catch (PDOException $e) {
       echo "Error al contar incidencias sin recepcionar: " . $e->getMessage();
-      return null;
-    }
-  }
-
-  // TODO: Contar incidencias del ultimo mes para el administrador
-  public function contarIncidenciasUltimoMesAdministrador()
-  {
-    $conector = parent::getConexion();
-    try {
-      if ($conector != null) {
-        $sql = "SELECT COUNT(*) as incidencias_mes_actual FROM INCIDENCIA 
-              WHERE INC_FECHA >= DATEADD(MONTH, -1, GETDATE())";
-        $stmt = $conector->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['incidencias_mes_actual'];
-      } else {
-        echo "Error de conexión con la base de datos.";
-        return null;
-      }
-    } catch (PDOException $e) {
-      echo "Error al contar incidencias del ultimo mes para el administrador: " . $e->getMessage();
       return null;
     }
   }

@@ -39,7 +39,7 @@
         <!-- CATEGORIA SELECCIONADA -->
         <div class="w-full sm:w-1/2 px-2 mb-2">
           <label for="categoria" class="block font-bold mb-1">Categor&iacute;a:</label>
-          <select id="categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
+          <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
           </select>
         </div>
 
@@ -77,7 +77,7 @@
         <!-- AREA DE LA INCIDENCIA -->
         <div class="w-full sm:w-1/2 px-2 mb-2">
           <label for="area" class="block font-bold mb-1">&Aacute;rea:</label>
-          <select id="area" name="area" class="border p-2 w-full text-sm cursor-pointer">
+          <select id="cbo_area" name="area" class="border p-2 w-full text-sm cursor-pointer">
           </select>
         </div>
 
@@ -112,11 +112,11 @@
       <!-- TODO: RECOPILACION DE VALORES DE CADA INPUT Y COMBOBOX     -->
       <script>
         // Asignación de valores predefinidos al cargar la página
-        document.getElementById('categoria').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['categoria'] : ''; ?>';
         document.getElementById('fecha').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_fecha'] : $fecha_actual; ?>';
         document.getElementById('hora').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_hora'] : $hora_actual; ?>';
-        document.getElementById('area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['ARE_codigo'] : ''; ?>';
+        document.getElementById('cbo_area').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['ARE_codigo'] : ''; ?>';
         document.getElementById('codigo_patrimonial').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_codigo_patrimonial'] : ''; ?>';
+        document.getElementById('cbo_categoria').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['CAT_codigo'] : ''; ?>';
         document.getElementById('asunto').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_asunto'] : ''; ?>';
         document.getElementById('documento').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_documento'] : ''; ?>';
         document.getElementById('descripcion').value = '<?php echo $incidenciaRegistrada ? $incidenciaRegistrada['INC_descripcion'] : ''; ?>';
@@ -124,9 +124,7 @@
 
       <!-- TODO: BOTONES -->
       <div class="flex justify-center space-x-4">
-        <button type="submit" id="guardar-incidencia" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">
-          Guardar
-        </button>
+        <button type="submit" id="guardar-incidencia" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">Guardar</button>
         <button type="button" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">
           Editar
         </button>
@@ -138,7 +136,7 @@
         </button>
       </div>
     </form>
-    falta arreglar aqui
+
     <!-- TODO: TABLA DE INCIDENCIAS REGISTRADAS -->
     <?php
     require_once './app/Model/IncidenciaModel.php';
@@ -199,7 +197,8 @@
     </div>
   </main>
 
-  <script src="./app/View/func/func_incidencias_admin.js"></script>
+  <!-- <script src="./app/View/func/func_incidencias_admin.js"></script> -->
+  <script src="./app/View/func/func_incidencia_admin.js"></script>
 </body>
 
 </html>

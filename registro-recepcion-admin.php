@@ -10,7 +10,6 @@ require_once 'app/Model/recepcionModel.php';
 $recepcionController = new RecepcionController();
 $recepcionModel = new RecepcionModel();
 
-
 if ($REC_numero != '') {
     global $recepcionRegistrada;
     $recepcionRegistrada = $recepcionModel->obtenerRecepcionPorId($REC_numero);

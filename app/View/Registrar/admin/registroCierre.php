@@ -103,13 +103,10 @@
       <form id="formCierre" action="registro-cierre-admin.php?action=registrar" method="POST">
 
         <!-- NUMERO DE RECEPCION -->
-        <input type="hidden" class="border bg-white p-2 w-full text-sm" id="REC_numero" name="REC_numero">
         <div class="flex justify-center mx-2 mb-4">
-
-          <!-- NUMERO DE RECEPCION -->
           <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center ">
-            <label for="num_recepcion" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Recepci&oacute;n:</label>
-            <input type="text" id="num_recepcion" name="num_recepcion" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly>
+            <label for="recepcion" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Recepci&oacute;n:</label>
+            <input type="text" id="recepcion" name="recepcion" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly>
           </div>
 
           <!-- INPUT ESCONDIDO PARA EL NUMERO DE CIERRE -->
@@ -153,7 +150,7 @@
           <!-- OPERATIVIDAD -->
           <div class="w-full md:w-1/4 px-2 mb-2">
             <label for="operatividad" class="block font-bold mb-1">Operatividad:</label>
-            <select id="operatividad" name="operatividad" class="border p-2 w-full text-sm cursor-pointer">
+            <select id="cbo_operatividad" name="operatividad" class="border p-2 w-full text-sm cursor-pointer">
             </select>
           </div>
         </div>
@@ -196,7 +193,7 @@
 
         <!-- TODO: RECOPILACION DE VALORES DE CADA INPUT Y COMBOBOX     -->
         <script>
-          document.getElementById('num_cierre').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['CIE_codigo'] : ''; ?>';
+          document.getElementById('recepcion').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['REC_codigo'] : ''; ?>';
           document.getElementById('fecha').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['CIE_fecha'] : $fecha_actual; ?>';
           document.getElementById('hora').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['REC_hora'] : $hora_actual; ?>';
           document.getElementById('operatividad').value = '<?php echo $cierreRegistrado ? $cierreRegistrado['OPE_codigo'] : ''; ?>';
@@ -220,65 +217,12 @@
       </form>
     </div>
 
-    <!-- TODO: TABLA DE INCIDENCIAS CERRADAS -->
-    <div>
-      <div class="relative max-h-[300px] overflow-x-hidden shadow-md sm:rounded-lg">
-        <table id="tablaRecepcionesCerradas" class="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-blue-300">
-            <tr>
-              <th scope="col" class="px-6 py-3">N°</th>
-              <th scope="col" class="px-6 py-3">Fecha Cierre</th>
-              <th scope="col" class="px-6 py-3">&Aacute;rea</th>
-              <th scope="col" class="px-6 py-3">C&oacute;digo Patrimonial</th>
-              <th scope="col" class="px-6 py-3">Categor&iacute;a</th>
-              <th scope="col" class="px-6 py-3">Asunto</th>
-              <th scope="col" class="px-6 py-3">Operatividad</th>
-              <th scope="col" class="px-6 py-3">Diagn&oacute;stico</th>
-              <th scope="col" class="px-6 py-3">Usuario</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            require_once './app/Model/RecepcionModel.php';
-            $recepcionModel = new RecepcionModel();
-            $recepciones = $recepcionModel->listarRecepciones();
-            foreach ($recepciones as $recepcion) {
-              echo "<tr class='second-table bg-white hover:bg-green-100 hover:scale-[101%] transition-all border-b' data-id='{$recepcion['REC_numero']}'>";
-              echo "<th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '>";
-              echo $recepcion['REC_numero'];
-              echo "</th>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['fechaRecepcionFormateada'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['ARE_nombre'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['INC_codigoPatrimonial'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['CAT_nombre'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['PRI_nombre'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['IMP_descripcion'];
-              echo "</td>";
-              echo "<td class='px-6 py-4'>";
-              echo $recepcion['USU_nombre'];
-              echo "</td>";
-              echo "</tr>";
-            }
-            ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
   </main>
 
-  <script src="./app/View/func/func_cierre.js"></script>
+  <!-- <script src="./app/View/func/func_cierre.js"></script> -->
+  <script src="./app/View/func/func_cierre_admin.js"></script>
+
 </body>
 
 </html>

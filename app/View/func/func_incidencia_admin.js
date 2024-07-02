@@ -1,3 +1,5 @@
+
+
 // TODO: SETEO DE COMBO AREA
 $(document).ready(function () {
   console.log("FETCHING")
@@ -6,7 +8,7 @@ $(document).ready(function () {
     type: 'GET',
     dataType: 'json',
     success: function (data) {
-      var select = $('#area');
+      var select = $('#cbo_area');
       select.empty();
       select.append('<option value="" selected disabled>Seleccione un &aacute;rea</option>');
       $.each(data, function (index, value) {
@@ -26,18 +28,20 @@ $(document).ready(function () {
 
 // TODO: SETEO DEL COMBO CATEGORIA
 $(document).ready(function () {
-  console.log("FETCHING")
+  console.log("FETCHING");
   $.ajax({
     url: 'ajax/getCategoryData.php',
     type: 'GET',
     dataType: 'json',
     success: function (data) {
-      var select = $('#categoria');
+      var select = $('#cbo_categoria');
       select.empty();
-      select.append('<option value="" selected disabled>Seleccione una categor&iacute;a</option>');
+      select.append('<option value="" selected disabled>Seleccione una categoría</option>');
       $.each(data, function (index, value) {
         select.append('<option value="' + value.CAT_codigo + '">' + value.CAT_nombre + '</option>');
       });
+
+      // Verificar y establecer el valor seleccionado
       if (categoriaRegistrada !== '') {
         select.val(categoriaRegistrada);
       } else {
@@ -45,31 +49,11 @@ $(document).ready(function () {
       }
     },
     error: function (error) {
-      console.error(error);
+      console.error('Error en la carga de categorías:', error);
     }
   });
 });
 
-
-$(document).ready(function () {
-  console.log("FETCHING")
-  $.ajax({
-    url: '../../../ajax/getLastIncidencia.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      console.log(data);
-      var select = $('#numero_incidencia');
-      if (select.val() === '') {
-        select.empty();
-        select.val(data.INC_numero);
-      }
-    },
-    error: function (error) {
-      console.error(error);
-    }
-  });
-});
 
 // TODO: CAMBIAR PAGINAS DE LA TABLA DE INCIDENCIAS
 function changePage(page) {
@@ -97,24 +81,6 @@ function changePage(page) {
 
 
 
-function limpiarCampos() {
-  // Obtener el formulario por su ID
-  const form = document.getElementById('formIncidencia');
-  // Limpiar los campos del formulario
-  form.reset();
-}
-const btnLimpiar = document.getElementById('limpiarCampos');
-btnLimpiar.addEventListener('click', limpiarCampos);
-
-function nuevoRegistro() {
-  const form = document.getElementById('formIncidencia');
-
-  // Restablecer el formulario
-  form.reset();
-}
-// Asignar el evento 'click' al botón 'Nuevo Registro'
-const btnNuevo = document.getElementById('nuevoRegistro');
-btnNuevo.addEventListener('click', nuevoRegistro);
 
 // TODO: GUARDAR INCIDENCIA
 $(document).ready(function () {
@@ -158,8 +124,8 @@ $(document).ready(function () {
     var mensajeError = '';
 
     // validar combos
-    var faltaCategoria = ($('#categoria').val() === null || $('#categoria').val() === '');
-    var faltaArea = ($('#area').val() === null || $('#area').val() === '');
+    var faltaCategoria = ($('#cbo_categoria').val() === null || $('#cbo_categoria').val() === '');
+    var faltaArea = ($('#cbo_area').val() === null || $('#cbo_area').val() === '');
     var faltaAsunto = ($('#asunto').val() === null || $('#asunto').val() === '');
     var faltaDocumento = ($('#documento').val() === null || $('#documento').val() === '');
 

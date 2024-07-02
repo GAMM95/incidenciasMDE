@@ -7,11 +7,31 @@ if (!isset($_SESSION['username'])) {
 }
 
 require_once 'config/conexion.php';
+require_once 'app/Model/IncidenciaModel.php';
+require_once 'app/Model/RecepcionModel.php';
+require_once 'app/Model/CierreModel.php';
+require_once 'app/Controller/InicioController.php';
+
 $conexion = new Conexion();
 $conector = $conexion->getConexion();
 
 $rol = $_SESSION['rol'];
+
+
+// Creacion de instancias de los modelos
+$incidenciasModel =  new IncidenciaModel();
+$recepcionesModel = new RecepcionModel();
+$cierresModel = new CierreModel();
+$controller = new InicioController();
+
+$cantidadesAdministador = $controller->mostrarCantidadesAdministrador();
+
+// cantidades individuales
+$incidenciasMes = $cantidadesAdministador['incidencias_mes_actual'];
+$recepcionesMes = $cantidadesAdministador['recepciones_mes_actual'];
+$cierresMes = $cantidadesAdministador['cierres_mes_actual'];
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -36,12 +56,12 @@ $rol = $_SESSION['rol'];
     // }
     if ($rol === 'Administrador' || $rol === 'Soporte') {
       include("app/View/partials/admin/sideBar.php");
+      include("app/View/Inicio/admin/PnlInicio.php");
     } else {
       include("app/View/partials/user/sideBar.php");
+      include("app/View/Inicio/user/PnlInicio.php");
     }
     ?>
-
-    <?php include("app/View/PnlInicio.php"); ?>
   </div>
 </body>
 

@@ -25,12 +25,13 @@
     ?>
     <!-- Header -->
     <h1 class="text-xl font-bold mb-4">Registro de Incidencia</h1>
-    <!-- Formulario -->
-    <form id="formIncidencia" action="registro-incidencia.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
-      <!-- PRIMERA FILA Campo para mostrar el número de incidencia -->
-      <div class="flex items-center mb-4 hidden">
+    <!-- TODO: FORMULARIO -->
+    <form id="formIncidencia" action="registro-incidencia-user.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+
+      <!-- TODO: FILA OCULTA DEL FORMULARIO - NUMERO DE INCIDENCIA -->
+      <div class="flex items-center mb-4 ">
         <label for="numero_incidencia" class="block font-bold mb-1 mr-1 text-lime-500">Nro Incidencia:</label>
-        <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly disabled>
+        <input type="text" id="numero_incidencia" name="numero_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm" readonly>
       </div>
 
       <!-- TODO: PRIMERA FILA DEL FORMULARIO -->
@@ -38,12 +39,13 @@
         <!-- AREA DEL USUARIO -->
         <div class="w-full sm:w-1/6 px-2 mb-2 ">
           <label for="area" class="block mb-1 font-bold text-sm">&Aacute;rea:</label>
-          <input type="text" id="area" name="area" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoArea']; ?>">
+          <input type="text" id="area" name="area" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoArea']; ?>" readonly>
         </div>
         <div class="w-full sm:w-1/2 px-2 mb-4">
           <label for="area" class="block font-bold mb-1 text-sm">&Aacute;rea:</label>
-          <input type="text" id="area" name="area" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['area']; ?>" readonly disabled>
+          <input type="text" id="area" name="area" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['area']; ?>" readonly>
         </div>
+
 
         <!-- FECHA DE REGISTRO DE INCIDENCIA -->
         <div class="w-full sm:w-1/6 px-2 mb-4">
@@ -153,7 +155,7 @@
     <!-- Fin del formulario -->
   </main>
 </body>
-<script>
+<!-- <script>
   $(document).ready(function() {
     console.log("FETCHING CATEGORIES");
     $.ajax({
@@ -237,29 +239,29 @@
   btnNuevo.addEventListener('click', nuevoRegistro);
 
   //GUARDAR DATOS
-  $(document).ready(function() {
-    $("#guardar-incidencia").on("click", function() {
-      // Obtener los datos del formulario
-      var formData = $("form").serialize(); // Obtener los datos del formulario
+  // $(document).ready(function() {
+  //   $("#guardar-incidencia").on("click", function() {
+  //     // Obtener los datos del formulario
+  //     var formData = $("form").serialize(); // Obtener los datos del formulario
 
-      $.ajax({
-        url: "consultar-incidencia.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
-        type: "POST",
-        data: formData,
-        success: function(response) {
-          // Manejar la respuesta del servidor si es necesario
-          alert("Datos guardados exitosamente");
-          // Puedes limpiar el formulario si lo deseas
-          $("form")[0].reset();
-        },
-        error: function(xhr, status, error) {
-          // Manejar los errores si la solicitud falla
-          console.error(error);
-          alert("Error al guardar los datos. Por favor, inténtalo de nuevo.");
-        }
-      });
-    });
-  });
-</script>
+  //     $.ajax({
+  //       url: "consultar-incidencia.php", // Reemplaza "tu_archivo_de_backend.php" con tu ruta de backend
+  //       type: "POST",
+  //       data: formData,
+  //       success: function(response) {
+  //         // Manejar la respuesta del servidor si es necesario
+  //         alert("Datos guardados exitosamente");
+  //         // Puedes limpiar el formulario si lo deseas
+  //         $("form")[0].reset();
+  //       },
+  //       error: function(xhr, status, error) {
+  //         // Manejar los errores si la solicitud falla
+  //         console.error(error);
+  //         alert("Error al guardar los datos. Por favor, inténtalo de nuevo.");
+  //       }
+  //     });
+  //   });
+  // });
+</script> -->
 
 </html>
