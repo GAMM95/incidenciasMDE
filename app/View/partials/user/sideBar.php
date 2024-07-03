@@ -1,11 +1,12 @@
-<!doctype html>
-<html lang="es">
-
 <?php
+// Inicia la sesión solo aquí
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 ?>
+
+<!doctype html>
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">

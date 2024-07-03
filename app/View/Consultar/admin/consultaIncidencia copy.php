@@ -94,7 +94,6 @@
     </script>
 
     <!-- TODO: TABLA DE RESULTADOS DE LAS INCIDENCIAS -->
-
     <div class="relative shadow-md sm:rounded-lg">
       <div class="max-w-full overflow-hidden">
         <table id="tablaConsultarIncidencias" class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -113,12 +112,14 @@
           </thead>
           <tbody>
             <?php
-            if (!empty($resultadoBusqueda)) {
-              foreach ($resultadoBusqueda as $incidencia) {
+            // Preparar resultado como HTML para la tabla
+            ob_start(); // Iniciar el almacenamiento en búfer
+            if (!empty($incidencias)) {
+              foreach ($incidencias as $incidencia) {
                 echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all border-b'>";
                 echo "<td class='px-3 py-2'>" . $incidencia['INC_numero'] . "</td>";
                 echo "<td class='px-3 py-2'>" . $incidencia['fechaIncidenciaFormateada'] . "</td>";
-                echo "<td class='px-3 py-2'>" . $incidencia['area'] . "</td>";
+                echo "<td class='px-3 py-2'>" . $incidencia['ARE_nombre'] . "</td>";
                 echo "<td class='px-3 py-2'>" . $incidencia['codigoPatrimonial'] . "</td>";
                 echo "<td class='px-3 py-2'>" . $incidencia['CAT_nombre'] . "</td>";
                 echo "<td class='px-3 py-2'>" . $incidencia['INC_asunto'] . "</td>";
@@ -130,6 +131,8 @@
             } else {
               echo "<tr><td colspan='9' class='text-center py-4'>No se encontraron incidencias.</td></tr>";
             }
+            $tableRows = ob_get_clean(); // Obtener el contenido del búfer y limpiarlo
+            echo $tableRows; // Devolver el HTML generado
             ?>
           </tbody>
         </table>

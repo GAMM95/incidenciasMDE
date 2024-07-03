@@ -97,6 +97,7 @@
             <th scope="col" class="px-6 py-3"> &Aacute;rea </th>
             <th scope="col" class="px-6 py-3"> Usuario </th>
             <th scope="col" class="px-6 py-3"> Contrase&ntilde;a </th>
+            <th scope="col" class="px-6 py-3"> Rol</th>
             <th scope="col" class="px-6 py-3"> Estado </th>
             <th scope="col" class="px-6 py-3"> Opciones </th>
           </tr>
@@ -127,6 +128,10 @@
 
             echo "<td class='px-6 py-4' data-password='" . htmlspecialchars($usuario['USU_password']) . "'>";
             echo htmlspecialchars($usuario['USU_password']);
+            echo "</td>";
+
+            echo "<td class='px-6 py-4' data-password='" . htmlspecialchars($usuario['ROL_nombre']) . "'>";
+            echo htmlspecialchars($usuario['ROL_nombre']);
             echo "</td>";
 
             echo "<td class='px-6 py-4' data-estado='" . $estado . "' data-codrol='" . (isset($usuario['ROL_codigo']) ? htmlspecialchars($usuario['ROL_codigo']) : "") . "'>";

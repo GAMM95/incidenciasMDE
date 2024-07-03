@@ -84,7 +84,7 @@
         <!-- CODIGO PATROMONIAL -->
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="codigo_patrimonial" class="block mb-1 font-bold text-sm">C&oacute;digo Patrimonial:</label>
-          <input type="text" id="codigo_patrimonial" name="codigo_patrimonial" class="border p-2 w-full text-sm" maxlength="12" pattern="\d{1,12}" title="Ingrese los 12 d&iacute;gitos del c&oacute;digo patrimonial" placeholder="Ingrese codigo patrimonial">
+          <input type="text" id="codigo_patrimonial" name="codigo_patrimonial" class="border p-2 w-full text-sm" maxlength="12" pattern="\d{1,12}" inputmode="numeric" title="Ingrese solo dígitos" required oninput="this.value = this.value.replace(/[^0-9]/g, ''); " placeholder="Ingrese c&oacute;digo patrimonial">
         </div>
 
         <!-- ASUNTO DE LA INCIDENCIA -->
@@ -147,7 +147,7 @@
     $start = ($page - 1) * $limit; // Calcula el índice de inicio
 
     // Obtiene el total de registros
-    $totalIncidencias = $incidenciaModel->contarIncidencias();
+    $totalIncidencias = $incidenciaModel->contarIncidenciasAdministrador();
     $totalPages = ceil($totalIncidencias / $limit);
 
     // Obtiene las incidencias para la página actual

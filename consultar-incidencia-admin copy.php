@@ -1,17 +1,6 @@
 <?php
-session_start();
-// Verificar si no hay una sesión iniciada
-if (!isset($_SESSION['usuario'])) {
-  header("Location: index.php"); // Redirigir a la página de inicio de sesión si no hay sesión iniciada
-  exit();
-}
-
 $action = $_GET['action'] ?? '';
 $INC_numero = $_GET['INC_numero'] ?? '';
-$area = $_GET['area'] ?? '';
-$codigoPatrimonial = $_GET['codigoPatrimonial'] ?? '';
-$fechaInicio = $_GET['fechaInicio'] ?? null;
-$fechaFin = $_GET['fechaFin'] ?? null;
 
 require_once 'app/Controller/incidenciaController.php';
 $incidenciaController = new IncidenciaController();
@@ -29,17 +18,31 @@ switch ($action) {
     $incidenciaController->registrarIncidencia();
     break;
   case 'consultar':
-    $resultadoBusqueda = NULL;
-    if (!empty($area) || !empty($codigoPatrimonial) || !empty($fechaInicio) || !empty($fechaFin)) {
-      $resultadoBusqueda = $incidenciaController->consultarIncidenciaAdministrador();
+    $area = $_GET['area'] ?? null;
+    $codigoPatrimonial = $_GET['codigoPatrimonial'] ?? null;
+    $fechaInicio = $_GET['fechaInicio'] ?? null;
+    $fechaFin = $_GET['fechaFin'] ?? null;
+
+    if ($area !== null || $codigoPatrimonial !== null || $fechaInicio !== null || $fechaFin !== null) {
+      $incidencias = $incidenciaController->consultarIncidenciaAdministrador($area, $codigoPatrimonial, $fechaInicio, $fechaFin);
+
+      if (empty($incidencias)) {
+        $error = "No se encontraron incidencias para los criterios especificados.";
+      }
+
+      include("app/View/Consultar/admin/consultaIncidencia.php");
     } else {
-      $error = "No se encontraron incidencias para los criterios especificados.";
+      $error = "Debe especificar al menos uno de los criterios de búsqueda.";
+      include("app/View/Consultar/admin/consultaIncidencia.php");
     }
     break;
+
   default:
+    // Cualquier otra lógica que necesites manejar
     break;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">

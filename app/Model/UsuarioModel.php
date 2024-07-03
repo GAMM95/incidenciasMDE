@@ -129,10 +129,11 @@ class UsuarioModel extends Conexion
   {
     try {
       $conector = $this->getConexion();
-      $sql = "SELECT USU_codigo, (p.PER_nombres + ' ' + p.PER_apellidoPaterno + ' '+ p.PER_apellidoMaterno) as persona, a.ARE_nombre , USU_nombre, USU_password, e.EST_descripcion FROM USUARIO u
+      $sql = "SELECT USU_codigo, (p.PER_nombres + ' ' + p.PER_apellidoPaterno + ' '+ p.PER_apellidoMaterno) as persona, a.ARE_nombre , USU_nombre, USU_password, r.ROL_nombre, e.EST_descripcion FROM USUARIO u
       INNER JOIN PERSONA p on p.PER_codigo = u.PER_codigo
       INNER JOIN AREA a on a.ARE_codigo = u.ARE_codigo
       INNER JOIN ESTADO e on e.EST_codigo = u.EST_codigo
+      INNER JOIN ROL r ON r.ROL_codigo = u.ROL_codigo
       ORDER BY USU_codigo";
       $stmt = $conector->prepare($sql);
       $stmt->execute();
