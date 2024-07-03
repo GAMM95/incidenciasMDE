@@ -353,6 +353,29 @@ class IncidenciaModel extends Conexion
     }
   }
 
+  // METODO PARA CONTAR LOS PENDIENTES EN EL MES ACTUAL PARA EL ADMINISTRADOR
+  public function contarPendientesUltimoMesAdministrador()
+  {
+    $conector = parent::getConexion();
+    try {
+      if ($conector != null) {
+        $sql = "SELECT COUNT(*) as pendientes_mes_actual FROM INCIDENCIA 
+              WHERE INC_FECHA >= DATEADD(MONTH, -1, GETDATE())
+              AND EST_codigo = 3";
+        $stmt = $conector->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['pendientes_mes_actual'];
+      } else {
+        echo "Error de conexión con la base de datos.";
+        return null;
+      }
+    } catch (PDOException $e) {
+      echo "Error al contar incidencias del ultimo mes para el administrador: " . $e->getMessage();
+      return null;
+    }
+  }
+
   // TODO: Contar incidencias del ultimo mes para el administrador
   public function contarIncidenciasUltimoMesUsuario($area)
   {
@@ -378,6 +401,31 @@ class IncidenciaModel extends Conexion
     }
   }
 
+  // METODO PARA CONTAR LOS PENDIENTES EN EL MES ACTUAL PARA EL USUARIO
+  public function contarPendientesUltimoMesUsuario($area)
+  {
+    $conector = parent::getConexion();
+    try {
+      if ($conector != null) {
+        $sql = "SELECT COUNT(*) as pendientes_mes_actual FROM INCIDENCIA i
+                INNER JOIN AREA a ON a.ARE_codigo = i.ARE_codigo
+                WHERE INC_FECHA >= DATEADD(MONTH, -1, GETDATE())
+                AND EST_codigo = 3 AND
+                a.ARE_codigo = :are_codigo";
+        $stmt = $conector->prepare($sql);
+        $stmt->bindParam(':are_codigo', $area, PDO::PARAM_INT); // Vinculamos el parámetro
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['pendientes_mes_actual'];
+      } else {
+        echo "Error de conexión con la base de datos.";
+        return null;
+      }
+    } catch (PDOException $e) {
+      echo "Error al contar incidencias del ultimo mes para el administrador: " . $e->getMessage();
+      return null;
+    }
+  }
 
   // METODOS PARA CONSULTAS
 
@@ -430,8 +478,8 @@ class IncidenciaModel extends Conexion
 
         // Asignar valores a los parámetros
         $stmt->bindParam(':codigoPatrimonial', $codigoPatrimonial, PDO::PARAM_STR);
-        $stmt->bindParam(':fechaInicio', $fechaInicio, PDO::PARAM_STR);
-        $stmt->bindParam(':fechaFin', $fechaFin, PDO::PARAM_STR);
+        $stmt->bindParam(':fechaInicio', $fechaInicio);
+        $stmt->bindParam(':fechaFin', $fechaFin);
         $stmt->bindParam(':areaCodigo', $codigoArea, PDO::PARAM_INT);
 
         // Ejecutar la consulta
@@ -452,57 +500,57 @@ class IncidenciaModel extends Conexion
 
 
 
-  //   public function buscarIncidenciaAdministrador($codigoArea, $codigoPatrimonial, $fechaInicio, $fechaFin)
-  //   {
-  //     $conector = parent::getConexion(); // Asumiendo que getConexion() devuelve la conexión PDO
+    // // public function buscarIncidenciaAdministrador($codigoArea, $codigoPatrimonial, $fechaInicio, $fechaFin)
+    // // {
+    // //   $conector = parent::getConexion(); // Asumiendo que getConexion() devuelve la conexión PDO
 
-  //     try {
-  //       if ($conector != null) {
-  //         // Construir la consulta SQL con parámetros
-  //         $sql = "SELECT 
-  //                 INC_numero, 
-  //                 CONVERT(VARCHAR(10), INC_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), INC_hora, 0), 7), 6, 0, ' ') AS fechaIncidenciaFormateada, 
-  //                 INC_asunto, 
-  //                 INC_descripcion, 
-  //                 INC_documento, 
-  //                 INC_codigoPatrimonial, 
-  //                 c.CAT_nombre, 
-  //                 a.ARE_nombre, 
-  //                 u.USU_nombre, 
-  //                 e.EST_descripcion
-  //             FROM INCIDENCIA i
-  //             INNER JOIN CATEGORIA c ON c.CAT_codigo = i.CAT_codigo
-  //             INNER JOIN AREA a ON a.ARE_codigo = i.ARE_codigo
-  //             INNER JOIN USUARIO u ON u.USU_codigo = i.USU_codigo
-  //             INNER JOIN ESTADO e ON e.EST_codigo = i.EST_codigo
-  //             WHERE 
-  //                 (:codigoPatrimonial IS NULL OR INC_codigoPatrimonial = :codigoPatrimonial) AND
-  //                 (:fechaInicio IS NULL OR INC_fecha >= :fechaInicio) AND
-  //                 (:fechaFin IS NULL OR INC_fecha <= :fechaFin) AND
-  //                 (:areaCodigo IS NULL OR a.ARE_codigo = :areaCodigo)";
+    // //   try {
+    // //     if ($conector != null) {
+    // //       Construir la consulta SQL con parámetros
+    // //       $sql = "SELECT 
+    // //               INC_numero, 
+    // //               CONVERT(VARCHAR(10), INC_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), INC_hora, 0), 7), 6, 0, ' ') AS fechaIncidenciaFormateada, 
+    // //               INC_asunto, 
+    // //               INC_descripcion, 
+    // //               INC_documento, 
+    // //               INC_codigoPatrimonial, 
+    // //               c.CAT_nombre, 
+    // //               a.ARE_nombre, 
+    // //               u.USU_nombre, 
+    // //               e.EST_descripcion
+    // //           FROM INCIDENCIA i
+    // //           INNER JOIN CATEGORIA c ON c.CAT_codigo = i.CAT_codigo
+    // //           INNER JOIN AREA a ON a.ARE_codigo = i.ARE_codigo
+    // //           INNER JOIN USUARIO u ON u.USU_codigo = i.USU_codigo
+    // //           INNER JOIN ESTADO e ON e.EST_codigo = i.EST_codigo
+    // //           WHERE 
+    // //               (:codigoPatrimonial IS NULL OR INC_codigoPatrimonial = :codigoPatrimonial) AND
+    // //               (:fechaInicio IS NULL OR INC_fecha >= :fechaInicio) AND
+    // //               (:fechaFin IS NULL OR INC_fecha <= :fechaFin) AND
+    // //               (:areaCodigo IS NULL OR a.ARE_codigo = :areaCodigo)";
 
-  //         // Preparar la consulta
-  //         $stmt = $conector->prepare($sql);
+    // //       Preparar la consulta
+    // //       $stmt = $conector->prepare($sql);
 
-  //         // Asignar valores a los parámetros
-  //         $stmt->bindParam(':codigoPatrimonial', $codigoPatrimonial);
-  //         $stmt->bindParam(':fechaInicio', $fechaInicio);
-  //         $stmt->bindParam(':fechaFin', $fechaFin);
-  //         $stmt->bindParam(':areaCodigo', $codigoArea);
+    // //       Asignar valores a los parámetros
+    // //       $stmt->bindParam(':codigoPatrimonial', $codigoPatrimonial);
+    // //       $stmt->bindParam(':fechaInicio', $fechaInicio);
+    // //       $stmt->bindParam(':fechaFin', $fechaFin);
+    // //       $stmt->bindParam(':areaCodigo', $codigoArea);
 
-  //         // Ejecutar la consulta
-  //         $stmt->execute();
+    // //       Ejecutar la consulta
+    // //       $stmt->execute();
 
-  //         // Obtener el resultado como un arreglo asociativo
-  //         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // //       Obtener el resultado como un arreglo asociativo
+    // //       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-  //         // Retornar el resultado
-  //         return $result;
-  //       } else {
-  //         throw new Exception("Error de conexión con la base de datos.");
-  //       }
-  //     } catch (PDOException $e) {
-  //       throw new Exception("Error al obtener las incidencias: " . $e->getMessage());
-  //     }
-  //   }
+    // //       Retornar el resultado
+    // //       return $result;
+    // //     } else {
+    // //       throw new Exception("Error de conexión con la base de datos.");
+    // //     }
+    // //   } catch (PDOException $e) {
+    // //     throw new Exception("Error al obtener las incidencias: " . $e->getMessage());
+    // //   }
+    // // }
 }

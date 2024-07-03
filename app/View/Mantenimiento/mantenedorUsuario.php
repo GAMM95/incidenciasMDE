@@ -63,12 +63,12 @@
       <div class="flex flex-wrap -mx-2">
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="nombre" class="block mb-1 font-bold text-sm">Usuario:</label>
-          <input type="text" id="txt_nombreUsuario" name="nombre" class="border p-2 w-full text-sm" maxlength="8" pattern="\d{1,8}" title="Ingrese solo dígitos" required>
+          <input type="text" id="txt_nombreUsuario" name="nombre" class="border p-2 w-full text-sm" placeholder="Ingrese nombre de usuario">
         </div>
 
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="password" class="block mb-1 font-bold text-sm">Contrase&ntilde;a:</label>
-          <input type="text" id="txt_password" name="password" class="border p-2 w-full text-sm" limi required>
+          <input type="text" id="txt_password" name="password" class="border p-2 w-full text-sm" placeholder="Ingrese contraseña">
         </div>
       </div>
 
@@ -155,7 +155,8 @@
     </div>
   </main>
   <!-- <script src="./app/View/func/func_usuario.js"></script> -->
+  <script src="./app/View/func/func_usuario.js"></script>
 </body>
-<script src="./app/View/func/func_usuario.js"></script>
+<!-- <script src="./app/View/func/func_usuario.js"></script> -->
 
 </html>

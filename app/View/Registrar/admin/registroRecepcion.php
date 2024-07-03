@@ -109,7 +109,7 @@
           </div>
 
           <!-- INPUT ESCONDIDO PARA EL NUMERO DE RECEPCION -->
-          <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center ">
+          <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center hidden">
             <label for="num_recepcion" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Recepci&oacute;n:</label>
             <input type="text" id="num_recepcion" name="num_recepcion" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly>
           </div>

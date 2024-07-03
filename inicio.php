@@ -16,7 +16,7 @@ $conexion = new Conexion();
 $conector = $conexion->getConexion();
 
 $rol = $_SESSION['rol'];
-
+$area = $_SESSION['codigoArea']; // Asegúrate de tener el área del usuario en la sesión
 
 // Creacion de instancias de los modelos
 $incidenciasModel =  new IncidenciaModel();
@@ -24,14 +24,14 @@ $recepcionesModel = new RecepcionModel();
 $cierresModel = new CierreModel();
 $controller = new InicioController();
 
-$cantidadesAdministador = $controller->mostrarCantidadesAdministrador();
 
-// cantidades individuales
-$incidenciasMes = $cantidadesAdministador['incidencias_mes_actual'];
-$recepcionesMes = $cantidadesAdministador['recepciones_mes_actual'];
-$cierresMes = $cantidadesAdministador['cierres_mes_actual'];
+if ($rol === 'Administrador' || $rol === 'Soporte') {
+  $cantidades = $controller->mostrarCantidadesAdministrador();
+} else {
+  $cantidades = $controller->mostrarCantidadesUsuario($area);
+}
+
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -42,7 +42,7 @@ $cierresMes = $cantidadesAdministador['cierres_mes_actual'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="public/assets/logo.ico" />
   <link rel="stylesheet" href="./public/styles/appMenu.css">
-  <title>Consulta Transportes</title>
+  <title>Sistema de incidencias</title>
 </head>
 
 <body>

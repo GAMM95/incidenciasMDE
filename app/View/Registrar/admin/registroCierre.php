@@ -210,14 +210,75 @@
         <div class="flex justify-center space-x-4 mt-2">
           <button type="submit" id="guardar-cierre" class="bg-[#87cd51] text-white font-bold hover:bg-[#8ce83c] py-2 px-4 rounded">Guardar</button>
           <button type="button" class="bg-blue-500 text-white font-bold hover:bg-blue-600 py-2 px-4 rounded">Editar</button>
-          <button type="button" id="imprimirDatos" class="bg-yellow-500 text-white font-bold hover:bg-yellow-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">Imprimir</button>
-          <button type="button" id="limpiarCampos" class="bg-red-500 text-white font-bold hover:bg-red-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">Limpiar</button>
+          <!-- <button type="button" id="imprimirDatos" class="bg-yellow-500 text-white font-bold hover:bg-yellow-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">Imprimir</button> -->
+          <!-- <button type="button" id="limpiarCampos" class="bg-red-500 text-white font-bold hover:bg-red-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">Limpiar</button> -->
           <button type="button" id="nuevoRegistro" class="bg-gray-500 text-white font-bold hover:bg-gray-600 py-2 px-4 rounded w-full md:w-auto mt-2 md:mt-0">Nuevo</button>
         </div>
       </form>
     </div>
 
+    <!-- TODO: TABLA DE INCIDENCIAS REGISTRADAS -->
+    <?php
+    require_once './app/Model/CierreModel.php';
 
+    $cierreModel = new CierreModel();
+    $limit = 5; // Número de filas por página
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Página actual
+    $start = ($page - 1) * $limit; // Calcula el índice de inicio
+
+    // Obtiene el total de registros
+    $totalCierres = $cierreModel->contarIncidenciasCerradas();
+    $totalPages = ceil($totalCierres / $limit);
+
+    // Obtiene las incidencias para la página actual
+    $cierres = $cierreModel->obtenerIncidenciasCerradas($start, $limit);
+    ?>
+
+    <div>
+      <div class="relative max-h-[800px] mt-2 overflow-x-hidden shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-blue-300">
+            <tr>
+              <th scope="col" class="px-6 py-3">Incidencia</th>
+              <th scope="col" class="px-6 py-3">Fecha Incidencia</th>
+              <th scope="col" class="px-6 py-3">&Aacute;rea</th>
+              <th scope="col" class="px-6 py-3">C&oacute;digo patrimonial</th>
+              <th scope="col" class="px-6 py-3">Fecha Cierre</th>
+              <th scope="col" class="px-6 py-3">Asunto Cierre</th>
+              <th scope="col" class="px-6 py-3">Documento Cierre</th>
+              <th scope="col" class="px-6 py-3">Operatividad</th>
+              <th scope="col" class="px-6 py-3">Usuario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($cierres as $incidencia) : ?>
+              <tr class='second-table bg-white hover:bg-green-100 hover:scale-[101%] transition-all border-b'>
+                <th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap'> <?= $incidencia['INC_numero']; ?></th>
+                <td class='px-6 py-4'><?= $incidencia['fechaIncidenciaFormateada']; ?></td>
+                <td class='px-6 py-4'><?= $incidencia['ARE_nombre']; ?></td>
+                <td class='px-6 py-4'><?= $incidencia['INC_codigoPatrimonial']; ?></td>
+                <td class='px-6 py-4'><?= $incidencia['fechaCierreFormateada']; ?></td>
+                <td class='px-6 py-4'><?= $incidencia['CIE_asunto']; ?></td>
+                <td class='px-6 py-4'><?= $incidencia['CIE_documento']; ?></td>
+                <td class='px-6 py-4'><?= $incidencia['OPE_descripcion']; ?></td>
+                <td class='px-6 py-4'><?= $incidencia['USU_nombre']; ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <div class="flex justify-center items-center mt-4">
+        <?php if ($page > 1) : ?>
+          <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePage(<?php echo $page - 1; ?>)">&lt;</a>
+        <?php endif; ?>
+        <span class="mx-2">P&aacute;gina <?php echo $page; ?> de <?php echo $totalPages; ?></span>
+        <?php if ($page < $totalPages) : ?>
+          <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePage(<?php echo $page + 1; ?>)">&gt;</a>
+        <?php endif; ?>
+      </div>
+    </div>
   </main>
 
   <!-- <script src="./app/View/func/func_cierre.js"></script> -->

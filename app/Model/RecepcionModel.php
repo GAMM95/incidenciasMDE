@@ -217,4 +217,30 @@ class RecepcionModel extends Conexion
       return null;
     }
   }
+
+  // TODO: Contar recepcions del ultimo mes para el administrador
+  public function contarRecepcionesUltimoMesUsuario()
+  {
+    $conector = parent::getConexion();
+    try {
+      if ($conector != null) {
+        $sql = "SELECT COUNT(*) as recepciones_mes_actual FROM RECEPCION r
+                INNER JOIN INCIDENCIA i ON i.INC_numero = r.INC_numero
+                INNER JOIN AREA a ON a.ARE_codigo = i.ARE_codigo
+                WHERE REC_FECHA >= DATEADD(MONTH, -1, GETDATE()) AND
+                a.ARE_codigo = :are_codigo";
+        $stmt = $conector->prepare($sql);
+        $stmt->bindParam(':are_codigo', $area, PDO::PARAM_INT); // Vinculamos el parámetro
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['recepciones_mes_actual'];
+      } else {
+        echo "Error de conexión con la base de datos.";
+        return null;
+      }
+    } catch (PDOException $e) {
+      echo "Error al contar recepciones del ultimo mes para el administrador: " . $e->getMessage();
+      return null;
+    }
+  }
 }

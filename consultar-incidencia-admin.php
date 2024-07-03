@@ -8,10 +8,11 @@ if (!isset($_SESSION['usuario'])) {
 
 $action = $_GET['action'] ?? '';
 $INC_numero = $_GET['INC_numero'] ?? '';
-$area = $_GET['area'] ?? '';
-$codigoPatrimonial = $_GET['codigoPatrimonial'] ?? '';
-$fechaInicio = $_GET['fechaInicio'] ?? null;
-$fechaFin = $_GET['fechaFin'] ?? null;
+
+$area = isset($_GET['area']) ? $_GET['area'] : '';
+$codigoPatrimonial = isset($_GET['codigoPatrimonial']) ? $_GET['codigoPatrimonial'] : '';
+$fechaInicio = isset($_GET['fechaInicio']) ? $_GET['fechaInicio'] : '';
+$fechaFin = isset($_GET['fechaFin']) ? $_GET['fechaFin'] : '';
 
 require_once 'app/Controller/incidenciaController.php';
 $incidenciaController = new IncidenciaController();

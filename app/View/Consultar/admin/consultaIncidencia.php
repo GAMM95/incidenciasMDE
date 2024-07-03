@@ -27,6 +27,7 @@
         <div class="w-full md:w-1/3 px-2 mb-2">
           <label for="area" class="block mb-1 font-bold text-sm">&Aacute;rea:</label>
           <select id="cbo_area" name="area" class="border p-2 w-full text-sm cursor-pointer">
+            <!-- Aquí puedes cargar opciones de área dinámicamente si es necesario -->
           </select>
         </div>
 
@@ -48,7 +49,7 @@
         </div>
       </div>
 
-      <!-- TODO: BOTONES DEL FORMULARIO -->
+      <!-- BOTONES DEL FORMULARIO -->
       <div class="flex justify-center space-x-2 mt-2">
         <button type="submit" id="buscar-incidencias" class="bg-blue-500 text-white font-bold hover:bg-[#4c8cf5] py-2 px-4 rounded">
           Buscar
@@ -58,42 +59,9 @@
         </button>
       </div>
     </form>
-    <script>
-      $(document).ready(function() {
-        $('#buscar-incidencias').submit(function(event) {
-          event.preventDefault(); // Evitar el envío normal del formulario
 
-          // Obtener los valores de los campos del formulario
-          var area = $('#cbo_area').val();
-          var codigoPatrimonial = $('#codigoPatrimonial').val();
-          var fechaInicio = $('#fechaInicio').val();
-          var fechaFin = $('#fechaFin').val();
 
-          // Enviar la solicitud AJAX
-          $.ajax({
-            url: 'consultar-incidencia-admin.php?action=consultar', // URL a la que se envía la solicitud
-            method: 'GET', // Método HTTP (GET es el predeterminado para formularios GET)
-            data: {
-              area: area,
-              codigoPatrimonial: codigoPatrimonial,
-              fechaInicio: fechaInicio,
-              fechaFin: fechaFin
-            },
-            success: function(response) {
-              // Actualizar la tabla de incidencias con los resultados recibidos
-              $('#tablaConsultarIncidencias tbody').html(response);
-            },
-            error: function(xhr, status, error) {
-              // Manejar errores si los hubiera
-              console.error(error);
-              toastr.error('Ocurrió un error al buscar incidencias.');
-            }
-          });
-        });
-      });
-    </script>
-
-    <!-- TODO: TABLA DE RESULTADOS DE LAS INCIDENCIAS -->
+    <!-- TABLA DE RESULTADOS DE LAS INCIDENCIAS -->
 
     <div class="relative shadow-md sm:rounded-lg">
       <div class="max-w-full overflow-hidden">
@@ -113,6 +81,7 @@
           </thead>
           <tbody>
             <?php
+            // Aquí deberías inicializar $resultadoBusqueda con la consulta adecuada
             if (!empty($resultadoBusqueda)) {
               foreach ($resultadoBusqueda as $incidencia) {
                 echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all border-b'>";
@@ -137,6 +106,40 @@
     </div>
   </main>
   <script src="./app/View/func/func_consulta_incidencia_admin.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#buscar-incidencias').submit(function(event) {
+        event.preventDefault(); // Evitar el envío normal del formulario
+
+        // Obtener los valores de los campos del formulario
+        var area = $('#cbo_area').val();
+        var codigoPatrimonial = $('#codigoPatrimonial').val();
+        var fechaInicio = $('#fechaInicio').val();
+        var fechaFin = $('#fechaFin').val();
+
+        // Enviar la solicitud AJAX
+        $.ajax({
+          url: 'consultar-incidencia-admin.php?action=consultar', // URL a la que se envía la solicitud
+          method: 'GET', // Método HTTP (GET es el predeterminado para formularios GET)
+          data: {
+            area: area,
+            codigoPatrimonial: codigoPatrimonial,
+            fechaInicio: fechaInicio,
+            fechaFin: fechaFin
+          },
+          success: function(response) {
+            // Actualizar la tabla de incidencias con los resultados recibidos
+            $('#tablaConsultarIncidencias tbody').html(response);
+          },
+          error: function(xhr, status, error) {
+            // Manejar errores si los hubiera
+            console.error(error);
+            toastr.error('Ocurrió un error al buscar incidencias.');
+          }
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>
