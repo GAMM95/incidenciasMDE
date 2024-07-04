@@ -44,25 +44,21 @@ if ($rol === 'Administrador' || $rol === 'Soporte') {
   <title>Sistema de incidencias</title>
 </head>
 
-<body class="bg-[#eeeff1] flex flex-col min-h-screen">
-
-
+<body class="bg-[#eeeff1] flex min-h-screen">
   <!-- Contenido principal -->
-  <main class="flex-1  w-full">
+  <div class="flex  w-full mt-20 ">
+    <?php
+    if ($rol === 'Administrador' || $rol === 'Soporte') {
 
-    <div class="flex justify-center w-full mt-20 ">
-      <?php
-      if ($rol === 'Administrador' || $rol === 'Soporte') {
+      include("app/View/partials/admin/header.php");
+      include("app/View/Inicio/admin/PnlInicio.php");
+    } else {
+      // include("app/View/partials/user/sideBar.php");
+      include("app/View/Inicio/user/PnlInicio.php");
+    }
+    ?>
+  </div>
 
-        include("app/View/partials/admin/sideBar.php");
-        include("app/View/Inicio/admin/PnlInicio.php");
-      } else {
-        // include("app/View/partials/user/sideBar.php");
-        include("app/View/Inicio/user/PnlInicio.php");
-      }
-      ?>
-    </div>
-  </main>
 
 </body>
 

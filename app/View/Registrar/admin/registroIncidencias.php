@@ -26,7 +26,7 @@
     <!-- Header -->
     <h1 class="text-xl font-bold mb-4">Registro de Incidencia</h1>
     <!-- TODO: FORMULARIO -->
-    <form id="formIncidencia" action="registro-incidencia-admin.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">
+    <form id="formIncidencia" action="registro-incidencia-admin.php?action=registrar" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md mb-2">
 
       <!-- TODO: FILA OCULTA DEL FORMULARIO - NUMERO DE INCIDENCIA -->
       <div class="flex items-center mb-4 hidden">
@@ -147,23 +147,24 @@
     ?>
 
     <div>
-      <!-- Paginación -->
-      <div class="flex justify-center items-center mt-4">
-        <?php if ($page > 1) : ?>
-          <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePage(<?php echo $page - 1; ?>)">&lt;</a>
-        <?php endif; ?>
-        <span class="mx-2">P&aacute;gina <?php echo $page; ?> de <?php echo $totalPages; ?></span>
-        <?php if ($page < $totalPages) : ?>
-          <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePage(<?php echo $page + 1; ?>)">&gt;</a>
-        <?php endif; ?>
-      </div>
-      
+      <?php if ($totalPages > 0) : ?>
+        <div class="flex justify-end items-center mt-1">
+          <?php if ($page > 1) : ?>
+            <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaListarIncidencias(<?php echo $page - 1; ?>)">&lt;</a>
+          <?php endif; ?>
+          <span class="mx-2">P&aacute;gina <?php echo $page; ?> de <?php echo $totalPages; ?></span>
+          <?php if ($page < $totalPages) : ?>
+            <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaListarIncidencias(<?php echo $page + 1; ?>)">&gt;</a>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
+
       <div class="relative max-h-[800px] mt-2 overflow-x-hidden shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <table id="tablaListarIncidencias" class="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-blue-300">
             <tr>
-              <th scope="col" class="px-6 py-3">N°</th>
-              <th scope="col" class="px-6 py-3">Fecha y Hora</th>
+              <th scope="col" class="px-6 py-3">N° de entrada</th>
+              <th scope="col" class="px-6 py-3">Fecha de entrada</th>
               <th scope="col" class="px-6 py-3">Area</th>
               <th scope="col" class="px-6 py-3">Código Patrimonial</th>
               <th scope="col" class="px-6 py-3">Categoría</th>
@@ -183,11 +184,17 @@
                 <td class='px-6 py-4'><?= $incidencia['USU_nombre']; ?></td>
               </tr>
             <?php endforeach; ?>
+
+            <?php if (empty($incidencias)) : ?>
+              <tr>
+                <td colspan="7" class="text-center py-4">No hay incidencias sin recepcionar.</td>
+              </tr>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>
 
-      
+
     </div>
   </main>
 

@@ -56,29 +56,29 @@ $(document).ready(function () {
 
 
 // TODO: CAMBIAR PAGINAS DE LA TABLA DE INCIDENCIAS
-function changePage(page) {
-  // Realizar la petición AJAX
+// TODO: FUNCION PARA CAMBIAR PAGINAS DE LA TABLA DE INCIDENCIAS SIN RECEPCIONAR
+function changePageTablaListarIncidencias(page) {
   fetch(`?page=${page}`)
     .then(response => response.text())
     .then(data => {
-      // Actualizar el contenido de la tabla y de la paginación
       const parser = new DOMParser();
       const newDocument = parser.parseFromString(data, 'text/html');
-      const newTable = newDocument.querySelector('table');
-      const newPagination = newDocument.querySelector('.flex.justify-center.items-center.mt-4');
+      const newTable = newDocument.querySelector('#tablaListarIncidencias');
+      const newPagination = newDocument.querySelector('.flex.justify-end.items-center.mt-1');
 
-      // Reemplazar la tabla y la paginación actual
-      const currentTable = document.querySelector('table');
-      currentTable.parentNode.replaceChild(newTable, currentTable);
+      // Reemplazar la tabla actual con la nueva tabla obtenida
+      document.querySelector('#tablaListarIncidencias').parentNode.replaceChild(newTable, document.querySelector('#tablaListarIncidencias'));
 
-      const currentPagination = document.querySelector('.flex.justify-center.items-center.mt-4');
-      currentPagination.parentNode.replaceChild(newPagination, currentPagination);
+      // Reemplazar la paginación actual con la nueva paginación obtenida
+      const currentPagination = document.querySelector('.flex.justify-end.items-center.mt-1');
+      if (currentPagination && newPagination) {
+        currentPagination.parentNode.replaceChild(newPagination, currentPagination);
+      }
     })
     .catch(error => {
       console.error('Error al cambiar de página:', error);
     });
 }
-
 
 
 
