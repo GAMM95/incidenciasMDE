@@ -56,9 +56,8 @@ switch ($action) {
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="flex s?? null;hadow-lg p-8 rounded-lg w-full sm:h-screen">
+  <div class="flex s?? null;hadow-lg  w-full sm:h-screen">
     <?php
-    // Incluir la barra lateral desde un archivo externo
     include("app/View/partials/admin/sideBar.php");
     include("app/View/Consultar/admin/consultaIncidencia.php");
     ?>

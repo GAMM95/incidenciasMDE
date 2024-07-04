@@ -244,9 +244,9 @@ CREATE TABLE INCIDENCIA (
 );
 GO
 
-INSERT INTO INCIDENCIA  VALUES ('2024-05-31','10:32:15','No enciende CPU','Se presiona y no enciende','S/D','740895000365',3,1,21,3);
-INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial, EST_codigo, CAT_codigo, ARE_codigo, USU_codigo) 
-VALUES ('2024-03-12','12:32:10','abc','as','S/D','705402564789',3,1,1,1) ;
+--INSERT INTO INCIDENCIA  VALUES ('2024-05-31','10:32:15','No enciende CPU','Se presiona y no enciende','S/D','740895000365',3,1,21,3);
+--INSERT INTO INCIDENCIA (INC_fecha, INC_hora, INC_asunto, INC_descripcion, INC_documento, INC_codigoPatrimonial, EST_codigo, CAT_codigo, ARE_codigo, USU_codigo) 
+--VALUES ('2024-03-12','12:32:10','abc','as','S/D','705402564789',3,1,1,1) ;
 
 -- CREACION DE TABLA RECEPCION
 CREATE TABLE RECEPCION (

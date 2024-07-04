@@ -17,7 +17,7 @@
 </head>
 
 <body class="bg-green-50 flex items-center justify-center min-h-screen overflow-x-hidden">
-  <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
+  <main class="bg-[#eeeff1] flex-1 p-4 ">
     <h1 class="text-2xl font-bold mb-4 ">M&oacute;dulo / Categor&iacute;a</h1>
 
     <form id="formcategoria" action="modulo-categoria.php" method="POST" class="border bg-white shadow-md p-6 w-full text-sm rounded-md">

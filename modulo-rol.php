@@ -5,7 +5,6 @@ $CodRol = $_GET['ROL_codigo'] ?? '';
 require_once 'app/Controller/RolController.php';
 require_once 'app/Model/RolModel.php';
 
-
 // Crear una instancia del controlador RolController
 $rolController = new RolController();
 $rolModel = new RolModel();
@@ -42,7 +41,7 @@ switch ($action) {
 </head>
 
 <body class="bg-green-50 flex items-center justify-center min-h-screen">
-  <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
+  <div class="flex shadow-lg rounded-lg w-full sm:h-screen mt-auto mt-80">
     <?php
     include("app/View/partials/admin/sideBar.php");
     include("app/View/Mantenimiento/mantenedorRol.php");

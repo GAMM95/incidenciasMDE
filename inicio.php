@@ -16,8 +16,7 @@ $conexion = new Conexion();
 $conector = $conexion->getConexion();
 
 $rol = $_SESSION['rol'];
-$area = $_SESSION['codigoArea']; // Asegúrate de tener el área del usuario en la sesión
-
+$area = $_SESSION['codigoArea'];
 // Creacion de instancias de los modelos
 $incidenciasModel =  new IncidenciaModel();
 $recepcionesModel = new RecepcionModel();
@@ -30,39 +29,41 @@ if ($rol === 'Administrador' || $rol === 'Soporte') {
 } else {
   $cantidades = $controller->mostrarCantidadesUsuario($area);
 }
-
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="public/assets/logo.ico" />
+  <link rel="icon" href="public/assets/logo.ico">
   <link rel="stylesheet" href="./public/styles/appMenu.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <title>Sistema de incidencias</title>
 </head>
 
-<body>
-  <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
+<body class="bg-[#eeeff1] flex flex-col min-h-screen">
 
-    <?php
-    // if ($rol === 'Administrador' || $rol === 'Soporte') {
-    //   include("app/View/partials/admin/sideBar.php");
-    // } else if ($rol === 'Usuario') {
-    //   include("app/View/partials/user/sideBar.php");
-    // }
-    if ($rol === 'Administrador' || $rol === 'Soporte') {
-      include("app/View/partials/admin/sideBar.php");
-      include("app/View/Inicio/admin/PnlInicio.php");
-    } else {
-      include("app/View/partials/user/sideBar.php");
-      include("app/View/Inicio/user/PnlInicio.php");
-    }
-    ?>
-  </div>
+
+  <!-- Contenido principal -->
+  <main class="flex-1  w-full">
+
+    <div class="flex justify-center w-full mt-20 ">
+      <?php
+      if ($rol === 'Administrador' || $rol === 'Soporte') {
+
+        include("app/View/partials/admin/sideBar.php");
+        include("app/View/Inicio/admin/PnlInicio.php");
+      } else {
+        // include("app/View/partials/user/sideBar.php");
+        include("app/View/Inicio/user/PnlInicio.php");
+      }
+      ?>
+    </div>
+  </main>
+
 </body>
 
 </html>

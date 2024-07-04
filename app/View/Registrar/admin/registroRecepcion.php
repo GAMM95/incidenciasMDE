@@ -104,7 +104,7 @@
         <!-- NUMERO DE INCIDENCIA -->
         <div class="flex justify-center mx-2 mb-2">
           <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center">
-            <label for="incidencia" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Incidencia:</label>
+            <label for="incidencia" class="block font-bold mb-1 mr-3 text-lime-500">Incidencia seleccionada:</label>
             <input type="text" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" id="incidencia" name="incidencia" readonly required>
           </div>
 
@@ -118,13 +118,13 @@
         <!-- TODO: PRIMERA FILA DEL FORMULARIO -->
         <div class="flex flex-wrap -mx-2 mb-2">
           <!-- FECHA DE RECEPCION -->
-          <div class="w-full md:w-1/5 px-2 mb-2">
+          <div class="w-full md:w-1/5 px-2 mb-2 hidden">
             <label for="fecha_recepcion" class="block font-bold mb-1">Fecha de Recepci&oacute;n:</label>
             <input type="date" id="fecha_recepcion" name="fecha_recepcion" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo date('Y-m-d'); ?>" readonly>
           </div>
 
           <!-- HORA DE RECEPCION -->
-          <div class="w-full md:w-1/5 px-2 mb-2">
+          <div class="w-full md:w-1/5 px-2 mb-2 hidden">
             <label for="hora" class="block font-bold mb-1">Hora:</label>
             <?php
             // Establecer la zona horaria deseada
@@ -137,7 +137,7 @@
           </div>
 
           <!-- USUARIO QUE REGISTRA LA RECEPCION -->
-          <div class="w-full md:w-1/5 px-2 mb-2">
+          <div class="w-full md:w-1/5 px-2 mb-2 hidden">
             <label for="usuarioDisplay" class="block font-bold mb-1">Usuario:</label>
             <input type="text" id="usuarioDisplay" name="usuarioDisplay" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['usuario']; ?>" readonly>
           </div>

@@ -46,7 +46,7 @@ switch ($action) {
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
+  <div class="flex shadow-lg  rounded-lg w-full sm:h-screen">
     <?php
     include("app/View/partials/admin/sideBar.php");
     include("app/View/Mantenimiento/mantenedorArea.php");

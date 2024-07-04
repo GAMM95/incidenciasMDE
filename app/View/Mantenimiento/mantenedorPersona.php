@@ -19,7 +19,7 @@
 <body class="bg-green-50 flex items-center justify-center min-h-screen overflow-x-hidden">
 
   <!-- Contenido principal -->
-  <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto">
+  <main class="bg-[#eeeff1] flex-1 p-4 ">
     <!-- Header -->
     <h1 class="text-2xl font-bold mb-4">Registro de persona</h1>
 

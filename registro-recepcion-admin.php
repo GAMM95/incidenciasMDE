@@ -38,13 +38,11 @@ switch ($action) {
 </head>
 
 
-<body class="bg-green-50 flex items-center justify-center min-h-screen">
-
-
-    <div class="flex shadow-lg p-8 rounded-lg w-full sm:h-screen">
-        <?php
-        // Incluir la barra lateral desde un archivo externo
-        include("app/View/partials/admin/sideBar.php");
+<body class="bg-[#eeeff1] flex min-h-screen">
+  <!-- Contenido principal -->
+  <div class="flex  w-full mt-20 ">
+    <?php
+    include("app/View/partials/admin/header.php");
         include("app/View/Registrar/admin/registroRecepcion.php");
         ?>
     </div>

@@ -37,20 +37,27 @@
       <!-- TODO: PRIMERA FILA DEL FORMULARIO  -->
       <div class="flex flex-wrap -mx-2">
         <!-- CATEGORIA SELECCIONADA -->
-        <div class="w-full sm:w-1/2 px-2 mb-2">
+        <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="categoria" class="block font-bold mb-1">Categor&iacute;a:</label>
           <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-sm cursor-pointer">
           </select>
         </div>
 
+        <!-- AREA DE LA INCIDENCIA -->
+        <div class="w-full sm:w-1/3 px-2 mb-2">
+          <label for="area" class="block font-bold mb-1">&Aacute;rea:</label>
+          <select id="cbo_area" name="area" class="border p-2 w-full text-sm cursor-pointer">
+          </select>
+        </div>
+
         <!-- FECHA DE LA INCIDENCIA -->
-        <div class="w-full sm:w-1/6 px-2 mb-2">
+        <div class="w-full sm:w-1/6 px-2 mb-2 hidden">
           <label for="fecha_incidencia" class="block mb-1 font-bold text-sm">Fecha:</label>
           <input type="date" id="fecha_incidencia" name="fecha_incidencia" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo date('Y-m-d'); ?>" readonly>
         </div>
 
         <!-- HORA DE LA INCIDENCIA -->
-        <div class="w-full md:w-1/6 px-2 mb-2">
+        <div class="w-full md:w-1/6 px-2 mb-2 hidden">
           <label for="hora" class="block font-bold mb-1">Hora:</label>
           <?php
           // Establecer la zona horaria deseada
@@ -62,7 +69,7 @@
         </div>
 
         <!-- USUARIO QUE ABRE LA INCIDENCIA -->
-        <div class="w-full md:w-1/6 px-2 mb-2">
+        <div class="w-full md:w-1/6 px-2 mb-2 hidden">
           <label for="usuarioDisplay" class="block font-bold mb-1">Usuario:</label>
           <input type="text" id="usuarioDisplay" name="usuarioDisplay" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['usuario']; ?>" readonly>
         </div>
@@ -70,44 +77,35 @@
           <label for="usuario" class="block font-bold mb-1">Usuario:</label>
           <input type="text" id="usuario" name="usuario" class="border border-gray-200 bg-gray-100 p-2 w-full text-sm" value="<?php echo $_SESSION['codigoUsuario']; ?>" readonly>
         </div>
+
+        <!-- CODIGO PATROMONIAL -->
+        <div class="w-full sm:w-1/3 px-2 mb-2">
+          <label for="codigo_patrimonial" class="block mb-1 font-bold text-sm">C&oacute;digo Patrimonial:</label>
+          <input type="text" id="codigo_patrimonial" name="codigo_patrimonial" class="border p-2 w-full text-sm" maxlength="12" pattern="\d{1,12}" inputmode="numeric" title="Ingrese solo dígitos" required oninput="this.value = this.value.replace(/[^0-9]/g, ''); " placeholder="Ingrese c&oacute;digo patrimonial">
+        </div>
       </div>
 
       <!-- TODO: SEGUNDA FILA DEL FORMULARIO -->
       <div class="flex flex-wrap -mx-2">
-        <!-- AREA DE LA INCIDENCIA -->
-        <div class="w-full sm:w-1/2 px-2 mb-2">
-          <label for="area" class="block font-bold mb-1">&Aacute;rea:</label>
-          <select id="cbo_area" name="area" class="border p-2 w-full text-sm cursor-pointer">
-          </select>
-        </div>
-
-        <!-- CODIGO PATROMONIAL -->
-        <div class="w-full sm:w-1/4 px-2 mb-2">
-          <label for="codigo_patrimonial" class="block mb-1 font-bold text-sm">C&oacute;digo Patrimonial:</label>
-          <input type="text" id="codigo_patrimonial" name="codigo_patrimonial" class="border p-2 w-full text-sm" maxlength="12" pattern="\d{1,12}" inputmode="numeric" title="Ingrese solo dígitos" required oninput="this.value = this.value.replace(/[^0-9]/g, ''); " placeholder="Ingrese c&oacute;digo patrimonial">
-        </div>
 
         <!-- ASUNTO DE LA INCIDENCIA -->
         <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="asunto" class="block mb-1 font-bold text-sm">Asunto:</label>
           <input type="text" id="asunto" name="asunto" class="border p-2 w-full text-sm" placeholder="Ingrese asunto">
         </div>
-      </div>
 
-      <!-- TODO: TERCERA FILA DEL FORMULARIO -->
-      <div class="flex flex-wrap -mx-2">
-        <!-- DOCUMENTO DE LA INCIDENCIA -->
-        <div class="w-full sm:w-1/3 px-2 mb-2">
+        <div class="w-full sm:w-1/4 px-2 mb-2">
           <label for="documento" class="block mb-1 font-bold text-sm">Documento:</label>
           <input type="text" id="documento" name="documento" class="border p-2 w-full text-sm" placeholder="Ingrese documento">
         </div>
 
         <!-- DESCRIPCION DE LA INCIDENCIA -->
-        <div class="w-full md:w-2/3 px-2 mb-2">
+        <div class="w-full md:w-1/2 px-2 mb-2">
           <label for="descripcion" class="block mb-1 font-bold text-sm">Descripci&oacute;n:</label>
           <input type="text" id="descripcion" name="descripcion" class="border p-2 w-full text-sm mb-3" placeholder="Inngrese descripcion (opcional)">
         </div>
       </div>
+
 
       <!-- TODO: RECOPILACION DE VALORES DE CADA INPUT Y COMBOBOX     -->
       <script>
@@ -149,6 +147,17 @@
     ?>
 
     <div>
+      <!-- Paginación -->
+      <div class="flex justify-center items-center mt-4">
+        <?php if ($page > 1) : ?>
+          <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePage(<?php echo $page - 1; ?>)">&lt;</a>
+        <?php endif; ?>
+        <span class="mx-2">P&aacute;gina <?php echo $page; ?> de <?php echo $totalPages; ?></span>
+        <?php if ($page < $totalPages) : ?>
+          <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePage(<?php echo $page + 1; ?>)">&gt;</a>
+        <?php endif; ?>
+      </div>
+      
       <div class="relative max-h-[800px] mt-2 overflow-x-hidden shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead class="sticky top-0 text-xs text-gray-700 uppercase bg-blue-300">
@@ -178,16 +187,7 @@
         </table>
       </div>
 
-      <!-- Paginación -->
-      <div class="flex justify-center items-center mt-4">
-        <?php if ($page > 1) : ?>
-          <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePage(<?php echo $page - 1; ?>)">&lt;</a>
-        <?php endif; ?>
-        <span class="mx-2">P&aacute;gina <?php echo $page; ?> de <?php echo $totalPages; ?></span>
-        <?php if ($page < $totalPages) : ?>
-          <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePage(<?php echo $page + 1; ?>)">&gt;</a>
-        <?php endif; ?>
-      </div>
+      
     </div>
   </main>
 
