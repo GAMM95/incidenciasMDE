@@ -54,9 +54,7 @@ $(document).ready(function () {
   });
 });
 
-
 // TODO: CAMBIAR PAGINAS DE LA TABLA DE INCIDENCIAS
-// TODO: FUNCION PARA CAMBIAR PAGINAS DE LA TABLA DE INCIDENCIAS SIN RECEPCIONAR
 function changePageTablaListarIncidencias(page) {
   fetch(`?page=${page}`)
     .then(response => response.text())
@@ -79,8 +77,6 @@ function changePageTablaListarIncidencias(page) {
       console.error('Error al cambiar de página:', error);
     });
 }
-
-
 
 // TODO: GUARDAR INCIDENCIA
 $(document).ready(function () {

@@ -1,5 +1,5 @@
+// TODO: Evento para setear al clickear tabla
 $(document).ready(function () {
-  // Evento de clic en una fila de la tabla
   $('tr').click(function () {
     var cod = $(this).find('th').data('cod');
     var dni = $(this).find('td[data-dni]').text();
@@ -33,93 +33,92 @@ $(document).ready(function () {
     // Cambiar la acción del formulario a editar
     $('#form-action').val('editar');
   });
-
-  function nuevoRegistro() {
-    const form = document.getElementById('formPersona');
-    form.reset();
-    $('#txt_codPersona').val('');
-    $('tr').removeClass('bg-blue-200 font-semibold');
-
-    // Cambiar la acción del formulario a registrar
-    $('#form-action').val('registrar');
-  }
-
-  $('#nuevo-registro').on('click', nuevoRegistro);
-
-  function enviarFormulario(action) {
-    var dni = $('#txt_dni').val();
-    var nombre = $('#txt_nombre').val();
-    var apellidoPaterno = $('#txt_apellidoPaterno').val();
-    var apellidoMaterno = $('#txt_apellidoMaterno').val();
-    var celular = $('#txt_celular').val();
-    var email = $('#txt_email').val();
-
-    if (!dni) {
-      toastr.error('El campo "DNI" no puede estar vacío');
-      return; // No enviar el formulario si el campo está vacío
-    }
-
-    if (!nombre) {
-      toastr.error('El campo "Nombres" no puede estar vacío');
-      return; // No enviar el formulario si el campo está vacío
-    }
-
-    if (!apellidoPaterno) {
-      toastr.error('El campo "Apellido Paterno" no puede estar vacío');
-      return; // No enviar el formulario si el campo está vacío
-    }
-
-    if (!apellidoMaterno) {
-      toastr.error('El campo "Apellido Materno" no puede estar vacío');
-      return; // No enviar el formulario si el campo está vacío
-    }
-
-    if (!celular) {
-      toastr.error('El campo "Celular" no puede estar vacío');
-      return; // No enviar el formulario si el campo está vacío
-    }
-    if (!email) {
-      toastr.error('El campo "Email" no puede estar vacío');
-      return; // No enviar el formulario si el campo está vacío
-    }
-
-    // Habilitar el campo antes de enviar
-    $('#txt_codPersona').prop('disabled', false);
-
-    var formData = $('#formPersona').serialize();
-
-
-    $.ajax({
-      url: 'modulo-persona.php?action=' + action,
-      method: 'POST',
-      data: formData,
-      success: function (response) {
-        if (action === 'registrar') {
-          toastr.success('Persona registrada exitosamente');
-        } else if (action === 'editar') {
-          toastr.success('Persona actualizada exitosamente');
-        }
-        setTimeout(function () {
-          location.reload();
-        }, 1500);
-      },
-      error: function (xhr, status, error) {
-        console.log(xhr.responseText);
-        toastr.error('Error al guardar persona');
-      },
-      complete: function () {
-        $('#txt_codPersona').prop('disabled', true);
-      }
-    });
-  }
-
-  $('#guardar-persona').on('click', function (e) {
-    e.preventDefault();
-    enviarFormulario($('#form-action').val());
-  });
-
-  $('#editar-persona').on('click', function (e) {
-    e.preventDefault();
-    enviarFormulario('editar');
-  }); $()
 });
+
+// TODO: NUEVO REGISTRO
+function nuevoRegistro() {
+  const form = document.getElementById('formPersona');
+  form.reset();
+  $('#txt_codPersona').val('');
+  $('tr').removeClass('bg-blue-200 font-semibold');
+  $('#form-action').val('registrar');
+}
+$('#nuevo-registro').on('click', nuevoRegistro);
+
+
+function enviarFormulario(action) {
+  var dni = $('#txt_dni').val();
+  var nombre = $('#txt_nombre').val();
+  var apellidoPaterno = $('#txt_apellidoPaterno').val();
+  var apellidoMaterno = $('#txt_apellidoMaterno').val();
+  var celular = $('#txt_celular').val();
+  var email = $('#txt_email').val();
+
+  if (!dni) {
+    toastr.error('El campo "DNI" no puede estar vacío');
+    return; // No enviar el formulario si el campo está vacío
+  }
+
+  if (!nombre) {
+    toastr.error('El campo "Nombres" no puede estar vacío');
+    return; // No enviar el formulario si el campo está vacío
+  }
+
+  if (!apellidoPaterno) {
+    toastr.error('El campo "Apellido Paterno" no puede estar vacío');
+    return; // No enviar el formulario si el campo está vacío
+  }
+
+  if (!apellidoMaterno) {
+    toastr.error('El campo "Apellido Materno" no puede estar vacío');
+    return; // No enviar el formulario si el campo está vacío
+  }
+
+  if (!celular) {
+    toastr.error('El campo "Celular" no puede estar vacío');
+    return; // No enviar el formulario si el campo está vacío
+  }
+  if (!email) {
+    toastr.error('El campo "Email" no puede estar vacío');
+    return; // No enviar el formulario si el campo está vacío
+  }
+
+  // Habilitar el campo antes de enviar
+  $('#txt_codPersona').prop('disabled', false);
+
+  var formData = $('#formPersona').serialize();
+
+
+  $.ajax({
+    url: 'modulo-persona.php?action=' + action,
+    method: 'POST',
+    data: formData,
+    success: function (response) {
+      if (action === 'registrar') {
+        toastr.success('Persona registrada exitosamente');
+      } else if (action === 'editar') {
+        toastr.success('Persona actualizada exitosamente');
+      }
+      setTimeout(function () {
+        location.reload();
+      }, 1500);
+    },
+    error: function (xhr, status, error) {
+      console.log(xhr.responseText);
+      toastr.error('Error al guardar persona');
+    },
+    complete: function () {
+      $('#txt_codPersona').prop('disabled', true);
+    }
+  });
+}
+
+$('#guardar-persona').on('click', function (e) {
+  e.preventDefault();
+  enviarFormulario($('#form-action').val());
+});
+
+$('#editar-persona').on('click', function (e) {
+  e.preventDefault();
+  enviarFormulario('editar');
+}); $()

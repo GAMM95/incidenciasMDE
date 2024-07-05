@@ -32,7 +32,7 @@
         <!-- TODO: CAMPO ESCONDIDO -->
         <div class="flex justify-center -mx-2 mb-5 hidden">
           <!-- CODIGO DE PERSONA -->
-          <div class="w-full sm:w-1/4 px-2 mb-2 hidden">
+          <div class="w-full sm:w-1/4 px-2 mb-2 ">
             <div class="flex items-center">
               <label for="CodPersona" class="block font-bold mb-1 mr-3 text-lime-500">Código de Persona:</label>
               <input type="text" id="txt_codPersona" name="CodPersona" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-sm text-center" readonly>
@@ -103,6 +103,18 @@
       <div class="w-2/3">
         <div class="flex justify-between items-center mt-2">
           <input type="text" id="searchInput" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-lime-300" placeholder="Buscar persona..." oninput="filtrarTablaPersonas()" />
+
+          <?php if ($totalPages > 0) : ?>
+            <div class="flex justify-end items-center mt-1">
+              <?php if ($page > 1) : ?>
+                <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaListarIncidencias(<?php echo $page - 1; ?>)">&lt;</a>
+              <?php endif; ?>
+              <span class="mx-2">P&aacute;gina <?php echo $page; ?> de <?php echo $totalPages; ?></span>
+              <?php if ($page < $totalPages) : ?>
+                <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaListarIncidencias(<?php echo $page + 1; ?>)">&gt;</a>
+              <?php endif; ?>
+            </div>
+          <?php endif; ?>
         </div>
 
         <!-- Tabla de personas -->

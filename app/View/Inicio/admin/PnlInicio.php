@@ -47,7 +47,6 @@
   <!-- Contenido principal -->
   <main class="bg-[#eeeff1] flex-1 p-4 overflow-y-auto relative shadow-md">
     <img src="public/assets/fondo.jpeg" alt="Fondo" class="absolute inset-0 w-full h-full object-cover opacity-90 z-0">
-
     <div class="relative z-10 flex flex-col items-center justify-center min-h-full">
       <!-- Título principal -->
       <div class="bg-white p-6 rounded-lg shadow-lg text-center mb-8">

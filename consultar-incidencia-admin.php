@@ -55,10 +55,11 @@ switch ($action) {
   <title>Sistema de Incidencias - Consultar Incidencias</title>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="flex s?? null;hadow-lg  w-full sm:h-screen">
+<body class="bg-[#eeeff1] flex min-h-screen">
+  <!-- Contenido principal -->
+  <div class="flex  w-full mt-28">
     <?php
-    include("app/View/partials/admin/sideBar.php");
+    include("app/View/partials/admin/header.php");
     include("app/View/Consultar/admin/consultaIncidencia.php");
     ?>
   </div>

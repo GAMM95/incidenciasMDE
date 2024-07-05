@@ -198,7 +198,6 @@
     </div>
   </main>
 
-  <!-- <script src="./app/View/func/func_incidencias_admin.js"></script> -->
   <script src="./app/View/func/func_incidencia_admin.js"></script>
 </body>
 

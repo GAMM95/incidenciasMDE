@@ -113,36 +113,6 @@ class UsuarioModel extends Conexion
     }
   }
 
-  public function redireccionSegunRol($username)
-  {
-    $rol = $this->obtenerRolPorId($username);
-    if ($rol === 'Administrador') {
-      header('Location: pagina-inicio.php');
-    } elseif ($rol === 'Trabajador') {
-      header('Location: pagina-inicio.php');
-    } else {
-      // No se redirige
-    }
-  }
-
-  public function listarUsuario()
-  {
-    try {
-      $conector = $this->getConexion();
-      $sql = "SELECT USU_codigo, (p.PER_nombres + ' ' + p.PER_apellidoPaterno + ' '+ p.PER_apellidoMaterno) as persona, a.ARE_nombre , USU_nombre, USU_password, r.ROL_nombre, e.EST_descripcion FROM USUARIO u
-      INNER JOIN PERSONA p on p.PER_codigo = u.PER_codigo
-      INNER JOIN AREA a on a.ARE_codigo = u.ARE_codigo
-      INNER JOIN ESTADO e on e.EST_codigo = u.EST_codigo
-      INNER JOIN ROL r ON r.ROL_codigo = u.ROL_codigo
-      ORDER BY USU_codigo";
-      $stmt = $conector->prepare($sql);
-      $stmt->execute();
-      return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-      throw new Exception("Error al obtener los usuarios: " . $e->getMessage());
-    }
-  }
-
   // Método para registrar un nuevo usuario
   public function registrarUsuario($per_codigo, $rol_codigo, $are_codigo)
   {
@@ -165,6 +135,90 @@ class UsuarioModel extends Conexion
       }
     } catch (PDOException $e) {
       throw new Exception("Error al registrar usuario: " . $e->getMessage());
+    }
+  }
+
+  // METODO PARA CONTAR EL TOTAL DE USUARIOS PARA EMPAGINAR TABLA
+  public function contarUsuarios()
+  {
+    $conector = parent::getConexion();
+    try {
+      if ($conector != null) {
+        $sql = "SELECT COUNT(*) as total FROM USUARIO";
+        $stmt = $conector->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+      } else {
+        throw new Exception('Error de conexion en la base de datos');
+        return null;
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al listar usuarios: " . $e->getMessage());
+    }
+  }
+
+
+  // METODO PARA LISTAR USUARIOS REGISTRADOS
+  public function listarUsuarios($start, $limit)
+  {
+    try {
+      $conector = parent::getConexion();
+      if ($conector != null) {
+        $sql = "SELECT USU_codigo, (p.PER_nombres + ' ' + p.PER_apellidoPaterno + ' '+ p.PER_apellidoMaterno) as persona, a.ARE_nombre , USU_nombre, USU_password, r.ROL_nombre, e.EST_descripcion FROM USUARIO u
+        INNER JOIN PERSONA p on p.PER_codigo = u.PER_codigo
+        INNER JOIN AREA a on a.ARE_codigo = u.ARE_codigo
+        INNER JOIN ESTADO e on e.EST_codigo = u.EST_codigo
+        INNER JOIN ROL r ON r.ROL_codigo = u.ROL_codigo
+        ORDER BY USU_codigo DESC
+        OFFSET :start ROWS
+        FETCH NEXT :limit ROWS ONLY";
+        $stmt = $conector->prepare($sql);
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+      } else {
+        throw new Exception('Error de conexion en la base de datos');
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al listar usuarios: " . $e->getMessage());
+    }
+  }
+
+  // Método para habilitar usuarios
+  public function habilitarUsuario($USU_codigo)
+  {
+    try {
+      $conector = parent::getConexion();
+      if ($conector != null) {
+        $sql = "UPDATE USUARIO SET EST_codigo = 2 
+        WHERE USU_codigo = :USU_codigo AND EST_codigo = 1";
+        $stmt = $conector->prepare($sql);
+        $stmt->bindParam(':USU_codigo', $USU_codigo, PDO::PARAM_INT);
+        $stmt->execute();
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al habilitar usuario: " . $e->getMessage());
+    }
+  }
+
+
+  // METODO PARA DESHABILITAR USUARIO
+  public function deshabilitarUsuario($USU_codigo)
+  {
+    try {
+      $conector = parent::getConexion();
+      if ($conector != null) {
+        $sql = "UPDATE USUARIO SET EST_codigo = 1
+        WHERE USU_codigo = :USU_codigo AND EST_codigo = 2";
+        $stmt = $conector->prepare($sql);
+        $stmt->bindParam(':USU_codigo', $USU_codigo, PDO::PARAM_INT);
+        $stmt->execute();
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al habilitar usuario: " . $e->getMessage());
     }
   }
 }

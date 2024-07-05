@@ -30,7 +30,7 @@
         <input type="hidden" id="form-action" name="action" value="registrar">
 
         <!-- CAMPO ESCONDIDO -->
-        <div class="flex justify-center -mx-2 mb-5 hidden">
+        <div class="flex justify-center -mx-2 mb-5 ">
           <!-- CODIGO DE USUARIO -->
           <div class="w-full sm:w-1/4 px-2 mb-2">
             <div class="flex items-center">
@@ -73,7 +73,12 @@
         </div>
 
         <script>
+          document.getElementById('txt_codigoUsuario').value = '<?php echo $UsuarioRegistrado ? $UsuarioRegistrado['USU_codigo'] : ''; ?>';
           document.getElementById('cbo_persona').value = '<?php echo $UsuarioRegistrado ? $UsuarioRegistrado['PER_codigo'] : ''; ?>';
+          document.getElementById('cbo_area').value = '<?php echo $UsuarioRegistrado ? $UsuarioRegistrado['ARE_codigo'] : ''; ?>';
+          document.getElementById('cbo_rol').value = '<?php echo $UsuarioRegistrado ? $UsuarioRegistrado['ROL_codigo'] : ''; ?>';
+          document.getElementById('txt_nombreUsuario').value = '<?php echo $UsuarioRegistrado ? $UsuarioRegistrado['USU_nombre'] : ''; ?>';
+          document.getElementById('txt_password').value = '<?php echo $UsuarioRegistrado ? $UsuarioRegistrado['USU_password'] : ''; ?>';
         </script>
 
         <!-- BOTONES -->
@@ -85,76 +90,89 @@
       </form>
 
       <!-- TODO: TABLA DE LISTA DE USUARIOS REGISTRADOS -->
+
+      <?php
+      require_once './app/Model/UsuarioModel.php';
+
+      $usuarioModel = new UsuarioModel();
+      $limit = 10; // Numero de filas por pagina
+      $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; //pagina actual
+      $start = ($page - 1) * $limit; // Calcula el índice de inicio
+
+      // Obtener el total de registros
+      $totalUsuarios = $usuarioModel->contarUsuarios();
+      $totalPages = ceil($totalUsuarios / $limit);
+
+      $usuarios = $usuarioModel->listarUsuarios($start, $limit);
+      ?>
+
       <div class="w-2/3">
         <div class="flex justify-between items-center mt-2">
           <input type="text" id="searchInput" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-lime-300" placeholder="Buscar persona..." oninput="filtrarTablaPersonas()" />
+
+          <?php if ($totalPages > 0) : ?>
+            <div class="flex justify-end items-center mt-1">
+              <?php if ($page > 1) : ?>
+                <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaUsuarios(<?php echo $page - 1; ?>)">&lt;</a>
+              <?php endif; ?>
+              <span class="mx-2">P&aacute;gina <?php echo $page; ?> de <?php echo $totalPages; ?></span>
+              <?php if ($page < $totalPages) : ?>
+                <a href="#" class="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300" onclick="changePageTablaUsuarios(<?php echo $page + 1; ?>)">&gt;</a>
+              <?php endif; ?>
+            </div>
+          <?php endif; ?>
         </div>
 
         <!-- TABLA DE USUARIOS -->
         <div class="relative max-h-[800px] mt-2 overflow-x-hidden shadow-md sm:rounded-lg">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+          <table id="tablaListarUsuarios" class="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="sticky top-0 text-xs text-gray-70 uppercase bg-lime-300">
               <tr>
-                <th scope="col" class="px-6 py-1"> N° </th>
-                <th scope="col" class="px-6 py-1"> Nombre completo </th>
-                <th scope="col" class="px-6 py-3"> &Aacute;rea </th>
-                <th scope="col" class="px-6 py-3"> Usuario </th>
-                <th scope="col" class="px-6 py-3"> Contrase&ntilde;a </th>
-                <th scope="col" class="px-6 py-3"> Rol</th>
-                <th scope="col" class="px-6 py-3"> Estado </th>
-                <th scope="col" class="px-6 py-3"> Opciones </th>
+                <th scope="col" class="px-6 py-1">N°</th>
+                <th scope="col" class="px-6 py-1">Nombre completo</th>
+                <th scope="col" class="px-6 py-3">&Aacute;rea</th>
+                <th scope="col" class="px-6 py-3">Usuario</th>
+                <th scope="col" class="px-6 py-3">Contrasena</th>
+                <th scope="col" class="px-6 py-3">Rol</th>
+                <th scope="col" class="px-6 py-3">Estado</th>
+                <th scope="col" class="px-6 py-3">Opciones</th>
               </tr>
             </thead>
             <tbody>
-              <?php
-              $usuarios = $usuarioModel->listarUsuario();
-              foreach ($usuarios as $usuario) {
-                $estado = htmlspecialchars($usuario['EST_descripcion']);
-                $isActive = ($estado === 'Activo');
+              <?php if (!empty($usuarios)) : ?>
+                <?php foreach ($usuarios as $usuario) : ?>
+                  <?php
+                  $estado = htmlspecialchars($usuario['EST_descripcion']);
+                  $isActive = ($estado === 'Activo');
+                  ?>
+                  <tr class="bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"><?= htmlspecialchars($usuario['USU_codigo']); ?></th>
+                    <td class="px-6 py-4"><?= htmlspecialchars($usuario['persona']); ?></td>
+                    <td class="px-6 py-4"><?= htmlspecialchars($usuario['ARE_nombre']); ?></td>
+                    <td class="px-6 py-4"><?= htmlspecialchars($usuario['USU_nombre']); ?></td>
+                    <td class="px-6 py-4"><?= htmlspecialchars($usuario['USU_password']); ?></td>
+                    <td class="px-6 py-4"><?= htmlspecialchars($usuario['ROL_nombre']); ?></td>
+                    <td class="px-6 py-4"><?= htmlspecialchars($usuario['EST_descripcion']); ?></td>
+                    <td class="px-6 py-4">
+                      <div class="flex flex-col space-y-2">
+                        <button class="flex items-center justify-center text-white font-bold py-2 px-4 rounded 
+            <?= $isActive ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700' ?>" <?= $isActive ? 'disabled' : '' ?>>
+                          <i class="bx bxs-bulb <?= $isActive ? 'text-white' : 'text-white' ?>"></i>
+                        </button>
+                        <button class="flex items-center justify-center text-white font-bold py-2 px-4 rounded 
+            <?= !$isActive ? 'bg-gray-500 cursor-not-allowed' : 'bg-red-500 hover:bg-red-700' ?>" <?= !$isActive ? 'disabled' : '' ?>>
+                          <i class="bx bx-bulb <?= !$isActive ? 'text-white' : 'text-white' ?>"></i>
+                        </button>
+                      </div>
+                    </td>
 
-                echo "<tr class='bg-white hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b '>";
-                echo "<th scope='col' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap' data-codusuario='" . htmlspecialchars($usuario['USU_codigo']) . "'>";
-                echo htmlspecialchars($usuario['USU_codigo']);
-                echo "</th>";
-
-                echo "<td class='px-6 py-4' data-nombre='" . htmlspecialchars($usuario['persona']) . "' data-codpersona='" . (isset($usuario['PER_codigo']) ? htmlspecialchars($usuario['PER_codigo']) : "") . "'>";
-                echo htmlspecialchars($usuario['persona']);
-                echo "</td>";
-
-                echo "<td class='px-6 py-4' data-area='" . (isset($usuario['ARE_codigo']) ? htmlspecialchars($usuario['ARE_codigo']) : "") . "' data-codarea='" . (isset($usuario['ARE_codigo']) ? htmlspecialchars($usuario['ARE_nombre']) : "") . "'>";
-                echo htmlspecialchars($usuario['ARE_nombre']);
-                echo "</td>";
-
-                echo "<td class='px-6 py-4' data-usuario='" . htmlspecialchars($usuario['USU_nombre']) . "'>";
-                echo htmlspecialchars($usuario['USU_nombre']);
-                echo "</td>";
-
-                echo "<td class='px-6 py-4' data-password='" . htmlspecialchars($usuario['USU_password']) . "'>";
-                echo htmlspecialchars($usuario['USU_password']);
-                echo "</td>";
-
-                echo "<td class='px-6 py-4' data-password='" . htmlspecialchars($usuario['ROL_nombre']) . "'>";
-                echo htmlspecialchars($usuario['ROL_nombre']);
-                echo "</td>";
-
-                echo "<td class='px-6 py-4' data-estado='" . $estado . "' data-codrol='" . (isset($usuario['ROL_codigo']) ? htmlspecialchars($usuario['ROL_codigo']) : "") . "'>";
-                echo $estado;
-                echo "</td>";
-
-                echo "<td class='px-6 py-4'>
-                <div class='flex'>
-                  <button class='flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 " . ($isActive ? "bg-gray-500 cursor-not-allowed" : "") . "' " . ($isActive ? "disabled" : "") . ">
-                    <i class='bx bxs-bulb " . ($isActive ? "text-white" : "text-white") . "'></i>
-                  </button>
-                  <button class='flex items-center justify-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded " . (!$isActive ? "bg-gray-500 cursor-not-allowed" : "") . "' " . (!$isActive ? "disabled" : "") . ">
-                    <i class='bx bx-bulb " . (!$isActive ? "text-white" : "text-white") . "'></i>
-                  </button>
-                </div>
-              </td>";
-
-                echo "</tr>";
-              }
-              ?>
+                  </tr>
+                <?php endforeach; ?>
+              <?php else : ?>
+                <tr>
+                  <td colspan="8" class="text-center py-4">No hay usuarios</td>
+                </tr>
+              <?php endif; ?>
             </tbody>
           </table>
         </div>

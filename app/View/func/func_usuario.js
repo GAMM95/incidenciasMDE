@@ -1,5 +1,5 @@
+// TODO: SETEO DE COMBO PERSONAS
 $(document).ready(function () {
-  // Fetch personas
   console.log("FETCHING PERSONAS");
   $.ajax({
     url: 'ajax/getPersona.php',
@@ -15,10 +15,14 @@ $(document).ready(function () {
     },
     error: function (error) {
       console.error("Error fetching personas:", error);
+
     }
   });
+});
 
-  // Fetch áreas
+// TODO: SETEO DE COMBO AREA
+$(document).ready(function () {
+  console.log("FETCHING PERSONAS");
   console.log("FETCHING AREAS");
   $.ajax({
     url: 'ajax/getAreaData.php',
@@ -37,9 +41,12 @@ $(document).ready(function () {
       console.error("Error fetching areas:", error);
     }
   });
+});
 
-  // Fetch roles
-  console.log("FETCHING ROLES");
+// TODO: SETEO DE COMBO ROL
+$(document).ready(function () {
+  console.log("FETCHING PERSONAS");
+  console.log("FETCHING AREAS");
   $.ajax({
     url: 'ajax/getRol.php',
     type: 'GET',
@@ -47,20 +54,59 @@ $(document).ready(function () {
     success: function (data) {
       var select = $('#cbo_rol');
       select.empty();
-      select.append('<option value="" selected disabled>Seleccione un rol</option>');
+      select.append('<option value="" selected disabled>Seleccione rol</option>');
       $.each(data, function (index, value) {
         select.append('<option value="' + value.ROL_codigo + '">' + value.ROL_nombre + '</option>');
       });
+      document.getElementById('rol').value = '<?php echo $usuarioRegistrado ? $usuarioRegistrado["ROL_codigo"] : "; ?>';
     },
     error: function (error) {
       console.error("Error fetching roles:", error);
     }
   });
+});
 
+// TODO: CAMBIAR LAS PAGINAS DE LA TABLA USUARIOS
+function changePageTablaUsuarios(page) {
+  fetch(`?page=${page}`)
+    .then(response => response.text())
+    .then(data => {
+      const parser = new DOMParser();
+      const newDocument = parser.parseFromString(data, 'text/html');
+      const newTable = newDocument.querySelector('#tablaListarUsuarios');
+      const newPagination = newDocument.querySelector('.flex.justify-end.items-center.mt-1');
+
+      // Reemplazar la tabla actual con la nueva tabla obtenida
+      document.querySelector('#tablaListarUsuarios').parentNode.replaceChild(newTable, document.querySelector('#tablaListarUsuarios'));
+
+      // Reemplazar la paginación actual con la nueva paginación obtenida
+      const currentPagination = document.querySelector('.flex.justify-end.items-center.mt-1');
+      if (currentPagination && newPagination) {
+        currentPagination.parentNode.replaceChild(newPagination, currentPagination);
+      }
+    })
+    .catch(error => {
+      console.error('Error al cambiar de página:', error);
+    });
+}
+
+// TODO: SETEO DEL CODIGO DE USUARIO DESDE LA TABLA
+$(document).ready(function () {
+  $(document).on('click', '#tablaListarUsuarios tbody tr', function () {
+    var id = $(this).find('th').html();
+    $('#tablaListarUsuarios tbody tr').removeClass('bg-blue-200 font-semibold');
+    $(this).addClass('bg-blue-200 font-semibold');
+    $('#txt_codigoUsuario').val(id);
+  });
+});
+
+
+// TODO: SETEO DE VALORES EN LOS INPUTS
+$(document).ready(function () {
   // Evento de clic en una fila de la tabla
-  $('table').on('click', 'tr', function () {
+  $('#tablaListarUsuarios tbody').on('click', 'tr', function () {
+    var usuario = $(this).data('usuario');
     var cod = $(this).find('td[data-codusuario]').data('codusuario');
-
     var codPersona = $(this).find('td[data-codpersona]').data('persona');
     var codArea = $(this).find('td[data-area]').data('codarea');
     var codRol = $(this).find('td[data-codrol]').data('codrol');
@@ -76,40 +122,5 @@ $(document).ready(function () {
 
     $('tr').removeClass('bg-blue-200 font-semibold');
     $(this).addClass('bg-blue-200 font-semibold');
-  });
-
-  // Validación del formulario
-  $('#formUsuario').on('submit', function (e) {
-    e.preventDefault();
-    var valid = true;
-
-    if ($('#cbo_persona').val() === '') {
-      valid = false;
-      toastr.error('Por favor, seleccione una persona.');
-    }
-
-    if ($('#cbo_area').val() === '') {
-      valid = false;
-      toastr.error('Por favor, seleccione un área.');
-    }
-
-    if ($('#cbo_rol').val() === '') {
-      valid = false;
-      toastr.error('Por favor, seleccione un rol.');
-    }
-
-    if ($('#txt_nombreUsuario').val() === '' || !$('#txt_nombreUsuario').val().match(/^\d{1,8}$/)) {
-      valid = false;
-      toastr.error('Por favor, ingrese un nombre de usuario válido.');
-    }
-
-    if ($('#txt_password').val() === '') {
-      valid = false;
-      toastr.error('Por favor, ingrese una contraseña.');
-    }
-
-    if (valid) {
-      this.submit();
-    }
   });
 });
