@@ -45,10 +45,11 @@ switch ($action) {
   <title>Sistema de Incidencias - Mantenimiento Categoría</title>
 </head>
 
-<body class="bg-green-50 flex items-center justify-center min-h-screen">
-  <div class="flex shadow-lg rounded-lg w-full sm:h-screen mt-auto mt-80">
+<body class="bg-[#eeeff1] flex min-h-screen">
+  <!-- Contenido principal -->
+  <div class="flex  w-full mt-28">
     <?php
-    include("app/View/partials/admin/sideBar.php");
+    include("app/View/partials/admin/header.php");
     include("app/View/Mantenimiento/mantenedorPersona.php");
     ?>
   </div>

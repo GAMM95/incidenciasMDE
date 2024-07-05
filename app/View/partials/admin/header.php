@@ -47,56 +47,61 @@ if (session_status() == PHP_SESSION_NONE) {
 <body class="bg-green-50 flex flex-col items-center min-h-screen">
 
   <!-- Header -->
-  <header class="bg-white text-gray-800 w-full flex flex-col items-center shadow-md">
+  <header class="bg-green-50 text-gray-800 w-full flex flex-col items-center shadow-md">
     <!-- Navegación -->
     <nav class="w-full flex justify-between items-center py-4 px-4 border-b">
-      <div class="flex space-x-6">
-        <a href="inicio.php" class="hover:bg-[#d5fab4] px-3 py-2 rounded-lg">Inicio</a>
+      <div class="flex items-center justify-center space-x-6">
+        <a href="inicio.php">
+          <img src="public/assets/escudo_mde.png" alt="Escudo" class="w-20 h-20 object-contain ml-20 mr-5">
+        </a>
+        <a href="inicio.php" class="hover:bg-[#d5fab4] px-3 py-2 rounded-lg  relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-green-500 after:transition-all after:duration-300 hover:after:w-full text-lg">Inicio</a>
 
-        <div x-data="{ open: false }" class="relative">
-          <button @click="open = !open" class="hover:bg-[#d5fab4] px-3 py-2 rounded-lg flex items-center space-x-1">
-            <span>Registrar</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': open, 'rotate-0': !open}" viewBox="0 0 20 20" fill="currentColor">
+        <div x-data="{ openRegistrar: false }" class="relative">
+          <button @click="openRegistrar = !openRegistrar" class="hover:bg-[#d5fab4] px-3 py-2 rounded-lg flex items-center space-x-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-green-500 after:transition-all after:duration-300 hover:after:w-full">
+            <span class="text-lg">Registrar</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': openRegistrar, 'rotate-0': !openRegistrar}" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 1.414L10 12.414l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
             </svg>
           </button>
-          <div x-show="open" @click.away="open = false" class="absolute left-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
+          <div x-show="openRegistrar" @click.away="openRegistrar = false" class="absolute left-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
             <a href="registro-incidencia-admin.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Incidencia</a>
             <a href="registro-recepcion-admin.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Recepción</a>
             <a href="registro-cierre-admin.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Cierre</a>
           </div>
         </div>
 
-        <div x-data="{ open: false }" class="relative">
-          <button @click="open = !open" class="hover:bg-[#d5fab4] px-3 py-2 rounded-lg flex items-center space-x-1">
-            <span>Consultar</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': open, 'rotate-0': !open}" viewBox="0 0 20 20" fill="currentColor">
+        <div x-data="{ openConsultar: false }" class="relative">
+          <button @click="openConsultar = !openConsultar" class="hover:bg-[#d5fab4] px-3 py-2 rounded-lg flex items-center space-x-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-green-500 after:transition-all after:duration-300 hover:after:w-full">
+            <span class="text-lg">Consultar</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': openConsultar, 'rotate-0': !openConsultar}" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 1.414L10 12.414l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
             </svg>
           </button>
-          <div x-show="open" @click.away="open = false" class="absolute left-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
+          <div x-show="openConsultar" @click.away="openConsultar = false" class="absolute left-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
             <a href="consultar-incidencia-admin.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Incidencia</a>
             <a href="consultar-recepcion-admin.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Recepción</a>
             <a href="consultar-cierre-admin.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Cierre</a>
           </div>
         </div>
 
-        <div x-data="{ open: false }" class="relative">
-          <button @click="open = !open" class="hover:bg-[#d5fab4] px-3 py-2 rounded-lg flex items-center space-x-1">
-            <span>Módulo</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': open, 'rotate-0': !open}" viewBox="0 0 20 20" fill="currentColor">
+        <div x-data="{ openMantenedor: false }" class="relative">
+          <button @click="openMantenedor = !openMantenedor" class="hover:bg-[#d5fab4] px-3 py-2 rounded-lg flex items-center space-x-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-green-500 after:transition-all after:duration-300 hover:after:w-full">
+            <span class="text-lg">Mantenedor</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" :class="{'rotate-180': openMantenedor, 'rotate-0': !openMantenedor}" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 1.414L10 12.414l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
             </svg>
           </button>
-          <div x-show="open" @click.away="open = false" class="absolute left-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
+          <div x-show="openMantenedor" @click.away="openMantenedor = false" class="absolute left-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
             <a href="modulo-persona.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Persona</a>
             <a href="modulo-usuario.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Usuario</a>
             <a href="modulo-area.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Área</a>
-            <a href="modulo-rol.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Rol</a>
+            <!-- <a href="modulo-rol.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Rol</a> -->
             <a href="modulo-categoria.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Categoría</a>
           </div>
         </div>
+
       </div>
+
 
       <div class="flex items-center space-x-4 ml-auto">
         <div class="flex items-center justify-end space-x-4">
@@ -127,9 +132,7 @@ if (session_status() == PHP_SESSION_NONE) {
           <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg py-2">
             <a href="modulo-persona.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Persona</a>
             <a href="modulo-usuario.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Perfil</a>
-            <a href="logout.php" class="block px-4 py-2 hover:bg-[#d5fab4]">
-              Cerrar Sesión
-            </a>
+            <a href="logout.php" class="block px-4 py-2 hover:bg-[#d5fab4]">Cerrar Sesión </a>
           </div>
 
         </div>

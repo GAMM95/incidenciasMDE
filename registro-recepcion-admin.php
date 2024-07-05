@@ -40,7 +40,7 @@ switch ($action) {
 
 <body class="bg-[#eeeff1] flex min-h-screen">
     <!-- Contenido principal -->
-    <div class="flex  w-full mt-20 ">
+    <div class="flex  w-full mt-28 ">
         <?php
         include("app/View/partials/admin/header.php");
         include("app/View/Registrar/admin/registroRecepcion.php");
