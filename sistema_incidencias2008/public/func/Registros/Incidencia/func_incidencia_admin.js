@@ -6,6 +6,14 @@ $(document).ready(function () {
     "timeOut": "2000"
   };
 
+  // Manejador de eventos para la tecla Escape
+  $(document).keydown(function (event) {
+    // Verificar si la tecla presionada es ESC
+    if (event.key === 'Escape') {
+      nuevoRegistro();
+    }
+  });
+
   // Evento para manejar la tecla Enter cuando una fila está seleccionada
   $(document).on('keydown', function (e) {
     // Verificar si la tecla presionada es Enter
@@ -15,14 +23,6 @@ $(document).ready(function () {
         e.preventDefault();
         enviarFormulario('editar');
       }
-    }
-  });
-
-  // Manejador de eventos para la tecla Escape
-  $(document).keydown(function (event) {
-    // Verificar si la tecla presionada es ESC
-    if (event.key === 'Escape') {
-      nuevoRegistro();
     }
   });
 

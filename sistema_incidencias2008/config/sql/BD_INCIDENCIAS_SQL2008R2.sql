@@ -2,12 +2,12 @@
 -- Producto		 : Sistema de Gestion de Incidencias Informaticas
 -- Software		 : Sistema de Incidencias Informaticas
 -- DBMS			 : SQL Server 2008 R2
--- Base de datos : SISTEMA_INCIDENCIAS
+-- Base de datos : BD_INCIDENCIAS_2008
 -- Responsable	 : Subgerente de informatica y Sistemas - SGIS
 --				   jhonatanmm.1995@gmail.com
 -- Repositorio	 : https://github.com/GAMM95/helpdeskMDE/tree/main/config/sql
 -- Creado por	 : Jhonatan Mantilla Miñano
---		         : 16 de mayo del 2024
+--		         : 08 de enero del 2025
 
 -------------------------------------------------------------------------------------------------------
   -- CREACION DE LA BASE DE DATOS

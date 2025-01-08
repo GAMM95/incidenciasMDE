@@ -26,37 +26,33 @@ $(document).ready(function () {
   });
 
   // Seteo de valores en el combo de categorias
-  $(document).ready(function () {
-    $.ajax({
-      url: 'ajax/getCategoryData.php',
-      type: 'GET',
-      dataType: 'json',
-      success: function (data) {
-        var select = $('#cbo_categoria');
-        select.empty();
-        select.append('<option value="" selected disabled>Seleccione una categor&iacute;a</option>');
-        $.each(data, function (index, value) {
-          select.append('<option value="' + value.CAT_codigo + '">' + value.CAT_nombre + '</option>');
-        });
-      },
-      error: function (error) {
-        console.error('Error en la carga de categorías:', error);
-      }
-    });
+  $.ajax({
+    url: 'ajax/getCategoryData.php',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      var select = $('#cbo_categoria');
+      select.empty();
+      select.append('<option value="" selected disabled>Seleccione una categor&iacute;a</option>');
+      $.each(data, function (index, value) {
+        select.append('<option value="' + value.CAT_codigo + '">' + value.CAT_nombre + '</option>');
+      });
+    },
+    error: function (error) {
+      console.error('Error en la carga de categorías:', error);
+    }
   });
 
   // Buscador de contenido en el combo categorias
-  $(document).ready(function () {
-    $('#cbo_categoria').select2({
-      allowClear: true,
-      width: '100%',
-      dropdownCssClass: 'text-xs',
-      language: {
-        noResults: function () {
-          return "No se encontraron resultados";
-        }
+  $('#cbo_categoria').select2({
+    allowClear: true,
+    width: '100%',
+    dropdownCssClass: 'text-xs',
+    language: {
+      noResults: function () {
+        return "No se encontraron resultados";
       }
-    });
+    }
   });
 
   // Evento para guardar incidencia
@@ -73,35 +69,15 @@ $(document).ready(function () {
 
   // Evento para nuevo registro
   $('#nuevo-registro').on('click', nuevoRegistro);
+
+  // Evento para seleccionar una fila de la tabla
+  $('#tablaListarIncidencias').on('click', 'tr', function () {
+    $(this).toggleClass('selected');
+    const isSelected = $(this).hasClass('selected');
+    $('#guardar-incidencia').prop('disabled', !isSelected);
+    $('#nuevo-registro').prop('disabled', isSelected);
+  });
 });
-
-
-
-
-// CAMBIAR PAGINAS DE LA TABLA DE INCIDENCIAS
-function changePageTablaListarIncidencias(page) {
-  fetch(`?page=${page}`)
-    .then(response => response.text())
-    .then(data => {
-      const parser = new DOMParser();
-      const newDocument = parser.parseFromString(data, 'text/html');
-      const newTable = newDocument.querySelector('#tablaListarIncidencias');
-      const newPagination = newDocument.querySelector('.flex.justify-end.items-center.mt-1');
-
-      // Reemplazar la tabla actual con la nueva tabla obtenida
-      document.querySelector('#tablaListarIncidencias').parentNode.replaceChild(newTable, document.querySelector('#tablaListarIncidencias'));
-
-      // Reemplazar la paginación actual con la nueva paginación obtenida
-      const currentPagination = document.querySelector('.flex.justify-end.items-center.mt-1');
-      if (currentPagination && newPagination) {
-        currentPagination.parentNode.replaceChild(newPagination, currentPagination);
-      }
-    })
-    .catch(error => {
-      console.error('Error al cambiar de página:', error);
-    });
-}
-
 
 // Funcion para las validaciones de campos vacios y registro - actualizacion de incidencias
 function enviarFormulario(action) {
@@ -178,75 +154,103 @@ function validarCampos() {
   return valido;
 }
 
-// Seteo de los valores de los inputs y combos
-$(document).on('click', '#tablaListarIncidencias tbody tr', function () {
-  $('#tablaListarIncidencias tbody tr').removeClass('bg-blue-200 font-semibold');
-  $(this).addClass('bg-blue-200 font-semibold');
 
-  // Establecer valores en el formulario segun la fila seleccionada
-  const celdas = $(this).find('td');
-  const codIncidencia = $(this).find('th').text().trim();
-  const codigoPatrimonialValue = celdas[2].innerText.trim();
-  const asuntoValue = celdas[3].innerText.trim();
-  const documentoValue = celdas[4].innerText.trim();
-  const categoriaValue = celdas[5].innerText.trim();
-  const descripcionValue = celdas[7].innerText.trim();
+// CAMBIAR PAGINAS DE LA TABLA DE INCIDENCIAS
+function changePageTablaListarIncidencias(page) {
+  fetch(`?page=${page}`)
+    .then(response => response.text())
+    .then(data => {
+      const parser = new DOMParser();
+      const newDocument = parser.parseFromString(data, 'text/html');
+      const newTable = newDocument.querySelector('#tablaListarIncidencias');
+      const newPagination = newDocument.querySelector('.flex.justify-end.items-center.mt-1');
+
+      // Reemplazar la tabla actual con la nueva tabla obtenida
+      document.querySelector('#tablaListarIncidencias').parentNode.replaceChild(newTable, document.querySelector('#tablaListarIncidencias'));
+
+      // Reemplazar la paginación actual con la nueva paginación obtenida
+      const currentPagination = document.querySelector('.flex.justify-end.items-center.mt-1');
+      if (currentPagination && newPagination) {
+        currentPagination.parentNode.replaceChild(newPagination, currentPagination);
+      }
+    })
+    .catch(error => {
+      console.error('Error al cambiar de página:', error);
+    });
+}
+
+// Establecer valores en el formulario según la fila seleccionada
+$(document).ready(function () {
+  // Seteo de los valores de los inputs y combos
+  $(document).on('click', '#tablaListarIncidencias tbody tr', function () {
+    $('#tablaListarIncidencias tbody tr').removeClass('bg-blue-200 font-semibold');
+    $(this).addClass('bg-blue-200 font-semibold');
+
+    // Establecer valores en el formulario segun la fila seleccionada
+    const celdas = $(this).find('td');
+    const codIncidencia = $(this).find('th').text().trim();
+    const codigoPatrimonialValue = celdas[2].innerText.trim();
+    const asuntoValue = celdas[3].innerText.trim();
+    const documentoValue = celdas[4].innerText.trim();
+    const categoriaValue = celdas[5].innerText.trim();
+    const descripcionValue = celdas[7].innerText.trim();
 
 
-  // Seteo de valores en los inputs
-  document.getElementById('numero_incidencia').value = codIncidencia;
-  document.getElementById('codigoPatrimonial').value = codigoPatrimonialValue;
-  document.getElementById('asunto').value = asuntoValue;
-  document.getElementById('documento').value = documentoValue;
-  document.getElementById('descripcion').value = descripcionValue;
+    // Seteo de valores en los inputs
+    document.getElementById('numero_incidencia').value = codIncidencia;
+    document.getElementById('codigoPatrimonial').value = codigoPatrimonialValue;
+    document.getElementById('asunto').value = asuntoValue;
+    document.getElementById('documento').value = documentoValue;
+    document.getElementById('descripcion').value = descripcionValue;
 
-  // Seteo de los valores en los combos
-  setComboValue('cbo_categoria', categoriaValue);
+    // Seteo de los valores en los combos
+    setComboValue('cbo_categoria', categoriaValue);
 
-  // Cambiar estado de los botones
-  document.getElementById('guardar-incidencia').disabled = true;
-  document.getElementById('editar-incidencia').disabled = false;
-  document.getElementById('nuevo-registro').disabled = false;
+    // Cambiar estado de los botones
+    $('#guardar-incidencia').prop('disabled', true);
+    $('#editar-incidencia').prop('disabled', false);
+    $('#nuevo-registro').prop('disabled', false);
+
+    // Si existe un código patrimonial, buscar el tipo de bien
+    if (codigoPatrimonialValue) {
+      buscarTipoBien(codigoPatrimonialValue);
+    } else {
+      // Si no hay código patrimonial, dejar el campo de tipo de bien en blanco
+      $('#tipoBien').val('');
+    }
+  });
 
   // Cambiar la acción a editar
   $('#form-action').val('editar');
 
-  // Si existe un código patrimonial, buscar el tipo de bien
-  if (codigoPatrimonialValue) {
-    buscarTipoBien(codigoPatrimonialValue);
-  } else {
-    // Si no hay código patrimonial, dejar el campo de tipo de bien en blanco
-    $('#tipoBien').val('');
+
+  // Función para buscar el tipo de bien en el servidor
+  function buscarTipoBien(codigo) {
+    // Limitar el código a los primeros 12 dígitos y obtener los primeros 8 dígitos para búsqueda
+    var codigoLimite = codigo.substring(0, 12);
+    var codigoBusqueda = codigoLimite.substring(0, 8);
+
+    if (codigoBusqueda.length === 8) {
+      $.ajax({
+        url: 'ajax/getTipoBien.php',
+        type: 'GET',
+        data: { codigo_patrimonial: codigoBusqueda },
+        success: function (response) {
+          if (response.tipo_bien) {
+            $('#tipoBien').val(response.tipo_bien);
+          } else {
+            $('#tipoBien').val('No encontrado');
+          }
+        },
+        error: function () {
+          $('#tipoBien').val('Error al buscar');
+        }
+      });
+    } else {
+      $('#tipoBien').val('Código inválido');
+    }
   }
 });
-
-// Función para buscar el tipo de bien en el servidor
-function buscarTipoBien(codigo) {
-  // Limitar el código a los primeros 12 dígitos y obtener los primeros 8 dígitos para búsqueda
-  var codigoLimite = codigo.substring(0, 12);
-  var codigoBusqueda = codigoLimite.substring(0, 8);
-
-  if (codigoBusqueda.length === 8) {
-    $.ajax({
-      url: 'ajax/getTipoBien.php',
-      type: 'GET',
-      data: { codigo_patrimonial: codigoBusqueda },
-      success: function (response) {
-        if (response.tipo_bien) {
-          $('#tipoBien').val(response.tipo_bien);
-        } else {
-          $('#tipoBien').val('No encontrado');
-        }
-      },
-      error: function () {
-        $('#tipoBien').val('Error al buscar');
-      }
-    });
-  } else {
-    $('#tipoBien').val('Código inválido');
-  }
-}
-
 
 // seteo de los valores de los combos
 function setComboValue(comboId, value) {
