@@ -36,12 +36,17 @@ class UsuarioModel extends Conexion
 
         // Validar el resultado
         if ($resultado) {
+          // Verificar si la autenticación fue exitosa
           if (isset($resultado['Resultado']) && $resultado['Resultado'] === 'Autenticación exitosa') {
-            // Devolver información del usuario si la autenticación es exitosa
-            return [
-              'codigo' => $resultado['codigo'],
-              'usuario' => $resultado['usuario']
-            ];
+            // Asegurarse de que las claves 'codigo' y 'usuario' existen
+            if (isset($resultado['codigo']) && isset($resultado['usuario'])) {
+              return [
+                'codigo' => $resultado['codigo'],
+                'usuario' => $resultado['usuario']
+              ];
+            } else {
+              return 'Error: Información de usuario no encontrada.';
+            }
           } else {
             // Devolver el mensaje de error
             return $resultado['Resultado'];
@@ -56,6 +61,7 @@ class UsuarioModel extends Conexion
       throw new PDOException("Error al obtener información del usuario: " . $e->getMessage());
     }
   }
+
 
   // Método para iniciar sesión
   public function iniciarSesion($username, $password, $digitos = null)
@@ -76,7 +82,7 @@ class UsuarioModel extends Conexion
           $digitos = null; // No se requiere autenticación en 2 pasos
         }
 
-        // Ejecutar el procedimiento almacenado
+        // Llamada al procedimiento almacenado para obtener el código y otros datos del usuario
         $query = "EXEC sp_login :username, :password, :digitos";
         $stmt = $conector->prepare($query);
         $stmt->bindParam(':username', $username);
@@ -89,34 +95,39 @@ class UsuarioModel extends Conexion
           $stmt->bindValue(':digitos', null, PDO::PARAM_NULL);
         }
 
+        // Ejecutar la consulta
         $stmt->execute();
 
         // Obtener el resultado del procedimiento
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Verificar si se encontraron resultados
-        if ($resultado && !isset($resultado['MensajeError'])) {
-          // Credenciales correctas, inicia sesión
-          session_start();
-          $_SESSION['nombreDePersona'] = $resultado['PER_nombres'] . ' ' . $resultado['PER_apellidoPaterno'];
-          $_SESSION['area'] = $resultado['ARE_nombre'];
-          $_SESSION['codigoArea'] = $resultado['ARE_codigo'];
-          $informacionUsuario = $this->obtenerInformacionUsuario($username, $password);
-          $codigo = $informacionUsuario['codigo'];
-          $usuario = $informacionUsuario['usuario'];
-          $_SESSION['codigoUsuario'] = $codigo;
-          $_SESSION['usuario'] = $usuario;
-          $_SESSION['rol'] = $this->obtenerRolPorId($username);
+        // Verificar si el resultado contiene datos
+        if ($resultado) {
+          if (isset($resultado['MensajeError'])) {
+            // Si hay un mensaje de error, lo mostramos
+            $mensajeError = $resultado['MensajeError'];
+            header("Location: index.php?state=failed&message=" . urlencode($mensajeError));
+            exit();
+          } else {
+            // Credenciales correctas, inicia sesión
+            // session_start();
+            $_SESSION['nombreDePersona'] = $resultado['PER_nombres'] . ' ' . $resultado['PER_apellidoPaterno'];
+            $_SESSION['area'] = $resultado['ARE_nombre'];
+            $_SESSION['codigoArea'] = $resultado['ARE_codigo'];
+            $_SESSION['codigoUsuario'] = $resultado['USU_codigo'];  // Asignamos el código de usuario
+            $_SESSION['usuario'] = $username;  // Asignamos el nombre de usuario
+            $_SESSION['rol'] = $this->obtenerRolPorId($username);
 
-          // Log de inicio de sesión
-          $this->registrarLog($username, $codigo, $ipCliente, $nombreEquipo);
+            // Log de inicio de sesión
+            $this->registrarLog($username, $resultado['USU_codigo'], $ipCliente, $nombreEquipo);
 
-          // Registrar el evento en la auditoría
-          $this->auditoria->registrarEvento('USUARIO', 'Iniciar sesión');
-          return true;
+            // Registrar el evento en la auditoría
+            $this->auditoria->registrarEvento('USUARIO', 'Iniciar sesión');
+            return true;
+          }
         } else {
-          // Si las credenciales son incorrectas o hay un mensaje de error
-          $mensajeError = isset($resultado['MensajeError']) ? $resultado['MensajeError'] : "Credenciales incorrectas.";
+          // Si no se encontró resultado
+          $mensajeError = "Credenciales incorrectas.";
           header("Location: index.php?state=failed&message=" . urlencode($mensajeError));
           exit();
         }
@@ -128,6 +139,42 @@ class UsuarioModel extends Conexion
     }
   }
 
+
+  public function obtenerCodigoUsuario($username, $password, $dniUltimos2 = null)
+  {
+    $conector = parent::getConexion(); // Obtener la conexión a la base de datos
+    try {
+      if ($conector != null) {
+        $query = "EXEC sp_obtener_codigo_usuario :username, :password, :dniUltimos2";
+        $stmt = $conector->prepare($query);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->bindParam(':dniUltimos2', $dniUltimos2, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // Obtener el resultado
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Verificar si se obtuvo un código de usuario
+        if ($resultado) {
+          if (isset($resultado['USU_codigo'])) {
+            // Si el código de usuario está presente, devolverlo
+            return $resultado['USU_codigo'];
+          } else {
+            // Si hay un mensaje de error, devolverlo
+            return $resultado['MensajeError'];
+          }
+        } else {
+          // En caso de que no haya resultado, devolver un error
+          return "Error: No se obtuvo resultado.";
+        }
+      } else {
+        throw new Exception("Error de conexión a la base de datos.");
+      }
+    } catch (PDOException $e) {
+      throw new PDOException("Error al obtener código de usuario: " . $e->getMessage());
+    }
+  }
 
   // Metodo para registrar los logeos
   private function registrarLog($username, $codigo, $ipCliente, $nombreEquipo)

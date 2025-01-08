@@ -1,7 +1,7 @@
 ﻿-- Empresa		 : Municipalidad Distrital de La Esperanza
 -- Producto		 : Sistema de Gestion de Incidencias Informaticas
 -- Software		 : Sistema de Incidencias Informaticas
--- DBMS			 : SQL Server
+-- DBMS			 : SQL Server 2008 R2
 -- Base de datos : SISTEMA_INCIDENCIAS
 -- Responsable	 : Subgerente de informatica y Sistemas - SGIS
 --				   jhonatanmm.1995@gmail.com
@@ -15,7 +15,7 @@
 USE master;
 GO
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'BD_INCIDENCIAS_PRUEBA')
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'BD_INCIDENCIAS_2008')
 BEGIN
     DROP DATABASE BD_INCIDENCIAS_PRUEBA;
 END
@@ -166,7 +166,7 @@ CREATE TABLE RECEPCION (
 	CONSTRAINT fk_incidencia_recepcion FOREIGN KEY (INC_numero) REFERENCES INCIDENCIA (INC_numero),
 	CONSTRAINT fk_prioridad_recepcion FOREIGN KEY (PRI_codigo) REFERENCES PRIORIDAD (PRI_codigo),
 	CONSTRAINT fk_impacto_recepcion FOREIGN KEY (IMP_codigo) REFERENCES IMPACTO (IMP_codigo),
-	CONSTRAINT fk_usuario_recepcion FOREIGN KEY (USU_codigo) REFERENCES USUARIO (USU_codigo),
+	CONSTRAINT fk_usuario_recepcion FOREIGN KEY (USU_codigo) REFERENCES USUARIO (USU_codigo)
 );
 GO
 
@@ -449,46 +449,6 @@ FROM
 WHERE 
     I.EST_codigo IN (2, 3);
 GO
-
---Vista para listar las incidencias recepionadas para el administrador
--- CREATE VIEW vw_recepciones AS
--- SELECT
---   I.INC_numero,
---   I.INC_numero_formato,
---   ( CONVERT ( VARCHAR ( 10 ), I.INC_fecha, 103 ) ) AS fechaIncidenciaFormateada,
---   I.INC_codigoPatrimonial,
---   B.BIE_nombre,
---   I.INC_asunto,
---   I.INC_documento,
---   I.INC_descripcion,
---   R.REC_numero,
---   (
---     CONVERT ( VARCHAR ( 10 ), R.REC_fecha, 103 ) + ' - ' + STUFF( RIGHT( '0' + CONVERT ( VARCHAR ( 7 ), REC_hora, 0 ), 7 ), 6, 0, ' ' ) 
---   ) AS fechaRecepcionFormateada,
---   PRI.PRI_nombre,
---   IMP.IMP_descripcion,
---   CAT.CAT_nombre,
---   EST_descripcion AS ESTADO,
---   A.ARE_nombre,
---   p.PER_nombres + ' ' + p.PER_apellidoPaterno AS UsuarioIncidente,
---   pR.PER_nombres + ' ' + pR.PER_apellidoPaterno AS UsuarioRecepcion 
--- FROM
---   INCIDENCIA I
---   LEFT JOIN BIEN B ON LEFT( I.INC_codigoPatrimonial, 8 ) = B.BIE_codigoIdentificador
---   INNER JOIN AREA A ON I.ARE_codigo = A.ARE_codigo
---   INNER JOIN CATEGORIA CAT ON I.CAT_codigo = CAT.CAT_codigo
---   INNER JOIN ESTADO E ON I.EST_codigo = E.EST_codigo
---   LEFT JOIN RECEPCION R ON R.INC_numero = I.INC_numero
---   LEFT JOIN USUARIO uR ON uR.USU_codigo = R.USU_codigo
---   LEFT JOIN PERSONA pR ON pR.PER_codigo = uR.PER_codigo
---   LEFT JOIN PRIORIDAD PRI ON PRI.PRI_codigo = R.PRI_codigo
---   LEFT JOIN IMPACTO IMP ON IMP.IMP_codigo = R.IMP_codigo
---   LEFT JOIN USUARIO U ON U.USU_codigo = I.USU_codigo
---   INNER JOIN PERSONA p ON p.PER_codigo = U.PER_codigo 
--- WHERE
---   R.EST_codigo = 4 
---   AND (I.EST_codigo IN ( 3, 4 ));
--- GO
 
 --Vista para listar las incidencias totales para el administrador
 CREATE VIEW vw_incidencias_registradas AS
@@ -965,51 +925,6 @@ WHERE rn = 1
 AND ESTADO <> 'CERRADO';
 GO
 
--- CREATE VIEW vw_mantenimiento AS
--- SELECT 
---     I.INC_numero,
---     ASI.ASI_codigo,
---     R.REC_numero,
---     I.INC_numero_formato,
---     M.MAN_codigo,
---     (CONVERT(VARCHAR(10), REC_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), REC_hora, 0), 7), 6, 0, ' ')) AS fechaRecepcionFormateada,
---     (CONVERT(VARCHAR(10), ASI.ASI_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), ASI.ASI_hora, 0), 7), 6, 0, ' ')) AS fechaAsignacionFormateada,    
---     (CONVERT(VARCHAR(10), M.MAN_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), M.MAN_hora, 0), 7), 6, 0, ' ')) AS fechaMantenimientoFormateada,
---     A.ARE_nombre,
---     I.INC_asunto,
---     I.INC_documento,
---     I.INC_codigoPatrimonial,
---     B.BIE_nombre,
---     U.USU_codigo,
---     P.PER_nombres + ' ' + P.PER_apellidoPaterno AS usuarioSoporte,
---     pA.PER_nombres + ' ' + pA.PER_apellidoPaterno AS usuarioAsignador,
---     CASE
---         WHEN C.CIE_numero IS NOT NULL THEN EC.EST_descripcion
---         ELSE E.EST_descripcion
---     END AS EST_descripcion,
---     C.EST_codigo
--- FROM 
---     ASIGNACION ASI
---     INNER JOIN ESTADO E ON E.EST_codigo = ASI.EST_codigo
---     LEFT JOIN RECEPCION R ON R.REC_numero = ASI.REC_numero
---     LEFT JOIN INCIDENCIA I ON I.INC_numero = R.INC_numero
---     LEFT JOIN BIEN B ON LEFT(I.INC_codigoPatrimonial, 8) = B.BIE_codigoIdentificador
---     INNER JOIN AREA A ON A.ARE_codigo = I.ARE_codigo
---     LEFT JOIN USUARIO uA ON uA.USU_codigo = R.USU_codigo
---     LEFT JOIN PERSONA pA ON pA.PER_codigo = uA.PER_codigo
---     LEFT JOIN USUARIO U ON U.USU_codigo = ASI.USU_codigo
---     INNER JOIN PERSONA P ON P.PER_codigo = U.PER_codigo
---     LEFT JOIN MANTENIMIENTO M ON M.ASI_codigo = ASI.ASI_codigo
---     LEFT JOIN CIERRE C ON C.MAN_codigo = M.MAN_codigo
---     LEFT JOIN ESTADO EC ON C.EST_codigo = EC.EST_codigo
--- WHERE 
---     E.EST_codigo IN (5,6)
---     AND (CASE
---             WHEN C.CIE_numero IS NOT NULL THEN EC.EST_descripcion
---             ELSE E.EST_descripcion
---          END) <> 'CERRADO'
--- GO
-
 -- Vista para listar mantenimientos con tiempo de mantenimiento
 CREATE VIEW vw_incidencias_mantenimiento AS
 WITH UltimaModificacion AS (
@@ -1151,27 +1066,6 @@ WHERE rn = 1;
 GO
 
 -- VISTA PARA LISTAR LAS INCIDENCIAS LISTAS PARA CERRAR
---CREATE VIEW vw_incidencias_finalizadas AS
---SELECT M.MAN_codigo, 
---       INC_numero_formato, 
---           (CONVERT(VARCHAR(10), REC_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), REC_hora, 0), 7), 6, 0, ' ')) AS fechaRecepcionFormateada,
---       ARE_nombre,
---       INC_codigoPatrimonial, 
---       BIE_nombre,
---       INC_asunto, 
---       INC_documento, 
---       PER_nombres + ' ' + PER_apellidoPaterno AS usuarioSoporte
---FROM MANTENIMIENTO M
---INNER JOIN ASIGNACION ASI ON ASI.ASI_codigo = M.ASI_codigo
---LEFT JOIN RECEPCION R ON R.REC_numero = ASI.REC_numero
---LEFT JOIN INCIDENCIA I ON I.INC_numero = R.INC_numero
---LEFT JOIN BIEN B ON LEFT(I.INC_codigoPatrimonial, 8) = B.BIE_codigoIdentificador
---INNER JOIN AREA AR ON AR.ARE_codigo = I.ARE_codigo
---LEFT JOIN USUARIO U ON U.USU_codigo = ASI.USU_codigo 
---LEFT JOIN PERSONA P ON P.PER_codigo = U.PER_codigo
---WHERE M.EST_codigo = 6;
---GO
-
 CREATE VIEW vw_incidencias_finalizadas AS
 WITH UltimaModificacion AS (
     SELECT 
@@ -1220,85 +1114,6 @@ WHERE rn = 1; -- Solo la última modificación de cada incidencia
 GO
 
 -- Vista para listar cierres
---CREATE VIEW vw_cierres AS
---SELECT
---    I.INC_numero,
---    I.INC_numero_formato,
---    (CONVERT(VARCHAR(10), INC_fecha, 103) + ' - ' + 
---    STUFF(RIGHT('0' + CONVERT(VARCHAR(7), INC_hora, 0), 7), 6, 0, ' ')) AS fechaIncidenciaFormateada,
---    A.ARE_nombre,
---    A.ARE_codigo,
---    CAT.CAT_nombre,
---    I.INC_asunto,
---    I.INC_documento,
---    I.INC_codigoPatrimonial,
---    B.BIE_nombre,
---    PRI.PRI_nombre,
---    (CONVERT(VARCHAR(10), C.CIE_fecha, 103) + ' - ' + 
---    STUFF(RIGHT('0' + CONVERT(VARCHAR(7), C.CIE_hora, 0), 7), 6, 0, ' ')) AS fechaCierreFormateada,
---    C.CIE_numero,
---    C.CIE_diagnostico, 
---    C.CIE_recomendaciones,
---    C.CIE_documento,
---    O.CON_descripcion,
---    U.USU_nombre,
---    U.USU_codigo,
---    S.SOL_descripcion,
---    CASE
---        WHEN C.CIE_numero IS NOT NULL THEN EC.EST_descripcion
---        ELSE E.EST_descripcion
---    END AS Estado,
---    (P.PER_nombres + ' ' + P.PER_apellidoPaterno) AS Usuario,
---    -- Última modificación (fecha y hora más reciente)
---    MAX(COALESCE(C.CIE_fecha, R.REC_fecha, I.INC_fecha)) AS ultimaFecha,
---    MAX(COALESCE(C.CIE_hora, R.REC_hora, I.INC_hora)) AS ultimaHora
---FROM CIERRE C
---LEFT JOIN MANTENIMIENTO MAN ON MAN.MAN_codigo = C.MAN_codigo
---LEFT JOIN ASIGNACION ASI ON ASI.ASI_codigo = MAN.ASI_codigo
---LEFT JOIN RECEPCION R ON R.REC_numero = ASI.REC_numero
---INNER JOIN PRIORIDAD PRI ON PRI.PRI_codigo = R.PRI_codigo
---RIGHT JOIN INCIDENCIA I ON I.INC_numero = R.INC_numero
---LEFT JOIN BIEN B ON LEFT(I.INC_codigoPatrimonial, 8) = B.BIE_codigoIdentificador
---INNER JOIN AREA A ON I.ARE_codigo = A.ARE_codigo
---INNER JOIN CATEGORIA CAT ON I.CAT_codigo = CAT.CAT_codigo
---INNER JOIN ESTADO E ON I.EST_codigo = E.EST_codigo
---LEFT JOIN ESTADO EC ON C.EST_codigo = EC.EST_codigo
---INNER JOIN CONDICION O ON O.CON_codigo = C.CON_codigo
---INNER JOIN USUARIO U ON U.USU_codigo = C.USU_codigo
---INNER JOIN PERSONA P ON P.PER_codigo = U.PER_codigo
---LEFT JOIN SOLUCION S ON S.SOL_codigo = C.SOL_codigo
---WHERE MAN.EST_codigo = 7 OR C.EST_codigo = 7
---GROUP BY
---    I.INC_numero,
---    I.INC_numero_formato,
---    INC_fecha,
---    INC_hora,
---    A.ARE_nombre,
---    A.ARE_codigo,
---    CAT.CAT_nombre,
---    I.INC_asunto,
---    I.INC_documento,
---    I.INC_codigoPatrimonial,
---    B.BIE_nombre,
---    PRI.PRI_nombre,
---    C.CIE_fecha,
---    C.CIE_hora,
---    C.CIE_numero,
---    C.CIE_diagnostico,
---    C.CIE_recomendaciones,
---    C.CIE_documento,
---    O.CON_descripcion,
---    U.USU_nombre,
---    U.USU_codigo,
---    S.SOL_descripcion,
---    P.PER_nombres,
---    P.PER_apellidoPaterno,
---    CASE
---        WHEN C.CIE_numero IS NOT NULL THEN EC.EST_descripcion
---        ELSE E.EST_descripcion
---    END;
---GO
-
 CREATE VIEW vw_cierres AS
 WITH UltimaModificacion AS (
   SELECT 
@@ -2903,7 +2718,7 @@ EXEC sp_deshabilitar_usuario 6;
 EXEC sp_deshabilitar_usuario 7; 
 GO 
 
---PROCEDIMIENTO ALMACENADO PARA INCIAR SESION
+
 CREATE PROCEDURE sp_login 
     @USU_usuario NVARCHAR(50),
     @USU_password NVARCHAR(100),
@@ -3015,7 +2830,6 @@ BEGIN
 END;
 GO
 
-
 -- PROCEDIMIENTO ALMACENADO PARA ACTUALIZAR DATOS PERSONALES DEL USUARIO
 CREATE PROCEDURE sp_editar_perfil
   @USU_codigo SMALLINT,
@@ -3067,7 +2881,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @stored_password VARBINARY(64);
+    DECLARE @stored_password VARBINARY(20);
     DECLARE @salt UNIQUEIDENTIFIER;
     DECLARE @USU_codigo INT;
 
@@ -3085,19 +2899,14 @@ BEGIN
         RETURN;
     END
 
-    -- Hashear la contraseña proporcionada
-    DECLARE @hashed_password VARBINARY(64);
+    -- Hashear la contraseña proporcionada junto con el salt almacenado
+    DECLARE @hashed_password VARBINARY(20);
     DECLARE @password_bytes VARBINARY(100) = CONVERT(VARBINARY(100), @USU_password);
     DECLARE @salt_bytes VARBINARY(16) = CAST(@salt AS VARBINARY(16));
     DECLARE @to_hash VARBINARY(116) = @password_bytes + @salt_bytes;
 
-    DECLARE @iterations INT = 10000;
-    WHILE @iterations > 0
-    BEGIN
-        SET @hashed_password = HASHBYTES('SHA2_512', @to_hash);
-        SET @to_hash = @hashed_password + @salt_bytes;
-        SET @iterations = @iterations - 1;
-    END
+    -- Hashear usando SHA1 (disponible en SQL Server 2008 R2)
+    SET @hashed_password = HASHBYTES('SHA1', @to_hash);
 
     -- Comparar las contraseñas hasheadas
     IF @hashed_password = @stored_password
@@ -3112,6 +2921,76 @@ BEGIN
     END
 END;
 GO
+
+--PROCEDIMIENTO ALMACENADO PARA OBTENER EL CODIGO DEL USUARIO
+CREATE PROCEDURE sp_obtener_codigo_usuario
+    @USU_usuario NVARCHAR(50),
+    @USU_password NVARCHAR(100),
+    @DNI_ultimos2 CHAR(2)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @USU_codigo INT;
+    DECLARE @EST_codigo SMALLINT;
+    DECLARE @stored_password VARBINARY(20);  -- Ajuste para el hash SHA1 (20 bytes)
+    DECLARE @salt UNIQUEIDENTIFIER;
+    DECLARE @PER_dni CHAR(8);
+
+    -- Obtener información del usuario
+    SELECT @USU_codigo = u.USU_codigo, 
+           @EST_codigo = u.EST_codigo, 
+           @stored_password = u.USU_password,
+           @salt = u.USU_salt,
+           @PER_dni = p.PER_dni
+    FROM USUARIO u
+    LEFT JOIN PERSONA p ON p.PER_codigo = u.PER_codigo
+    WHERE u.USU_nombre = @USU_usuario;
+
+    -- Verificar si el usuario existe y está activo
+    IF @USU_codigo IS NOT NULL AND @EST_codigo = 1
+    BEGIN
+        -- Hashear la contraseña ingresada utilizando SHA1 (20 bytes)
+        DECLARE @hashed_password VARBINARY(20);  
+        DECLARE @password_bytes VARBINARY(100) = CONVERT(VARBINARY(100), @USU_password);
+        DECLARE @salt_bytes VARBINARY(16) = CAST(@salt AS VARBINARY(16));
+        DECLARE @to_hash VARBINARY(116) = @password_bytes + @salt_bytes;
+
+        -- Aplicar el hash usando SHA1
+        SET @hashed_password = HASHBYTES('SHA1', @to_hash);
+
+        -- Verificar si las credenciales son correctas
+        IF @hashed_password = @stored_password
+        BEGIN
+            -- Verificar si el usuario es 'ADMIN' o si el DNI coincide para usuarios no 'ADMIN'
+            IF LOWER(@USU_usuario) = 'admin' OR RIGHT(@PER_dni, 2) = @DNI_ultimos2
+            BEGIN
+                -- Devolver el código del usuario
+                SELECT @USU_codigo AS USU_codigo;
+            END
+            ELSE
+            BEGIN
+                -- Los dos últimos dígitos del DNI no coinciden
+                SELECT 'Los dos últimos dígitos del DNI no coinciden.' AS MensajeError;
+            END
+        END
+        ELSE
+        BEGIN
+            -- Credenciales incorrectas
+            SELECT 'Credenciales incorrectas' AS MensajeError;
+        END
+    END
+    ELSE
+    BEGIN
+        -- Usuario no encontrado o inactivo
+        SELECT CASE 
+            WHEN @USU_codigo IS NULL THEN 'Usuario no encontrado'
+            ELSE 'Usuario inactivo. Por favor, contacte al administrador.'
+        END AS MensajeError;
+    END
+END;
+GO
+
 
 --PROCEDIMIENTO ALMACENADO PARA CAMBIAR CONTRASEÑA
 CREATE PROCEDURE sp_cambiar_contrasena
@@ -3131,7 +3010,7 @@ BEGIN
     END
 
     -- 2. Obtener el salt y la contraseña hasheada del usuario
-    DECLARE @stored_password VARBINARY(64);  -- Contraseña almacenada (hash)
+    DECLARE @stored_password VARBINARY(20);  -- Contraseña almacenada (hash de 20 bytes para SHA1)
     DECLARE @salt UNIQUEIDENTIFIER;          -- Salt almacenado
 
     SELECT @stored_password = USU_password, 
@@ -3146,19 +3025,14 @@ BEGIN
         RETURN;
     END
 
-    -- 3. Hashear la nueva contraseña antes de guardarla
-    DECLARE @hashed_password_nueva VARBINARY(64);
+    -- 3. Hashear la nueva contraseña con el salt existente (sin iteraciones)
+    DECLARE @hashed_password_nueva VARBINARY(20);  -- SHA1 produce un hash de 20 bytes
     DECLARE @nueva_password_bytes VARBINARY(100) = CONVERT(VARBINARY(100), @USU_password_nueva);
     DECLARE @salt_bytes VARBINARY(16) = CAST(@salt AS VARBINARY(16));
     DECLARE @to_hash_nueva VARBINARY(116) = @nueva_password_bytes + @salt_bytes;
 
-    DECLARE @iterations INT = 10000;
-    WHILE @iterations > 0
-    BEGIN
-        SET @hashed_password_nueva = HASHBYTES('SHA2_512', @to_hash_nueva);
-        SET @to_hash_nueva = @hashed_password_nueva + @salt_bytes;
-        SET @iterations = @iterations - 1;
-    END
+    -- Aplicar el hash una sola vez con SHA1
+    SET @hashed_password_nueva = HASHBYTES('SHA1', @to_hash_nueva);
 
     -- 4. Actualizar la contraseña en la base de datos
     UPDATE USUARIO
@@ -3169,12 +3043,11 @@ BEGIN
 END;
 GO
 
-
 -- PROCEDIMIENTO ALMACENADO PARA RESTABLECER CONTRASEÑA
 CREATE PROCEDURE sp_restablecer_contrasena
-    @USU_codigo INT,                       -- Código del usuario
-    @USU_password_nueva NVARCHAR(100),     -- Nueva contraseña
-    @USU_password_confirmacion NVARCHAR(100) -- Confirmación de la nueva contraseña
+    @USU_codigo INT,                       
+    @USU_password_nueva NVARCHAR(100),     
+    @USU_password_confirmacion NVARCHAR(100) 
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -3190,19 +3063,13 @@ BEGIN
     DECLARE @salt UNIQUEIDENTIFIER = NEWID();
 
     -- Convertir la nueva contraseña y el salt a varbinary
-    DECLARE @hashed_password_nueva VARBINARY(64);
+    DECLARE @hashed_password_nueva VARBINARY(20);  -- SHA1 produce 20 bytes
     DECLARE @password_bytes VARBINARY(100) = CONVERT(VARBINARY(100), @USU_password_nueva);
     DECLARE @salt_bytes VARBINARY(16) = CAST(@salt AS VARBINARY(16));
     DECLARE @to_hash VARBINARY(116) = @password_bytes + @salt_bytes;
 
-    -- Hashear la nueva contraseña usando un bucle de iteraciones (ej. 10000 iteraciones de SHA2_512)
-    DECLARE @iterations INT = 10000;
-    WHILE @iterations > 0
-    BEGIN
-        SET @hashed_password_nueva = HASHBYTES('SHA2_512', @to_hash);
-        SET @to_hash = @hashed_password_nueva + @salt_bytes;
-        SET @iterations = @iterations - 1;
-    END
+    -- Hashear la nueva contraseña usando SHA1
+    SET @hashed_password_nueva = HASHBYTES('SHA1', @to_hash);
 
     -- Actualizar la nueva contraseña hasheada y el salt en la base de datos
     UPDATE USUARIO
@@ -3213,6 +3080,7 @@ BEGIN
 END;
 GO
 
+
 --PROCEDIMIENTO ALMACENADO PARA VERIFICAR SI LA CONTRASEÑA ACTUAL ES CORRECTA
 CREATE PROCEDURE sp_verificar_contrasena_actual
     @USU_codigo INT, 
@@ -3221,8 +3089,9 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @stored_password VARBINARY(64); 
-    DECLARE @salt UNIQUEIDENTIFIER;        
+    DECLARE @stored_password VARBINARY(20);  -- SHA1 genera un hash de 20 bytes
+    DECLARE @salt UNIQUEIDENTIFIER;          -- Salt almacenado        
+
 
     -- Obtener la contraseña hasheada y el salt del usuario
     SELECT @stored_password = USU_password, 
@@ -3237,19 +3106,14 @@ BEGIN
         RETURN;
     END
 
-    -- Hashear la contraseña actual proporcionada por el usuario
-    DECLARE @hashed_password VARBINARY(64);
+    -- Hashear la contraseña actual proporcionada por el usuario sin iteraciones
+    DECLARE @hashed_password VARBINARY(20);  -- SHA1 genera un hash de 20 bytes
     DECLARE @password_bytes VARBINARY(100) = CONVERT(VARBINARY(100), @USU_password_actual);
     DECLARE @salt_bytes VARBINARY(16) = CAST(@salt AS VARBINARY(16));
     DECLARE @to_hash VARBINARY(116) = @password_bytes + @salt_bytes;
 
-    DECLARE @iterations INT = 10000;  -- Iteraciones del algoritmo de hash
-    WHILE @iterations > 0
-    BEGIN
-        SET @hashed_password = HASHBYTES('SHA2_512', @to_hash);
-        SET @to_hash = @hashed_password + @salt_bytes;
-        SET @iterations = @iterations - 1;
-    END
+    -- Hashear con SHA1 sin iteraciones
+    SET @hashed_password = HASHBYTES('SHA1', @to_hash);
 
     -- Comparar las contraseñas hasheadas
     IF @hashed_password = @stored_password
@@ -3262,6 +3126,9 @@ BEGIN
     END
 END;
 GO
+
+
+
 
 --PROCEDIMIENTO ALMACENADO PARA ACTUALIZAR DATOS DE USUARIO
 CREATE PROCEDURE sp_editar_usuario
