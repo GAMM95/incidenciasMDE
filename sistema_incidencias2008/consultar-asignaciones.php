@@ -148,7 +148,7 @@ if ($rol === 'Administrador') {
 <html lang="es">
 
 <head>
-  <title>Sistema de Gestión de Incidencias</title>
+  <title>Sistema de Gesti&oacute;n de Incidencias</title>
   <link rel="icon" href="public/assets/logo.ico">
   <!-- Meta -->
   <meta charset="utf-8">

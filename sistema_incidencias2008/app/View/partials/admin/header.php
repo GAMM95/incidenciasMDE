@@ -189,7 +189,7 @@ if (isset($_SESSION['codigoUsuario'])) {
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
-                <p class="mb-0 text-gray-800 text-center text-md">¿Desea cerrar sesi&oacute;n?</p>
+                <p class="mb-0 text-gray-800 text-center text-md">&quest;Desea cerrar sesi&oacute;n?</p>
               </div>
               <div class="modal-footer">
                 <a href="logout.php" class="btn btn-primary rounded-md text-white">Cerrar sesi&oacute;n</a>

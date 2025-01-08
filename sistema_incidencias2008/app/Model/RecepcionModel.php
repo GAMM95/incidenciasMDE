@@ -163,13 +163,22 @@ class RecepcionModel extends Conexion
     $conector = parent::getConexion();
     if ($conector != null) {
       try {
-        $sql = "SELECT * FROM vw_incidencias_recepcionadas 
-        ORDER BY INC_numero DESC 
-        OFFSET :start ROWS FETCH NEXT :limit ROWS ONLY";
+        $sql = "WITH Paginacion AS (
+                SELECT *, ROW_NUMBER() OVER (ORDER BY INC_numero DESC) AS RowNum
+                FROM vw_incidencias_recepcionadas
+              )
+              SELECT *
+              FROM Paginacion
+              WHERE RowNum BETWEEN :start AND :end";
+
+        // Calculamos el valor de 'end' como el inicio + el límite
+        $end = $start + $limit - 1;
         $stmt = $conector->prepare($sql);
         $stmt->bindParam(':start', $start, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
         $stmt->execute();
+
+        // Fetch the results
         $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $registros;
       } catch (PDOException $e) {
@@ -181,6 +190,7 @@ class RecepcionModel extends Conexion
       return null;
     }
   }
+
 
   // Metodo para listar incidencias pendientes de cierre para reporte
   public function listarIncidenciasPendientesCierre()

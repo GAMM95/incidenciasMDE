@@ -358,16 +358,29 @@ class IncidenciaModel extends Conexion
     $conector = parent::getConexion();
     try {
       if ($conector != null) {
-        $sql = "SELECT * FROM vw_incidencias_registradas
-          ORDER BY 
-          SUBSTRING(INC_numero_formato, CHARINDEX('-', INC_numero_formato) + 1, 4) DESC,
-          INC_numero_formato DESC
-          OFFSET :start ROWS
-          FETCH NEXT :limit ROWS ONLY";
+        // Calculamos el valor de 'end' como 'start + limit - 1'
+        $end = $start + $limit - 1;
+
+        // Usamos ROW_NUMBER() para numerar las filas
+        $sql = "WITH Paginacion AS (
+                  SELECT *,
+                    ROW_NUMBER() OVER (
+                      ORDER BY 
+                        SUBSTRING(INC_numero_formato, CHARINDEX('-', INC_numero_formato) + 1, 4) DESC,
+                        INC_numero_formato DESC
+                    ) AS RowNum
+                  FROM vw_incidencias_registradas
+              )
+              SELECT *
+              FROM Paginacion
+              WHERE RowNum BETWEEN :start AND :end";
+        // Preparamos y ejecutamos la consulta
         $stmt = $conector->prepare($sql);
         $stmt->bindParam(':start', $start, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
         $stmt->execute();
+
+        // Obtenemos los resultados
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
       } else {
@@ -377,6 +390,7 @@ class IncidenciaModel extends Conexion
       throw new Exception("Error al listar incidencias registradas por el administrador: " . $e->getMessage());
     }
   }
+
 
   // Metodo para listar incidencias registradas por el administrador
   public function listarIncidenciasRegistroAdmin()

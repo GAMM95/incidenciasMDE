@@ -112,28 +112,63 @@ class AsignacionModel extends Conexion
   }
 
   // Metodo para listar incidencias asignadas
+  // public function listarAsignaciones($start, $limit)
+  // {
+  //   $conector = parent::getConexion();
+  //   try {
+  //     if ($conector != null) {
+  //       $sql = "SELECT * FROM vw_incidencias_asignadas
+  //           ORDER BY ASI_codigo DESC
+  //           OFFSET :start ROWS
+  //           FETCH NEXT :limit ROWS ONLY";
+  //       $stmt = $conector->prepare($sql);
+  //       $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+  //       $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+  //       $stmt->execute();
+  //       $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  //       return $registros;
+  //     } else {
+  //       throw new Exception("Error de conexión a la base de datos");
+  //       return null;
+  //     }
+  //   } catch (PDOException $e) {
+  //     throw new PDOException("Error al listar incidencias asignadas: " . $e->getMessage());
+  //     return null;
+  //   }
+  // }
+
   public function listarAsignaciones($start, $limit)
   {
     $conector = parent::getConexion();
     try {
       if ($conector != null) {
-        $sql = "SELECT * FROM vw_incidencias_asignadas
-            ORDER BY ASI_codigo DESC
-            OFFSET :start ROWS
-            FETCH NEXT :limit ROWS ONLY";
+        // Calculamos el valor de 'end' como 'start + limit - 1'
+        $end = $start + $limit - 1;
+
+        // Usamos ROW_NUMBER() para numerar las filas
+        $sql = "WITH Paginacion AS (
+              SELECT *,
+                ROW_NUMBER() OVER (ORDER BY ASI_codigo DESC) AS RowNum
+              FROM vw_incidencias_asignadas
+            )
+            SELECT *
+            FROM Paginacion
+            WHERE RowNum BETWEEN :start AND :end";
+
+        // Preparamos y ejecutamos la consulta
         $stmt = $conector->prepare($sql);
         $stmt->bindParam(':start', $start, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':end', $end, PDO::PARAM_INT);
         $stmt->execute();
+
+        // Obtenemos los resultados
         $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $registros;
       } else {
-        throw new Exception("Error de conexión a la base de datos");
-        return null;
+        throw new Exception("Error de conexión a la base de datos.");
       }
     } catch (PDOException $e) {
       throw new PDOException("Error al listar incidencias asignadas: " . $e->getMessage());
-      return null;
     }
   }
 
@@ -240,11 +275,11 @@ class AsignacionModel extends Conexion
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['recepciones_finalizadas_mes_actual'];
       } else {
-        throw new Exception ("Error de conexión con la base de datos.");
+        throw new Exception("Error de conexión con la base de datos.");
         return null;
       }
     } catch (PDOException $e) {
-      throw new PDOException ("Error al contar recepciones en espera del ultimo mes para el administrador: " . $e->getMessage());
+      throw new PDOException("Error al contar recepciones en espera del ultimo mes para el administrador: " . $e->getMessage());
       return null;
     }
   }
@@ -314,27 +349,27 @@ class AsignacionModel extends Conexion
     }
   }
 
-    // Metodo para consultar eventos de asignaciones - auditoria
-    public function buscarEventosAsignaciones($usuario, $fechaInicio, $fechaFin)
-    {
-      $conector = parent::getConexion();
-      try {
-        if ($conector != null) {
-          $sql = "EXEC sp_consultar_eventos_asignaciones :usuario, :fechaInicio, :fechaFin";
-          $stmt = $conector->prepare($sql);
-          $stmt->bindParam(':usuario', $usuario);
-          $stmt->bindParam(':fechaInicio', $fechaInicio);
-          $stmt->bindParam(':fechaFin', $fechaFin);
-          $stmt->execute();
-          $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
-          return $resultado;
-        } else {
-          throw new Exception("Error de conexión a la base de datos.");
-          return null;
-        }
-      } catch (PDOException $e) {
-        throw new Exception("Error al consultar eventos de asignaciones en la tabla de auditoria: " . $e->getMessage());
+  // Metodo para consultar eventos de asignaciones - auditoria
+  public function buscarEventosAsignaciones($usuario, $fechaInicio, $fechaFin)
+  {
+    $conector = parent::getConexion();
+    try {
+      if ($conector != null) {
+        $sql = "EXEC sp_consultar_eventos_asignaciones :usuario, :fechaInicio, :fechaFin";
+        $stmt = $conector->prepare($sql);
+        $stmt->bindParam(':usuario', $usuario);
+        $stmt->bindParam(':fechaInicio', $fechaInicio);
+        $stmt->bindParam(':fechaFin', $fechaFin);
+        $stmt->execute();
+        $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
+      } else {
+        throw new Exception("Error de conexión a la base de datos.");
         return null;
       }
+    } catch (PDOException $e) {
+      throw new Exception("Error al consultar eventos de asignaciones en la tabla de auditoria: " . $e->getMessage());
+      return null;
     }
+  }
 }
