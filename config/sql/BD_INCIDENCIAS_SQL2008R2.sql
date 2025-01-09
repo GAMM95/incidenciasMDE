@@ -432,6 +432,7 @@ SELECT
   I.INC_asunto,
   I.INC_documento,
   I.INC_descripcion,
+  CAT.CAT_codigo,
   CAT.CAT_nombre,
   A.ARE_codigo,
   A.ARE_nombre,
