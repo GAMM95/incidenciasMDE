@@ -36,8 +36,8 @@
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="categoria" class="block font-bold mb-1">Categor&iacute;a: *</label>
           <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-xs cursor-pointer">
-          <input type="" id="codigoCategoria" name="codigoCategoria" readonly>
-          <input type="" id="nombreCategoria" name="nombreCategoria" readonly>
+            <input type="" id="codigoCategoria" name="codigoCategoria" readonly>
+            <input type="" id="nombreCategoria" name="nombreCategoria" readonly>
           </select>
         </div>
 
@@ -45,8 +45,8 @@
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="area" class="block font-bold mb-1">&Aacute;rea: *</label>
           <select id="cbo_area" name="area" class="border p-2 w-full text-xs cursor-pointer">
-          <input type="" id="codigoArea" name="codigoArea" readonly>
-          <input type="" id="codigoNombre" name="nombreArea" readonly>
+            <input type="" id="codigoArea" name="codigoArea" readonly>
+            <input type="" id="codigoNombre" name="nombreArea" readonly>
           </select>
         </div>
 
@@ -230,7 +230,7 @@
                   <th scope='row' class='px-6 py-3 font-medium text-gray-900 whitespace-nowrap hidden'> <?= $incidencia['INC_numero']; ?></th>
                   <td class='px-6 py-3 text-center'><?= $incidencia['INC_numero_formato']; ?></td>
                   <td class='px-4 py-3 text-center'><?= $incidencia['fechaIncidenciaFormateada']; ?></td>
-                  <td class='px-1 py-3 text-center'><?= $incidencia['INC_codigoPatrimonial']; ?></td> 
+                  <td class='px-1 py-3 text-center'><?= $incidencia['INC_codigoPatrimonial']; ?></td>
                   <td class='px-10 py-3 text-center'><?= $incidencia['INC_asunto']; ?></td>
                   <td class='px-3 py-3 text-center'><?= $incidencia['INC_documento']; ?></td>
                   <td class='px-6 py-3 text-center'><?= $incidencia['CAT_codigo']; ?></td>

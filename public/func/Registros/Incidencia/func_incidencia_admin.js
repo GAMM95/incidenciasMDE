@@ -198,33 +198,35 @@ $(document).ready(function () {
   $(document).on('click', '#tablaListarIncidencias tbody tr', function () {
     $('#tablaListarIncidencias tbody tr').removeClass('bg-blue-200 font-semibold');
     $(this).addClass('bg-blue-200 font-semibold');
-
+  
     // Establecer valores en el formulario según la fila seleccionada
     const celdas = $(this).find('td');
     const codIncidencia = $(this).find('th').text().trim();
     const codigoPatrimonialValue = celdas[2].innerText.trim();
     const asuntoValue = celdas[3].innerText.trim();
     const documentoValue = celdas[4].innerText.trim();
-    const categoriaValue = celdas[5].innerText.trim();
-    const areaValue = celdas[6].innerText.trim();
-    const descripcionValue = celdas[7].innerText.trim();
-
+    const codigoCategoria = celdas[5].innerText.trim(); // Código de la categoría
+    const codigoArea = celdas[7].innerText.trim(); // Código del área
+    const descripcionValue = celdas[9].innerText.trim();
+  
     // Seteo de valores en los inputs
     document.getElementById('numero_incidencia').value = codIncidencia;
     document.getElementById('codigoPatrimonial').value = codigoPatrimonialValue;
     document.getElementById('asunto').value = asuntoValue;
     document.getElementById('documento').value = documentoValue;
     document.getElementById('descripcion').value = descripcionValue;
-
-    // Seteo de los valores en los combos
-    setComboValue('cbo_categoria', categoriaValue);
-    setComboValue('cbo_area', areaValue);
-
+    document.getElementById('codigoCategoria').value = codigoCategoria;
+    document.getElementById('codigoArea').value = codigoArea;
+  
+    // Setear el código en los combos (esto hará que se muestre el nombre asociado)
+    $('#cbo_categoria').val(codigoCategoria).trigger('change'); // Setear el código de la categoría
+    $('#cbo_area').val(codigoArea).trigger('change'); // Setear el código del área
+  
     // Cambiar estado de los botones
     $('#guardar-incidencia').prop('disabled', true);
     $('#editar-incidencia').prop('disabled', false);
     $('#nuevo-registro').prop('disabled', false);
-
+  
     // Si existe un código patrimonial, buscar el tipo de bien
     if (codigoPatrimonialValue) {
       buscarTipoBien(codigoPatrimonialValue);
@@ -233,6 +235,8 @@ $(document).ready(function () {
       $('#tipoBien').val('');
     }
   });
+  
+  
 
   // Función para buscar el tipo de bien en el servidor
   function buscarTipoBien(codigo) {
