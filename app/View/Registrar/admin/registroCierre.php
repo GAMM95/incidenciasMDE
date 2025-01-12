@@ -177,6 +177,7 @@
             <label for="solucion" class="block font-bold mb-1 text-xs">Soluci&oacute;n: *</label>
             <select id="solucion" name="solucion" class="border p-2 w-full text-xs cursor-pointer rounded-md">
             </select>
+            <input type="hidden" id="codigoSolucion" name="codigoSolucion">
           </div>
 
           <!-- Botón al costado del select -->
@@ -246,6 +247,7 @@
             <th scope="col" class="px-6 py-2 text-center hidden">Diagn&oacute;stico</th>
             <th scope="col" class="px-6 py-2 text-center hidden">Recomendaciones</th>
             <th scope="col" class="px-6 py-2 text-center">Usuario cierre</th>
+            <th scope="col" class="px-6 py-2 text-center hidden">C&oacute;digo Soluci&oacute;n</th>
             <th scope="col" class="px-6 py-2 text-center">Soluci&oacute;n</th>
             <th scope="col" class="px-6 py-2 text-center">Acci&oacute;n</th>
           </tr>
@@ -271,6 +273,7 @@
                 <td class='px-6 py-2 text-center hidden'><?= $incidencia['CIE_diagnostico']; ?></td>
                 <td class='px-6 py-2 text-center hidden'><?= $incidencia['CIE_recomendaciones']; ?></td>
                 <td class='px-6 py-2 text-center'><?= $incidencia['Usuario']; ?></td>
+                <td class='px-6 py-2 text-center hidden'><?= $incidencia['SOL_codigo']; ?></td>
                 <td class='px-6 py-2 text-center'><?= $incidencia['SOL_descripcion']; ?></td>
                 <td class="px-6 py-2 justify-center text-center justify-middle flex space-x-2"> <!-- Columna de Acción con botones -->
                   <!-- Botón de Imprimir detalla de incidencia -->

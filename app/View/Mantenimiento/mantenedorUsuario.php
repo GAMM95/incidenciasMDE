@@ -44,7 +44,7 @@
           <div class="flex-grow w-1/4">
             <label for="persona" class="block text-gray-700 font-bold mb-2">Trabajador:</label>
             <select id="persona" name="persona" class="border p-2 w-full text-xs cursor-pointer rounded-md"></select>
-            <input type="hidden" id="codigoPersona" name="codigoPersona">
+            <input type="hidden" id="codigoPersona" name="codigoPersona" readonly>
           </div>
 
           <!-- Boton agregar persona -->
@@ -54,12 +54,14 @@
           <div class="flex-grow w-1/2">
             <label for="area" class="block text-gray-700 font-bold mb-2">&Aacute;rea:</label>
             <select id="area" name="area" class="border p-2 w-full text-xs cursor-pointer rounded-md"></select>
+            <input type="hidden" id="codigoArea" name="codigoArea" readonly>
           </div>
 
           <!-- Seleccion de rol -->
           <div class="flex-grow w-1/4">
             <label for="rol" class="block text-gray-700 font-bold mb-2">Rol:</label>
             <select id="rol" name="rol" class="border p-2 w-full text-xs cursor-pointer rounded-md"></select>
+            <input type="hidden" id="codigoRol" name="codigoRol" readonly>
           </div>
         </div>
 
@@ -74,7 +76,7 @@
           <!-- CONTRASEÑA -->
           <div class="w-full sm:w-1/5 px-2 mb-2">
             <label for="password" class="block mb-1 font-bold text-xs">Contrase&ntilde;a:</label>
-            <input type="password" id="password" name="password" class="border p-2 w-full text-xs rounded-md" placeholder="Ingrese contraseña">
+            <input type="password" id="password" name="password" class="border p-2 w-full text-xs rounded-md" placeholder="Ingrese contrase&ntilde;a">
           </div>
 
           <!-- Botones del formulario -->
@@ -193,10 +195,13 @@
             <tr>
               <th scope="col" class="px-6 py-2 text-center">N&deg;</th>
               <th scope="col" class="px-6 py-2 text-center">DNI</th>
+              <th scope="col" class="px-6 py-2 text-center hidden">Codigo Persona</th>
               <th scope="col" class="px-6 py-2 text-center">Trabajador</th>
+              <th scope="col" class="px-6 py-2 text-center hidden">Codigo Area</th>
               <th scope="col" class="px-6 py-2 text-center">&Aacute;rea</th>
               <th scope="col" class="px-6 py-2 text-center">Usuario</th>
               <th scope="col" class="px-6 py-2 text-center hidden">Contrase&ntilde;a</th>
+              <th scope="col" class="px-6 py-2 text-center hidden">Codigo Rol</th>
               <th scope="col" class="px-6 py-2 text-center">Rol</th>
               <th scope="col" class="px-6 py-2 text-center">Estado</th>
             </tr>
@@ -218,16 +223,19 @@
                 // Aplicar clase de texto rojo si el ARE_estado es 2
                 $areaInactiva = ($areaEstado == 2) ? 'text-red-600' : 'text-gray-900';
                 ?>
-                <tr class="hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b" data-id="<?= $usuario['USU_codigo']; ?>">
-                  <th scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap hidden"><?= htmlspecialchars($usuario['USU_codigo']); ?></th>
-                  <td class="px-3 py-2 text-center"><?= $item++ ?></td> <!-- Columna de ítem -->
-                  <td class="px-6 py-2 text-center"><?= htmlspecialchars($usuario['PER_dni']); ?></td>
-                  <td class="px-6 py-2 text-center"><?= htmlspecialchars($usuario['persona']); ?></td>
-                  <td class="px-6 py-2 text-center <?= $areaInactiva; ?>"><?= htmlspecialchars($usuario['ARE_nombre']); ?></td>
-                  <td class="px-6 py-2 text-center"><?= htmlspecialchars($usuario['USU_nombre']); ?></td>
-                  <td class="px-6 py-2 text-center hidden"><?= htmlspecialchars($usuario['USU_password']); ?></td>
-                  <td class="px-6 py-2 text-center"><?= htmlspecialchars($usuario['ROL_nombre']); ?></td>
-                  <td class="px-6 py-2 text-center">
+                <tr class="hover:bg-green-100 hover:scale-[101%] transition-all hover:cursor-pointer border-b" data-id="<?= $codigoUsuario; ?>">
+                  <th scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap hidden"><?= $codigoUsuario; ?></th>
+                  <td class="px-3 py-2 text-center <?= $areaInactiva; ?>"><?= $item++ ?></td> <!-- Columna de ítem -->
+                  <td class="px-6 py-2 text-center <?= $areaInactiva; ?>"><?= $usuario['PER_dni']; ?></td>
+                  <td class="px-6 py-2 text-center hidden"><?= $usuario['PER_codigo']; ?></td>
+                  <td class="px-6 py-2 text-center <?= $areaInactiva; ?>"><?= $usuario['persona']; ?></td>
+                  <td class="px-6 py-2 text-center hidden"><?= $usuario['ARE_codigo']; ?></td>
+                  <td class="px-6 py-2 text-center <?= $areaInactiva; ?>"><?= $usuario['ARE_nombre']; ?></td>
+                  <td class="px-6 py-2 text-center <?= $areaInactiva; ?>"><?= $usuario['USU_nombre']; ?></td>
+                  <td class="px-6 py-2 text-center hidden"><?= $usuario['USU_password']; ?></td>
+                  <td class="px-6 py-2 text-center hidden"><?= $usuario['ROL_codigo']; ?></td>
+                  <td class="px-6 py-2 text-center <?= $areaInactiva; ?>"><?= $usuario['ROL_nombre']; ?></td>
+                  <td class="px-6 py-2 text-center <?= $areaInactiva; ?>">
                     <div class="custom-control custom-switch cursor-pointer">
                       <input type="checkbox" class="custom-control-input switch-usuario" id="customswitch<?= $codigoUsuario; ?>" data-id="<?= $codigoUsuario; ?>" <?= $isActive ? 'checked' : ''; ?>>
                       <label class="custom-control-label" for="customswitch<?= $codigoUsuario; ?>"><?= $isActive ? 'Activo' : 'Inactivo'; ?></label>

@@ -365,14 +365,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
       // Mapeo de los valores de las celdas a los inputs del formulario
       const codAsignacion = fila.querySelector('th').innerText.trim();
       const codRecepcion = celdas[1].innerText.trim();
-      const usuarioValue = celdas[6].innerText.trim();
+      const codigoUsuario = celdas[6].innerText.trim();
 
       // Seteo de valores en los inputs
       document.getElementById('num_asignacion').value = codAsignacion;
       document.getElementById('num_recepcion').value = codRecepcion;
+      document.getElementById('codigoUsuario').value = codigoUsuario;
 
-      // Seteo de los valores en los combos
-      setComboValue('usuarioAsignado', usuarioValue);
+      // Setear el código en los combos (esto hará que se muestre el nombre asociado)
+      $('#usuarioAsignado').val(codigoUsuario).trigger('change');
 
       // Cambiar estado de los botones
       document.getElementById('guardar-asignacion').disabled = true;

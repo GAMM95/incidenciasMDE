@@ -207,6 +207,7 @@
               <th scope="col" class="px-6 py-2 text-center">Asunto</th>
               <th scope="col" class="px-6 py-2 text-center">Equipo</th>
               <th scope="col" class="px-6 py-2 text-center">Nombre del bien</th>
+              <th scope="col" class="px-6 py-2 text-center">C&oacute;digo Usuario</th>
               <th scope="col" class="px-6 py-2 text-center">Usuario Asignado</th>
             </tr>
           </thead>
@@ -227,6 +228,7 @@
                   <td class='px-6 py-2 text-center'><?= $asignaciones['INC_asunto']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $asignaciones['INC_codigoPatrimonial']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $asignaciones['BIE_nombre']; ?></td>
+                  <td class='px-6 py-2 text-center'><?= $asignaciones['USU_codigo']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $asignaciones['usuarioSoporte']; ?></td>
                 </tr>
               <?php endforeach; ?>

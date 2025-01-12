@@ -370,15 +370,19 @@ FROM PERSONA;
 GO
 
 -- VISTA LISTAR USUARIOS
+
 CREATE VIEW vw_usuarios AS
 SELECT 
     u.USU_codigo, 
     p.PER_dni, 
+	  p.PER_codigo,
     p.PER_nombres + ' ' + p.PER_apellidoPaterno + ' ' + p.PER_apellidoMaterno AS persona,
+	  a.ARE_codigo,
     a.ARE_nombre, 
     u.EST_codigo, 
     u.USU_nombre, 
     u.USU_password, 
+	  r.ROL_codigo,
     r.ROL_nombre, 
     e.EST_descripcion 
 FROM 

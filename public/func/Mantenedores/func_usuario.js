@@ -209,11 +209,14 @@ $(document).on('click', '#tablaListarUsuarios tbody tr', function () {
   // Establecer valores en el formulario según la fila seleccionada
   const celdas = $(this).find('td');
   const codUsuario = $(this).find('th').text().trim();
-  const personaValue = celdas.eq(2).text().trim();
-  const areaValue = celdas.eq(3).text().trim();
-  const usernameValue = celdas.eq(4).text().trim();
+  const codigoPersona = celdas.eq(2).text().trim();
+  const personaValue = celdas.eq(3).text().trim();
+  const codigoArea = celdas.eq(4).text().trim();
+  const areaValue = celdas.eq(5).text().trim();
+  const usernameValue = celdas.eq(6).text().trim();
+  const codigoRol = celdas.eq(8).text().trim();
+  const rolValue = celdas.eq(7).text().trim();
   const passwordValue = celdas.eq(11).text().trim();
-  const rolValue = celdas.eq(6).text().trim();
 
   // Seteo del codigo de usuario en el formulario principal
   $('#CodUsuario').val(codUsuario);
@@ -225,9 +228,10 @@ $(document).on('click', '#tablaListarUsuarios tbody tr', function () {
   $('#usernameModal').val(usernameValue);
   $('#nombreModal').val(personaValue);
 
-  setComboValue('persona', personaValue);
-  setComboValue('area', areaValue);
-  setComboValue('rol', rolValue);
+  // Seteo de los combos 
+  $('#persona').val(codigoPersona).trigger('change');
+  $('#area').val(codigoArea).trigger('change');
+  $('#rol').val(codigoRol).trigger('change');
 
   // Bloquear el combo de persona
   $('#persona').prop('disabled', true);

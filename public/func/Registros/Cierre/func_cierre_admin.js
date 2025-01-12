@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       const codCierre = fila.querySelector('th').innerText.trim();
       const documentoValue = celdas[5].innerText.trim();
       const operatividadValue = celdas[6].innerText.trim();
-      const solucionValue = celdas[10].innerText.trim();
+      const codigoSolucion = celdas[10].innerText.trim();
       const diagnosticoValue = celdas[7].innerText.trim();
       const recomendacionesValue = celdas[8].innerText.trim();
 
@@ -391,10 +391,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
       document.getElementById('documento').value = documentoValue;
       document.getElementById('diagnostico').value = diagnosticoValue;
       document.getElementById('recomendaciones').value = recomendacionesValue;
+      document.getElementById('codigoSolucion').value = codigoSolucion;
 
       // Seteo de los valores en los combos
       setComboValue('operatividad', operatividadValue);
-      setComboValue('solucion', solucionValue);
+      $('#solucion').val(codigoSolucion).trigger('change'); // Setear el código de la categoría
 
       // Cambiar estado de los botones
       document.getElementById('guardar-cierre').disabled = true;

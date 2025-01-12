@@ -36,8 +36,7 @@
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="categoria" class="block font-bold mb-1">Categor&iacute;a: *</label>
           <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-xs cursor-pointer">
-            <input type="" id="codigoCategoria" name="codigoCategoria" readonly>
-            <input type="" id="nombreCategoria" name="nombreCategoria" readonly>
+            <input type="hidden" id="codigoCategoria" name="codigoCategoria" readonly>
           </select>
         </div>
 
@@ -45,8 +44,7 @@
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="area" class="block font-bold mb-1">&Aacute;rea: *</label>
           <select id="cbo_area" name="area" class="border p-2 w-full text-xs cursor-pointer">
-            <input type="" id="codigoArea" name="codigoArea" readonly>
-            <input type="" id="codigoNombre" name="nombreArea" readonly>
+            <input type="hidden" id="codigoArea" name="codigoArea" readonly>
           </select>
         </div>
 
@@ -202,9 +200,9 @@
               <th scope="col" class="px-1 py-2 text-center">C&oacute;d. Patrimonial</th> <!-- Ajuste aquí -->
               <th scope="col" class="px-10 py-2 text-center">Asunto</th>
               <th scope="col" class="px-3 py-2 text-center">Documento</th>
-              <th scope="col" class="px-6 py-2 text-center">Cod. Categor&iacute;a</th>
+              <th scope="col" class="px-6 py-2 hidden text-center">Cod. Categor&iacute;a</th>
               <th scope="col" class="px-6 py-2 text-center">Categor&iacute;a</th>
-              <th scope="col" class="px-6 py-2 text-center">Cod. &Aacute;rea</th>
+              <th scope="col" class="px-6 py-2 hidden text-center">Cod. &Aacute;rea</th>
               <th scope="col" class="px-6 py-2 text-center">&Aacute;rea</th>
               <th scope="col" class="px-6 py-2 hidden">descripcion</th>
               <th scope="col" class="px-6 py-2 hidden">Estado</th>
@@ -233,9 +231,9 @@
                   <td class='px-1 py-3 text-center'><?= $incidencia['INC_codigoPatrimonial']; ?></td>
                   <td class='px-10 py-3 text-center'><?= $incidencia['INC_asunto']; ?></td>
                   <td class='px-3 py-3 text-center'><?= $incidencia['INC_documento']; ?></td>
-                  <td class='px-6 py-3 text-center'><?= $incidencia['CAT_codigo']; ?></td>
+                  <td class='px-6 py-3 text-center hidden'><?= $incidencia['CAT_codigo']; ?></td>
                   <td class='px-6 py-3 text-center'><?= $incidencia['CAT_nombre']; ?></td>
-                  <td class='px-6 py-3 text-center'><?= $incidencia['ARE_codigo']; ?></td>
+                  <td class='px-6 py-3 text-center hidden'><?= $incidencia['ARE_codigo']; ?></td>
                   <td class='px-6 py-3 text-center'><?= $incidencia['ARE_nombre']; ?></td>
                   <td class='px-6 py-3 hidden'><?= $incidencia['INC_descripcion']; ?></td>
                   <td class="px-3 py-3 text-center ">
