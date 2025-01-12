@@ -630,8 +630,7 @@
                             ?>
                             <label class="badge <?= $badgeClass ?>"><?= $estadoDescripcion ?></label>
                           </td>
-                          <td class="px-6 py-2 text-center align-middle flex space-x-2"> <!-- Columna de Acción con botones -->
-                            <!-- Botón de Imprimir detalle de incidencia -->
+                          <td class="px-6 py-3 justify-center text-center align-middle flex space-x-2"> <!-- Columna de Acción con botones -->
                             <button type="button" id="imprimir-incidencia" class="bn btn-warning text-xs text-white font-bold py-2 px-3 rounded-md flex items-center justify-center" title="Detalle de incidencia">
                               <i class="feather icon-file"></i>
                             </button>

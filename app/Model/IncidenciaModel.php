@@ -248,6 +248,29 @@ class IncidenciaModel extends Conexion
     }
   }
 
+  // Metodo para listar incidencias con reporte detalle por area
+  public function listarIncidenciasDetalleArea($area)
+  {
+    $conector = parent::getConexion();
+    try {
+      if ($conector != null) {
+        $sql = "SELECT * FROM vw_incidencias_totales
+                  WHERE ARE_codigo = :area
+                  ORDER BY INC_numero DESC";
+        $stmt = $conector->prepare($sql);
+        $stmt->bindParam(':area', $area, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+      } else {
+        throw new Exception("Error de conexión a la base de datos.");
+      }
+    } catch (PDOException $e) {
+      throw new Exception("Error al obtener incidencias con detalle por area: " . $e->getMessage());
+    }
+  }
+
   // Metodo para listar incidencias totales para reporte
   public function listarIncidenciasArea()
   {

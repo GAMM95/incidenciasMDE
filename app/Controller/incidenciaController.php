@@ -451,6 +451,13 @@ class IncidenciaController
     return $resultado;
   }
 
+  // Metodo para listar incidencias con reporte detalle por area
+  public function listarIncidenciasDetalleArea($area)
+  {
+    $resultado = $this->incidenciaModel->listarIncidenciasDetalleArea($area);
+    return $resultado;
+  }
+
   public function listarIncidenciasArea()
   {
     $resultado = $this->incidenciaModel->listarIncidenciasArea();
@@ -679,7 +686,7 @@ class IncidenciaController
   //   }
   // }
 
-  
+
   // Metodo para mostrar las incidencias por cada mes
   public function mostrarCantidadIncidenciasMes($anio = null)
   {

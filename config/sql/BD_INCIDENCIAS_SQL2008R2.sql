@@ -2687,7 +2687,7 @@ GO
 EXEC sp_registrar_usuario 'JCASTRO', 'garbalenus', 1, 1, 1;
 EXEC sp_registrar_usuario 'PERCY', '123456', 2, 2, 1;
 EXEC sp_registrar_usuario 'ACOLLANTES', '123456', 3, 2, 1;
-EXEC sp_registrar_usuario 'FBENITES', 'mde123', 4, 2, 1;
+EXEC sp_registrar_usuario 'FBENITES', 'mde123', 4, 1, 1;
 EXEC sp_registrar_usuario 'CLEYVA', '123456', 5, 2, 1;
 EXEC sp_registrar_usuario 'MBLAS', '123456', 6, 2, 1;
 EXEC sp_registrar_usuario 'SFABIAN', '123456', 7, 2, 1;

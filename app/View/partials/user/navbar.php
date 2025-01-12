@@ -67,6 +67,17 @@ if (session_status() == PHP_SESSION_NONE) {
             <span class="pcoded-mtext">Consultar incidencias</span>
           </a>
         </li>
+
+        <!-- Reporets -->
+        <!-- <li class="nav-item pcoded-menu-caption">
+          <label>Reportes</label>
+        </li>
+        <li class="nav-item transition-transform duration-300 hover:translate-x-1">
+          <a href="reportes.php" class="nav-link ">
+            <span class="pcoded-micon"> <i class="feather icon-file"></i> </span>
+            <span class="pcoded-mtext">Reportes de incidencias</span>
+          </a>
+        </li> -->
       </ul>
     </div>
   </div>

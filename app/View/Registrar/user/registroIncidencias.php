@@ -78,6 +78,7 @@
           <label for="categoria" class="block font-bold mb-1">Categor&iacute;a: *</label>
           <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-xs cursor-pointer">
           </select>
+          <input type="hidden" id="codigoCategoria" name="codigoCategoria" readonly>
         </div>
 
         <!-- CODIGO PATRIMONIAL -->
@@ -103,7 +104,8 @@
           </div>
           <div class="toast-body bg-white">
             <p>El c&oacute;digo patrimonial es de <b>12 d&iacute;gitos, sin puntos ni separaciones</b>.<br><br>
-              <b>Ejemplo:</b> <i>740881870123</i></p>
+              <b>Ejemplo:</b> <i>740881870123</i>
+            </p>
           </div>
         </div>
 
@@ -134,7 +136,7 @@
         <div class="w-full md:w-1/1 px-2 mb-2">
           <label for="descripcion" class="block mb-1 font-bold text-xs">Descripci&oacute;n:</label>
           <input type="text" id="descripcion" name="descripcion" class="border p-2 w-full text-xs mb-3 rounded-md" placeholder="Ingrese descripci&oacute;n (opcional)"
-          oninput="capitalizeInput(this)">
+            oninput="capitalizeInput(this)">
         </div>
       </div>
 
@@ -171,6 +173,7 @@
               <th scope="col" class="px-6 py-2 text-center">C&oacute;digo Patrimonial</th>
               <th scope="col" class="px-6 py-2 text-center">Asunto</th>
               <th scope="col" class="px-6 py-2 text-center">Documento</th>
+              <th scope="col" class="px-6 py-2 text-center hidden">Codigo Categor&iacute;a</th>
               <th scope="col" class="px-6 py-2 text-center">Categor&iacute;a</th>
               <th scope="col" class="px-6 py-2 text-center hidden">Area</th>
               <th scope="col" class="px-6 py-2 text-center hidden">descripci&oacute;n</th>
@@ -193,6 +196,7 @@
                   <td class='px-6 py-2 text-center'><?= $incidencia['INC_codigoPatrimonial']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $incidencia['INC_asunto']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $incidencia['INC_documento']; ?></td>
+                  <td class='px-6 py-2 text-center hidden'><?= $incidencia['CAT_codigo']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $incidencia['CAT_nombre']; ?></td>
                   <td class='px-6 py-2 text-center hidden'><?= $incidencia['ARE_nombre']; ?></td>
                   <td class='px-6 py-2 text-center hidden'><?= $incidencia['INC_descripcion']; ?></td>

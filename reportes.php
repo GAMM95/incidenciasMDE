@@ -9,6 +9,7 @@ if (!isset($_SESSION['usuario'])) {
 $action = $_GET['action'] ?? '';
 $state = $_GET['state'] ?? '';
 $rol = $_SESSION['rol'];
+$area = $_SESSION['codigoArea'];
 
 require_once './app/Controller/incidenciaController.php';
 require_once './app/Controller/recepcionController.php';
@@ -489,11 +490,11 @@ if ($rol === 'Administrador' || $rol === 'Soporte') {
   if ($rol === 'Administrador') {
     include('app/View/partials/admin/navbar.php');
     include('app/View/partials/admin/header.php');
-    include('app/View/Reporte/reportes.php');
+    include('app/View/Reporte/admin/reportes.php');
   } else if ($rol === 'Soporte') {
     include('app/View/partials/soporte/navbar.php');
     include('app/View/partials/soporte/header.php');
-    include('app/View/Reporte/reportes.php');
+    include('app/View/Reporte/admin/reportes.php');
   }
   ?>
   <!-- [ Main Content ] end -->
