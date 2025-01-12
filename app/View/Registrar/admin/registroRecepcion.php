@@ -24,8 +24,7 @@
     <div id="noIncidencias" class="flex justify-between items-center mb-2">
       <h1 class="text-xl text-gray-400">Nuevas incidencias</h1>
       <div id="paginadorNuevasIncidencias" class="flex justify-end items-center mt-1">
-        <?php if ($totalPages > 1) : // Mostrar el contenedor solo si hay más de una página
-        ?>
+        <?php if ($totalPages > 1) : ?>
           <div class="flex justify-end items-center mt-1">
             <?php if ($page > 1) : ?>
               <a href="#" class="px-2 py-1 bg-gray-400 text-gray-200 hover:bg-gray-600 rounded-l-md" onclick="changePageTablaSinRecepcionar(<?php echo $page - 1; ?>)"><i class="feather mr-2 icon-chevrons-left"></i> Anterior</a>

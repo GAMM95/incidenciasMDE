@@ -36,16 +36,16 @@
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="categoria" class="block font-bold mb-1">Categor&iacute;a: *</label>
           <select id="cbo_categoria" name="categoria" class="border p-2 w-full text-xs cursor-pointer">
-            <input type="hidden" id="codigoCategoria" name="codigoCategoria" readonly>
           </select>
+          <input type="hidden" id="codigoCategoria" name="codigoCategoria" readonly>
         </div>
 
         <!-- AREA DE LA INCIDENCIA -->
         <div class="w-full sm:w-1/3 px-2 mb-2">
           <label for="area" class="block font-bold mb-1">&Aacute;rea: *</label>
           <select id="cbo_area" name="area" class="border p-2 w-full text-xs cursor-pointer">
-            <input type="hidden" id="codigoArea" name="codigoArea" readonly>
           </select>
+          <input type="hidden" id="codigoArea" name="codigoArea" readonly>
         </div>
 
         <!-- FECHA DE LA INCIDENCIA -->
