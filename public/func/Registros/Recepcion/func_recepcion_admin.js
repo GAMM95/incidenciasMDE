@@ -199,21 +199,80 @@ function validarCamposActualizacion() {
   return valido;
 }
 
-// Funcion para eliminar recepcion
-$(document).ready(function () {
-  // Agregar funcionalidad para seleccionar una fila (al hacer clic)
-  $('#tablaIncidenciasRecepcionadas').on('click', 'tr', function () {
-    $('#tablaIncidenciasRecepcionadas tr').removeClass('selected');
-    $(this).addClass('selected');
-  });
+// // Funcion para eliminar recepcion
+// $(document).ready(function () {
+//   // Agregar funcionalidad para seleccionar una fila (al hacer clic)
+//   $('#tablaIncidenciasRecepcionadas').on('click', 'tr', function () {
+//     $('#tablaIncidenciasRecepcionadas tr').removeClass('selected');
+//     $(this).addClass('selected');
+//   });
 
-  // Evento para eliminar recepción
-  $('body').on('click', '.eliminar-recepcion', function (e) {
+//   // Evento para eliminar recepción
+//   $('body').on('click', '.eliminar-recepcion', function (e) {
+//     e.preventDefault();
+
+//     // Obtener el número de recepción de la fila seleccionada
+//     const selectedRow = $(this).closest('tr');
+//     const numeroRecepcion = selectedRow.data('id');
+//     // Confirmar eliminación
+//     $.ajax({
+//       url: 'registro-recepcion.php?action=eliminar',
+//       type: 'POST',
+//       data: {
+//         num_recepcion: numeroRecepcion
+//       },
+//       dataType: 'json',
+//       success: function (response) {
+//         try {
+//           if (response.success) {
+//             toastr.success(response.message, 'Mensaje');
+//             setTimeout(function () {
+//               selectedRow.remove(); // Eliminar la fila seleccionada
+//               location.reload(); // Recargar la pagina
+//             }, 1500);
+//           } else {
+//             toastr.warning(jsonResponse.message, 'Advertencia');
+//           }
+//         } catch (e) {
+//           toastr.error('Error al procesar la respuesta.', 'Mensaje de error');
+//         }
+//       },
+//       error: function (xhr, status, error) {
+//         toastr.error('Hubo un problema al eliminar la recepci&oacute;n. Int&eacute;ntalo de nuevo.', 'Mensaje de error');
+//       }
+//     });
+//   });
+// });
+
+$(document).ready(function () {
+  // Evento para abrir el modal de eliminación
+  $('body').on('click', '.bn.btn-danger', function (e) {
     e.preventDefault();
 
-    // Obtener el número de recepción de la fila seleccionada
+    // Obtener el número de recepción desde el data-id de la fila seleccionada
     const selectedRow = $(this).closest('tr');
     const numeroRecepcion = selectedRow.data('id');
+
+    // Asignar el número de recepción al botón de confirmación en el modal
+    $('#confirmarEliminarRecepcion').data('id', numeroRecepcion);
+
+    // Abrir el modal de confirmación
+    $('#eliminarRecepcionModal').modal('show');
+  });
+
+  // Evento para eliminar recepción cuando se confirma desde el modal
+  $('#confirmarEliminarRecepcion').on('click', function (e) {
+    e.preventDefault();
+
+    // Obtener el número de recepción desde el botón de confirmación
+    const numeroRecepcion = $(this).data('id');
+
+    // Validar si se obtuvo correctamente el número de recepción
+    if (!numeroRecepcion) {
+      toastr.error('No se pudo obtener el número de recepción.', 'Error');
+      return;
+    }
+
     // Confirmar eliminación
     $.ajax({
       url: 'registro-recepcion.php?action=eliminar',
@@ -223,22 +282,31 @@ $(document).ready(function () {
       },
       dataType: 'json',
       success: function (response) {
+        console.log(response); // Depuración para ver la respuesta del servidor
+
         try {
           if (response.success) {
             toastr.success(response.message, 'Mensaje');
+
+            // Cerrar el modal inmediatamente
+            $('#eliminarRecepcionModal').modal('hide');
+
+            // Recargar la página después de un retraso de 2 segundos
             setTimeout(function () {
-              selectedRow.remove(); // Eliminar la fila seleccionada
-              location.reload(); // Recargar la pagina
-            }, 1500);
+              location.reload(); // Recargar la página
+            }, 2000); // 2 segundos de retraso (puedes ajustar el tiempo si prefieres)
+
           } else {
-            toastr.warning(jsonResponse.message, 'Advertencia');
+            toastr.warning(response.message || 'Advertencia desconocida', 'Advertencia');
           }
         } catch (e) {
+          console.error(e);
           toastr.error('Error al procesar la respuesta.', 'Mensaje de error');
         }
       },
       error: function (xhr, status, error) {
-        toastr.error('Hubo un problema al eliminar la recepci&oacute;n. Int&eacute;ntalo de nuevo.', 'Mensaje de error');
+        toastr.error('Hubo un problema al eliminar la recepción. Inténtalo de nuevo.', 'Mensaje de error');
+        console.error(xhr.responseText);
       }
     });
   });

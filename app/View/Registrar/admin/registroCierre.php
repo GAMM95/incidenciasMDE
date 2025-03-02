@@ -95,7 +95,7 @@
 
       <!-- NUMERO DE RECEPCION -->
       <div class="flex justify-center mx-2 mb-4">
-        <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center hidden ">
+        <div class="flex-1 max-w-[500px] px-2 mb-2  items-center hidden ">
           <label for="num_incidencia" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Incidencia:</label>
           <input type="text" id="num_incidencia" name="num_incidencia" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-xs text-center" readonly>
         </div>
@@ -109,13 +109,13 @@
         </div>
 
         <!-- Numero de mantenimiento -->
-        <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center hidden">
+        <div class="flex-1 max-w-[500px] px-2 mb-2  items-center hidden">
           <label for="mantenimiento" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero de Mantenimiento:</label>
           <input type="text" id="mantenimiento" name="mantenimiento" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-xs text-center" readonly>
         </div>
 
         <!-- INPUT ESCONDIDO PARA EL NUMERO DE CIERRE -->
-        <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center hidden">
+        <div class="flex-1 max-w-[500px] px-2 mb-2  items-center hidden">
           <label for="num_cierre" class="block font-bold mb-1 mr-3 text-lime-500">N&uacute;mero Cierre:</label>
           <input type="text" id="num_cierre" name="num_cierre" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-xs text-center" readonly>
         </div>
@@ -164,7 +164,7 @@
         <!-- Fin de documento de cierre -->
 
         <!-- Operatividad del cierre -->
-        <div class="w-full md:w-1/5 px-2 mb-2">
+        <div class="w-full md:w-1/5 px-2 mb-2 mt-2">
           <label for="operatividad" class="block font-bold mb-1 text-xs">Condici&oacute;n: *</label>
           <select id="operatividad" name="operatividad" class="border p-2 w-full text-xs cursor-pointer rounded-md">
           </select>
@@ -181,13 +181,14 @@
           </div>
 
           <!-- Botón al costado del select -->
-          <a href="modulo-solucion.php"
+          <a href="#"
+            data-toggle="modal"
+            data-target="#solucionModal"
             class="ml-2 bn btn-warning text-xs text-white font-bold h-9 py-2 px-3 rounded-md flex items-center hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             title="Agregar nueva soluci&oacute;n"
             aria-label="Agregar nueva soluci&oacute;n">
             <i class="feather icon-plus"></i>
           </a>
-
         </div>
         <!-- Fin de solucion de cierre con botón al costado -->
       </div>
@@ -282,7 +283,12 @@
                   </button>
 
                   <!-- Botón de Eliminar -->
-                  <button type="button" class="eliminar-cierre bn btn-danger text-xs text-white font-bold py-2 px-2 rounded-md flex items-center justify-center" title="Eliminar cierre">
+                  <button
+                    type="button"
+                    data-toggle="modal"
+                    data-target="#eliminarCierreModal"
+                    class="bn btn-danger text-xs text-white font-bold py-2 px-2 rounded-md flex items-center justify-center"
+                    title="Eliminar cierre">
                     <i class="feather icon-trash-2"></i>
                   </button>
                 </td>
@@ -300,5 +306,74 @@
     <!-- Fin de la tabla -->
   </div>
 </div>
+
+<!-- Modal para agregar nueva solución -->
+<div class="modal fade" id="solucionModal" tabindex="-1" role="dialog" aria-labelledby="solucionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <!-- titulo del modal -->
+      <div class="modal-header">
+        <h5 class="modal-title text-xl text-bold" id="solucionModalLabel">Agregar nueva soluci&oacute;n</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- cuerpo del modal -->
+      <div class="modal-body">
+        <form id="form-solucion" action="registro-cierre.php?action=agregar-solucion" method="POST" class="bg-white w-full text-xs">
+          <div class="flex justify-center items-center">
+            <div class="w-full px-2 mb-2" style="max-width: 500px;">
+              <label for="descripcionSolucion" class="block mb-1 font-bold text-xs">Descripci&oacute;n de soluci&oacute;n:</label>
+              <input type="text" id="descripcionSolucion" name="descripcionSolucion" class="border border-gray-200 bg-gray-white p-2 w-full text-xs" placeholder="Ingrese nueva de soluci&oacute;n" oninput="capitalizeInput(this)">
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- footer del modal -->
+      <div class="modal-footer">
+        <!-- Botones del formulario -->
+        <div class="flex justify-center space-x-4">
+          <button type="submit" id="agregar-solucion" class="bn btn-primary text-xs text-white font-bold py-2 px-3 rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"><i class="feather mr-2 icon-save"></i>Agregar</button>
+          <button type="button" class="btn btn-secondary py-2 px-3 rounded-md" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin de modal para agregar nueva solución -->
+
+<!-- Modal para eliminar cierre -->
+<div class="modal fade" id="eliminarCierreModal" tabindex="-1" role="dialog" aria-labelledby="eliminarCierreModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <!-- titulo del modal -->
+      <div class="modal-header">
+        <h5 class="modal-title text-xl text-bold" id="eliminarCierreModalLabel">Advertencia</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- cuerpo del modal -->
+      <div class="modal-body">
+        <h1 class="mb-0 text-gray-800 text-center text-md">&iquest;Est&aacute; seguro de eliminar esta incidencia cerrada?</h1>
+      </div>
+
+      <!-- footer del modal -->
+      <div class="modal-footer">
+        <div class="flex justify-center space-x-4">
+          <button type="button" id="confirmarEliminarCierre" data-id="" class="eliminar-cierre bn btn-danger text-xs text-white font-bold py-2 px-3 rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"><i class="feather mr-2 icon-trash-2"></i>Eliminar</button>
+
+          <button type="button" class="btn btn-secondary py-2 px-3 rounded-md" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin del modal -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="dist/assets/css/plugins/tailwind.min.css" rel="stylesheet">

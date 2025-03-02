@@ -39,19 +39,26 @@ $(document).ready(function () {
     dataType: 'json',
     success: function (data) {
       var select = $('#solucion');
-      select.empty();
+      select.empty(); // Limpia el select antes de agregar nuevas opciones
       select.append('<option value="" selected disabled>Seleccione una soluci&oacute;n</option>');
-      $.each(data, function (index, value) {
-        select.append('<option value="' + value.SOL_codigo + '">' + value.SOL_descripcion + '</option>');
-      });
+
+      // Asegúrate de que el data.success sea true y que soluciones tenga datos
+      if (data.success && data.soluciones.length > 0) {
+        $.each(data.soluciones, function (index, solucion) {
+          select.append('<option value="' + solucion.codigo + '">' + solucion.descripcion + '</option>');
+        });
+      } else {
+        // Manejar si no hay soluciones
+        select.append('<option value="" disabled>No hay soluciones disponibles</option>');
+      }
     },
     error: function (error) {
-      console.error('Error en la carga de condiciones:', error);
+      console.error('Error en la carga de soluciones:', error);
     }
   });
 
-  // Buscador para el combo Condicion
-  $('#operatividad', '#solucion').select2({
+  // BUSCADOR PARA EL COMBO condicion y solucion
+  $('#operatividad, #solucion').select2({
     allowClear: true,
     width: '100%',
     dropdownCssClass: 'text-xs',
@@ -118,7 +125,7 @@ function enviarFormulario(action) {
         }
       } catch (e) {
         console.error('JSON parsing error:', e);
-        toastr.error('Error al procesar la respuesta.','Mensaje de error');
+        toastr.error('Error al procesar la respuesta.', 'Mensaje de error');
       }
     },
     error: function (xhr, status, error) {
@@ -208,21 +215,81 @@ function validarCamposActualizacionCierre() {
   return valido;
 }
 
-// Funcion para eliminar recepcion
-$(document).ready(function () {
-  // Agregar funcionalidad para seleccionar una fila (al hacer clic)
-  $('#tablaIncidenciasCerradas').on('click', 'tr', function () {
-    $('#tablaIncidenciasCerradas tr').removeClass('selected');
-    $(this).addClass('selected');
-  });
+// Funcion para eliminar cierre
+// $(document).ready(function () {
+//   // Agregar funcionalidad para seleccionar una fila (al hacer clic)
+//   $('#tablaIncidenciasCerradas').on('click', 'tr', function () {
+//     $('#tablaIncidenciasCerradas tr').removeClass('selected');
+//     $(this).addClass('selected');
+//   });
 
-  // Evento para eliminar recepción
-  $('body').on('click', '.eliminar-cierre', function (e) {
+//   // Evento para eliminar recepción
+//   $('body').on('click', '.eliminar-cierre', function (e) {
+//     e.preventDefault();
+
+//     // Obtener el número de recepción de la fila seleccionada
+//     const selectedRow = $(this).closest('tr');
+//     const numeroCierre = selectedRow.data('id');
+//     // Confirmar eliminación
+//     $.ajax({
+//       url: 'registro-cierre.php?action=eliminar',
+//       type: 'POST',
+//       data: {
+//         num_cierre: numeroCierre
+//       },
+//       dataType: 'json',
+//       success: function (response) {
+//         try {
+//           if (response.success) {
+//             toastr.success(response.message, 'Mensaje');
+//             setTimeout(function () {
+//               selectedRow.remove(); // Eliminar la fila seleccionada
+//               location.reload(); // Recargar la pagina
+//             }, 2000);
+//           } else {
+//             toastr.warning(jsonResponse.message, 'Advertencia');
+//           }
+//         } catch (e) {
+//           toastr.error('Error al procesar la respuesta.');
+//         }
+//       },
+//       error: function (xhr, status, error) {
+//         toastr.error('Hubo un problema al eliminar la incidencia cerrada. Inténtalo de nuevo.', 'Error');
+//       }
+//     });
+//   });
+// });
+
+
+$(document).ready(function () {
+  // Evento para abrir el modal de eliminación
+  $('body').on('click', '.bn.btn-danger', function (e) {
     e.preventDefault();
 
-    // Obtener el número de recepción de la fila seleccionada
+    // Obtener el número de cierre desde el data-id de la fila seleccionada
     const selectedRow = $(this).closest('tr');
     const numeroCierre = selectedRow.data('id');
+
+    // Asignar el número de cierre al botón de confirmación en el modal
+    $('#confirmarEliminarCierre').data('id', numeroCierre);
+
+    // Abrir el modal de confirmación
+    $('#eliminarCierreModal').modal('show');
+  });
+
+  // Evento para eliminar cierre cuando se confirma desde el modal
+  $('#confirmarEliminarCierre').on('click', function (e) {
+    e.preventDefault();
+
+    // Obtener el número de cierre desde el botón de confirmación
+    const numeroCierre = $(this).data('id');
+
+    // Validar si se obtuvo correctamente el número de cierre
+    if (!numeroCierre) {
+      toastr.error('No se pudo obtener el número de cierre.', 'Error');
+      return;
+    }
+
     // Confirmar eliminación
     $.ajax({
       url: 'registro-cierre.php?action=eliminar',
@@ -232,22 +299,31 @@ $(document).ready(function () {
       },
       dataType: 'json',
       success: function (response) {
+        console.log(response); // Depuración para ver la respuesta del servidor
+
         try {
           if (response.success) {
             toastr.success(response.message, 'Mensaje');
+
+            // Cerrar el modal inmediatamente
+            $('#eliminarCierreModal').modal('hide');
+
+            // Recargar la página después de un retraso de 2 segundos
             setTimeout(function () {
-              selectedRow.remove(); // Eliminar la fila seleccionada
-              location.reload(); // Recargar la pagina
-            }, 2000);
+              location.reload(); // Recargar la página
+            }, 2000); // 2 segundos de retraso (puedes ajustar el tiempo si prefieres)
+
           } else {
-            toastr.warning(jsonResponse.message, 'Advertencia');
+            toastr.warning(response.message || 'Advertencia desconocida', 'Advertencia');
           }
         } catch (e) {
-          toastr.error('Error al procesar la respuesta.');
+          console.error(e);
+          toastr.error('Error al procesar la respuesta.', 'Mensaje de error');
         }
       },
       error: function (xhr, status, error) {
-        toastr.error('Hubo un problema al eliminar la incidencia cerrada. Inténtalo de nuevo.', 'Error');
+        toastr.error('Hubo un problema al eliminar el cierre. Inténtalo de nuevo.', 'Mensaje de error');
+        console.error(xhr.responseText);
       }
     });
   });
@@ -497,3 +573,56 @@ function updateCharCount(textareaId, charCountId) {
   const charCount = document.getElementById(charCountId);
   charCount.textContent = `${textarea.value.length}/1000 caracteres`;
 }
+
+
+// Función para actualizar dinámicamente el select de soluciones
+$(document).ready(function () {
+  // Configuración de toastr (si es necesario)
+  toastr.options = {
+    "positionClass": "toast-bottom-right",
+    "progressBar": true,
+    "timeOut": "2000"
+  };
+
+  // Evento para el botón de refrescar
+  $('#refresh').on('click', function (e) {
+    e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+    actualizarSelectSoluciones(); // Llama a la función para actualizar el select
+  });
+
+  // Función para actualizar dinámicamente el select de soluciones
+  function actualizarSelectSoluciones() {
+    $.ajax({
+      url: 'ajax/getSolucion.php',
+      method: 'GET',
+      dataType: 'json', // Esperamos un JSON con las opciones del select
+      success: function (response) {
+        if (response.success) {
+          var $selectSolucion = $('#solucion');
+          $selectSolucion.empty(); // Limpiar el select antes de agregar las nuevas opciones
+
+          // Agregar la opción por defecto "Seleccione una solución"
+          $selectSolucion.append('<option value="" selected disabled>Seleccione una soluci&oacute;n</option>');
+
+          // Recorrer y agregar las nuevas opciones
+          $.each(response.soluciones, function (index, solucion) {
+            $selectSolucion.append($('<option>', {
+              value: solucion.codigo,
+              text: solucion.descripcion
+            }));
+          });
+
+          console.log('Soluciones actualizadas correctamente.', 'Éxito');
+        } else {
+          console.warning('No se pudieron cargar las soluciones.', 'Advertencia');
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX Error al actualizar el select:', error);
+        console.error('Error al actualizar las soluciones.', 'Mensaje de error');
+      }
+    });
+  }
+   // Exponer la función al ámbito global para que otros archivos puedan acceder a ella
+   window.actualizarSelectSoluciones = actualizarSelectSoluciones;
+});

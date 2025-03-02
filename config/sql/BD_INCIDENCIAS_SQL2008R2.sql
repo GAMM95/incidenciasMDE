@@ -529,6 +529,7 @@ WITH IncidenciasOrdenadas AS (
         I.INC_codigoPatrimonial,
         B.BIE_nombre,
         I.INC_documento,
+	      I.INC_descripcion,
         (CONVERT(VARCHAR(10), REC_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), REC_hora, 0), 7), 6, 0, ' ')) AS fechaRecepcionFormateada,
         CASE
             WHEN E.EST_codigo = 3 THEN NULL
@@ -584,6 +585,7 @@ SELECT
     INC_codigoPatrimonial,
     BIE_nombre,
     INC_documento,
+    INC_descripcion,
     fechaRecepcionFormateada,
     PRI_nombre,
     IMP_descripcion,
@@ -1140,9 +1142,9 @@ WITH UltimaModificacion AS (
     MAX(CONVERT(VARCHAR(10), INC_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), INC_hora, 0), 7), 6, 0, ' ')) AS fechaIncidenciaFormateada,
     MAX(CONVERT(VARCHAR(10), C.CIE_fecha, 103) + ' - ' + STUFF(RIGHT('0' + CONVERT(VARCHAR(7), C.CIE_hora, 0), 7), 6, 0, ' ')) AS fechaCierreFormateada,
     A.ARE_nombre,
-	A.ARE_codigo,
+	  A.ARE_codigo,
     I.INC_asunto,
-	CAT.CAT_nombre,
+	  CAT.CAT_nombre,
     I.INC_numero_formato,
     I.INC_documento,
     I.INC_codigoPatrimonial,
@@ -1153,6 +1155,7 @@ WITH UltimaModificacion AS (
     U.USU_codigo,
     P.PER_nombres + ' ' + P.PER_apellidoPaterno AS Usuario,
     P.PER_nombres + ' ' + P.PER_apellidoPaterno + ' ' + P.PER_apellidoMaterno AS NombreCompleto,  -- Agregado
+    S.SOL_codigo,
     S.SOL_descripcion,
     CASE
       WHEN C.CIE_numero IS NOT NULL THEN EC.EST_descripcion
@@ -1186,8 +1189,8 @@ WITH UltimaModificacion AS (
     C.CIE_diagnostico,
     C.CIE_recomendaciones,
     A.ARE_nombre,
-	A.ARE_codigo,
-	CAT.CAT_nombre,
+	  A.ARE_codigo,
+	  CAT.CAT_nombre,
     I.INC_asunto,
     I.INC_numero_formato,
     I.INC_documento,
@@ -1200,6 +1203,7 @@ WITH UltimaModificacion AS (
     P.PER_nombres,
     P.PER_apellidoPaterno,
     P.PER_apellidoMaterno,  -- Incluido en GROUP BY
+    S.SOL_codigo,
     S.SOL_descripcion,
     EC.EST_descripcion,
     E.EST_descripcion
@@ -1229,6 +1233,7 @@ SELECT
   NombreCompleto,  -- Nombre completo agregado
   ultimaFecha,
   ultimaHora,
+  SOL_codigo,
   SOL_descripcion,
   Estado
 FROM UltimaModificacion
@@ -3561,7 +3566,7 @@ CREATE PROCEDURE sp_registrar_incidencia
   @USU_codigo SMALLINT
 AS 
 BEGIN 
-  DECLARE @numero_formato VARCHAR(20);  -- N�mero de incidencia
+  DECLARE @numero_formato VARCHAR(20);  -- N mero de incidencia
 
   -- Verificar si ya existe una incidencia similar
   IF NOT EXISTS (

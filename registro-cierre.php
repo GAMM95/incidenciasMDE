@@ -14,9 +14,11 @@ $area = $_SESSION['codigoArea'];
 
 require_once 'app/Controller/cierreController.php';
 require_once 'app/Controller/mantenimientoController.php';
+require_once 'app/Controller/solucionController.php';
 
 $cierreController = new CierreController();
 $mantenimientoController = new MantenimientoController();
+$solucionController = new SolucionController();
 
 // Paginacion de la tabla de incidencias recepcionadas
 $limit = 2; //Numero de filas por pagina
@@ -37,6 +39,9 @@ switch ($action) {
     break;
   case 'eliminar':
     $cierreController->eliminarCierre();
+    break;
+  case 'agregar-solucion':
+    $solucionController->registrarSolucion();
     break;
   default:
     break;
@@ -120,6 +125,7 @@ switch ($action) {
   <!-- Funcionalidades enrutadas -->
   <script src="./public/func/Registros/Cierre/func_cierre_admin.js"></script>
   <script src="./public/func/Registros/Cierre/reporteDetalleCierre.js"></script>
+  <script src="./public/func/Registros/Cierre/func_solucion_modal.js"></script>
 </body>
 
 </html>

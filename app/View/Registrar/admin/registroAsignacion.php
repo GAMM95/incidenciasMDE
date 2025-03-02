@@ -56,7 +56,7 @@
               <th scope="col" class="px-6 py-2 text-center">Prioridad</th>
               <th scope="col" class="px-6 py-2 text-center">Impacto</th>
               <th scope="col" class="px-6 py-2 text-center">Usuario receptor</th>
-              <th scope="col" class="px-6 py-2 text-center">Acci&oacute;n</th>
+              <th scope="col" class="px-6 py-2 text-center hidden">Acci&oacute;n</th>
             </tr>
           </thead>
           <!-- Fin de encabezado -->
@@ -76,8 +76,13 @@
                   <td class='px-6 py-2 text-center'><?= $recepcion['PRI_nombre']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $recepcion['IMP_descripcion']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $recepcion['UsuarioRecepcion']; ?></td>
-                  <td class="px-6 py-2 text-center flex space-x-2">
-                    <button type="button" class="eliminar-recepcion bn btn-danger text-xs text-white font-bold py-2 px-3 rounded-md flex items-center justify-center">
+                  <td class="px-6 py-2 text-center hidden space-x-2">
+                    <button
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#eliminarRecepcionModal"
+                      class="bn btn-danger text-xs text-white font-bold py-2 px-3 rounded-md flex items-center justify-center"
+                      title="Eliminar recepci&oacute;n">
                       <i class="feather icon-trash-2"></i>
                     </button>
                   </td>
@@ -101,7 +106,7 @@
 
       <div class="flex flex-wrap -mx-2 justify-center">
         <!-- Numero de recepcion -->
-        <div class="flex justify-center items-center mr-5 ml-5 hidden">
+        <div class="justify-center items-center mr-5 ml-5 hidden">
           <div class="text-center">
             <label for="num_recepcion" class="block font-bold mb-1 mr-3 text-[#32cfad]">C&oacute;digo de recepci&oacute;n:</label>
             <input type="text" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-xs text-center" id="num_recepcion" name="num_recepcion" readonly required>
@@ -117,7 +122,7 @@
         </div>
 
         <!-- Numero de asignacion -->
-        <div class="flex justify-center items-center hidden">
+        <div class="justify-center items-center hidden">
           <div class="text-center">
             <label for="num_asignacion" class="block font-bold mb-1 mr-3 text-lime-500">Número de Asignacion:</label>
             <input type="text" id="num_asignacion" name="num_asignacion" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-xs text-center" readonly>

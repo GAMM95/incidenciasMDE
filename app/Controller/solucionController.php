@@ -15,6 +15,7 @@ class SolucionController
   public function registrarSolucion()
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
       $descripcionSolucion = $_POST['descripcionSolucion'] ?? null;
 
       if ($descripcionSolucion === null || trim($descripcionSolucion) === '') {

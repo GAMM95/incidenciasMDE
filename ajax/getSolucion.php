@@ -17,7 +17,7 @@ class SolucionModel extends Conexion
       ORDER BY SOL_descripcion";
     $stmt = $conector->prepare($query);
     $stmt->execute();
-    $resultado = $stmt->fetchAll(); 
+    $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $resultado;
   }
 }
@@ -25,5 +25,19 @@ class SolucionModel extends Conexion
 $solucionModel = new SolucionModel();
 $soluciones = $solucionModel->getSolucionData();
 
+// Construir la respuesta en el formato adecuado
+$response = [
+  'success' => true,
+  'soluciones' => []
+];
+
+// Mapear los datos a un formato legible por el front-end
+foreach ($soluciones as $solucion) {
+  $response['soluciones'][] = [
+    'codigo' => $solucion['SOL_codigo'],
+    'descripcion' => $solucion['SOL_descripcion']
+  ];
+}
+
 header('Content-Type: application/json');
-echo json_encode($soluciones);
+echo json_encode($response);

@@ -121,7 +121,14 @@ if (isset($_SESSION['codigoUsuario'])) {
             </div>
             <ul class="pro-body">
               <!-- <li><a href="perfil-admin.php" class="dropdown-item"><i class="feather icon-user"></i> Perfil</a></li> -->
-              <li><a href="#" class="dropdown-item" data-toggle="modal" data-target="#exampleModal"><i class="feather icon-user"></i>Mi Perfil</a></li>
+              <li>
+                <a href="#"
+                  class="dropdown-item"
+                  data-toggle="modal"
+                  data-target="#exampleModal">
+                  <i class="feather icon-user"> </i>Mi Perfil
+                </a>
+              </li>
               <li><a href="#" class="dropdown-item" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="feather icon-log-out"></i> Cerrar sesi&oacute;n</a></li>
             </ul>
           </div>
@@ -142,29 +149,29 @@ if (isset($_SESSION['codigoUsuario'])) {
                   <div class="row">
                     <div class="col-md-6">
                       <label for="usuNombre" class="block font-bold text-xs text-gray-800 py-0 mb-0">Usuario</label>
-                      <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="usuNombre" value="<?php echo htmlspecialchars($perfil['USU_nombre']); ?>" readonly>
+                      <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="usuNombre" value="<?php echo utf8_decode($perfil['USU_nombre']); ?>" readonly>
                     </div>
                     <div class="col-md-6">
                       <label for="rolNombre" class="block font-bold text-xs text-gray-800 mb-0">Rol</label>
-                      <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="rolNombre" value="<?php echo htmlspecialchars($perfil['ROL_nombre']); ?>" readonly>
+                      <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="rolNombre" value="<?php echo utf8_decode($perfil['ROL_nombre']); ?>" readonly>
                     </div>
                   </div>
                   <div class="mb-0">
                     <label for="areNombre" class="block font-bold text-xs text-gray-800 mb-0">&Aacute;rea</label>
-                    <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="areNombre" value="<?php echo htmlspecialchars($perfil['ARE_nombre']); ?>" readonly>
+                    <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="areNombre" value="<?php echo utf8_decode($perfil['ARE_nombre']); ?>" readonly>
                   </div>
                   <div class="mb-1">
                     <label for="perNombres" class="block font-bold text-xs text-gray-800 mb-0">Nombres y apellidos</label>
-                    <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="perNombres" value="<?php echo htmlspecialchars($perfil['Persona']); ?>" readonly>
+                    <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="perNombres" value="<?php echo utf8_decode($perfil['Persona']); ?>" readonly>
                   </div>
                   <div class="row">
                     <div class="col-md-3">
                       <label for="perApellidoPaterno" class="block font-bold text-xs text-gray-800 mb-0">Celular</label>
-                      <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="perApellidoPaterno" value="<?php echo htmlspecialchars($perfil['PER_celular']); ?>" readonly>
+                      <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="perApellidoPaterno" value="<?php echo utf8_decode($perfil['PER_celular']); ?>" readonly>
                     </div>
                     <div class="col-md-9">
                       <label for="perApellidoMaterno" class="block font-bold text-xs text-gray-800 mb-0">Email</label>
-                      <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="perApellidoMaterno" value="<?php echo htmlspecialchars($perfil['PER_email']); ?>" readonly>
+                      <input type="text" class="border border-gray-200 bg-gray-100 p-2 w-full text-xs text-gray-800 mb-3" id="perApellidoMaterno" value="<?php echo utf8_decode($perfil['PER_email']); ?>" readonly>
                     </div>
                   </div>
                 </form>

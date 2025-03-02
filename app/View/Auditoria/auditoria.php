@@ -995,7 +995,7 @@
                               <!-- Fin de fecha de fin -->
 
                               <!-- Botones alineados horizontalmente -->
-                              <div class="ml-2 flex space-x-2 ml-5">
+                              <div class="flex space-x-2 ml-5">
                                 <!-- Botón de buscar -->
                                 <button type="submit" id="filtrarListaAuditoriaPersonas" class="h-10 w-12 text-xs text-white font-bold py-1 px-3 bg-red-400 rounded-md flex justify-center items-center">
                                   <i class="feather icon-filter"></i>

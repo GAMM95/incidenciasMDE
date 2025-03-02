@@ -94,7 +94,7 @@
       <div class="flex flex-wrap -mx-2 justify-center">
         <!-- NUMERO DE INCIDENCIA -->
         <div class="flex justify-center mx-2 mb-2 ">
-          <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center hidden">
+          <div class="flex-1 max-w-[500px] px-2 mb-2  items-center hidden">
             <label for="incidencia" class="block font-bold mb-1 mr-3 text-[#32cfad]">C&oacute;digo de incidencia:</label>
             <input type="text" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-xs text-center" id="incidencia" name="incidencia" readonly required>
           </div>
@@ -109,7 +109,7 @@
         </div>
 
         <!-- Numero de recepcion -->
-        <div class="flex justify-center mx-2 mb-2 hidden">
+        <div class=" justify-center mx-2 mb-2 hidden">
           <div class="flex-1 max-w-[500px] px-2 mb-2 flex items-center">
             <label for="num_recepcion" class="block font-bold mb-1 mr-3 text-lime-500">Número de Recepción:</label>
             <input type="text" id="num_recepcion" name="num_recepcion" class="w-20 border border-gray-200 bg-gray-100 rounded-md p-2 text-xs text-center" readonly>
@@ -219,7 +219,7 @@
               <?php foreach ($resultadoRecepciones as $recepcion) : ?>
                 <tr class='second-table hover:bg-green-100 hover:scale-[101%] transition-all border-b' data-id="<?= $recepcion['REC_numero']; ?>">
                   <th scope='row' class='px-6 py-3 font-medium text-gray-900 whitespace-nowrap hidden'><?= $recepcion['REC_numero']; ?></th>
-                  <td class='px-6 py-2 text-center'><?= $recepcion['INC_numero_formato']; ?></td>
+                  <td class='px-6 py-2 text-center'><?= htmlspecialchars_decode($recepcion['INC_numero_formato']); ?></td>
                   <td class='px-6 py-2 text-center'><?= $recepcion['fechaRecepcionFormateada']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $recepcion['ARE_nombre']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $recepcion['INC_codigoPatrimonial']; ?></td>
@@ -228,7 +228,12 @@
                   <td class='px-6 py-2 text-center'><?= $recepcion['IMP_descripcion']; ?></td>
                   <td class='px-6 py-2 text-center'><?= $recepcion['UsuarioRecepcion']; ?></td>
                   <td class="px-6 py-2 justify-center text-center flex space-x-2">
-                    <button type="button" class="eliminar-recepcion bn btn-danger text-xs text-white font-bold py-2 px-3 rounded-md flex items-center justify-center" title="Eliminar recepci&oacute;n">
+                    <button
+                      type="button"
+                      data-toggle="modal"
+                      data-target="#eliminarRecepcionModal"
+                      class="bn btn-danger text-xs text-white font-bold py-2 px-3 rounded-md flex items-center justify-center"
+                      title="Eliminar recepci&oacute;n">
                       <i class="feather icon-trash-2"></i>
                     </button>
                   </td>
@@ -247,6 +252,37 @@
     <!-- Fin de la tabla -->
   </div>
 </div>
+
+<!-- Modal para eliminar recepción -->
+<div class="modal fade" id="eliminarRecepcionModal" tabindex="-1" role="dialog" aria-labelledby="eliminarRecepcionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <!-- titulo del modal -->
+      <div class="modal-header">
+        <h5 class="modal-title text-xl text-bold" id="eliminarRecepcionModalLabel">Advertencia</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- cuerpo del modal -->
+      <div class="modal-body">
+        <h1 class="mb-0 text-gray-800 text-center text-md">&iquest;Est&aacute; seguro de eliminar esta incidencia recepcionada?</h1>
+      </div>
+
+      <!-- footer del modal -->
+      <div class="modal-footer">
+        <div class="flex justify-center space-x-4">
+          <button type="button" id="confirmarEliminarRecepcion" data-id="" class="eliminar-recepcion bn btn-danger text-xs text-white font-bold py-2 px-3 rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"><i class="feather mr-2 icon-trash-2"></i>Eliminar</button>
+
+          <button type="button" class="btn btn-secondary py-2 px-3 rounded-md" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin del modal -->
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="dist/assets/css/plugins/tailwind.min.css" rel="stylesheet">
